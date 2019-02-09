@@ -17,7 +17,8 @@ CONVERT_TERMS = {
     "nms" : "no major skips",
     "out of bounds" : "oob",
     "reverse bottle adventure" : "rba",
-    "rdo" : "reverse dungeon order"
+    "rdo" : "reverse dungeon order",
+    "hundo" : r"100%"
 }
 
 
@@ -28,19 +29,28 @@ class Category_matcher:
         self.category_data = {}
 
     def match_category(self, str):
-        str = self.substitute_abbreviations(str)
+        print(str)
+        str = self.substitute_abbreviations(CONVERT_TERMS, str)
+        print('substituted!')
+        print(CONVERT_TERMS['hundo'])
+        print(str)
 
         # try exact matching
         match = self.find_exact_match(OOT_ID, str)
         if not match:
             match = self.find_exact_match(OOT_EXT_ID, str)
 
+        # None if not found
+        return match
+
+    def match_stream_category(self):
+        return
+
 
     def get_category_data(self, game_id):
-        if game_id in self.category_data.keys():
-            return self.category_data[game_id]
-        else:
+        if game_id not in self.category_data.keys():
             self.category_data[game_id] = readjson("https://www.speedrun.com/api/v1/games/" + OOT_ID + "/categories")['data']
+        return self.category_data[game_id]
 
 
     def find_exact_match(self, category_id, str):
@@ -55,15 +65,17 @@ class Category_matcher:
 
                 if str == name:
                     return found_category
+
                 remainder = str.replace(name, '')
-
-
-
+                for subcategory in found_category.leaderboards.keys():
+                    if remainder == subcategory:
+                        found_category.selected_subcategory = subcategory
+                        return found_category
 
 
     def rule_based_match_OOT(self, category_id, str):
 
-        for category in self.get_category_data(category_id)
+        for category in self.get_category_data(category_id):
 
             name = category['name'].lower()
 

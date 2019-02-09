@@ -1,16 +1,72 @@
 import json
 import time
 from Utils import *
+from Category_matcher import *
 
 STREAMER = 'xwillmarktheplace'
+
+
+class SRC_handler:
+
+    def __init__(self):
+        self.category_matcher = Category_matcher()
+
+    def handle_SRC_message(self, message):
+        type = message.split(' ')[0].replace('!', '')
+        #TODO: USER PB args
+        user = STREAMER
+        args = message.replace('!' + type + ' ', '')
+
+        if args == "":
+            category = self.category_matcher.match_stream_category()
+        else:
+            category = self.category_matcher.match_category(args)
+
+        if category is None:
+            print("Category " + args + " was not found.")
+            return
+
+        # if the selected subcategory remained None, the default will be taken.
+        leaderboard = category.get_leaderboard(category.selected_subcategory)
+        if type == "wr":
+            run = leaderboard.get_rank_run()
+            if run is None:
+                print("No world record found for OoT" + category.name)
+                return
+            print("The current world record for OoT " + category.name + " is " + run.time + " by " + run.player + ".")
+        else:
+            run = leaderboard.get_user_run(user)
+            if run is None:
+                print("No PB found for " + category.name + " by " + user + ".")
+                return
+            print(run.player + "'s PB for OoT " + category.name + " is " + run.time + ".")
+
+
+
+
+
+
+
+
+
+
+    def retrieve_stream_title(self, streamer=STREAMER):
+        stream_title = readjson("https://decapi.me/twitch/title/" + streamer)
+
+
+
+
+
+
 
 class Category:
     def __init__(self, cat):
         self.id = cat['id']
         self.name = cat['name']
-        self.leaderboards = self.get_leaderboards(cat)
+        self.leaderboards = self.import_leaderboards(cat)
+        self.selected_subcategory = None # so you can save a subcategory to use later
 
-    def get_leaderboards(self, cat):
+    def import_leaderboards(self, cat):
         leaderboards = {}
         var_link = self.get_link(cat['links'], 'variables')
         vars_json = readjson(var_link)
@@ -21,8 +77,7 @@ class Category:
             variables = vars_json['data'][0]
             var_id = variables['id']
             for subcat_id, subcat in variables['values']['values'].items():
-                subcat_leaderboard_url = f
-                "{main_leaderboard_url}?var-{var_id}={subcat_id}"
+                subcat_leaderboard_url = main_leaderboard_url + "?var-{var_id}={subcat_id}"
                 is_default = subcat_id == variables['values']['default']
                 leaderboards[subcat['label']] = Leaderboard(subcat_leaderboard_url, is_default)
         return leaderboards
@@ -59,9 +114,9 @@ class Leaderboard:
             leaderboard_data = readjson(self.url)
             runs = leaderboard_data['data']['runs']
             for entry in runs:
-                if entry['run']['players'][0]['id'] == user_id:
+                player = entry['run']['players'][0]
+                if 'id' in player.keys() and player['id'] == user_id:
                     return Run(entry)
-        print("User " + user + " not found!")
 
 
 
