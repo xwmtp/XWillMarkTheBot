@@ -1,5 +1,5 @@
 from Utils import *
-import SRC
+from SRC.SRC import *
 import re
 
 OOT_ID     = "j1l9qz1g"
@@ -18,7 +18,8 @@ CONVERT_TERMS = {
     "out of bounds" : "oob",
     "reverse bottle adventure" : "rba",
     "rdo" : "reverse dungeon order",
-    "hundo" : r"100%"
+    "hundo" : "100%",
+    "dampe rta" : "dampe hp rta"
 }
 
 
@@ -29,11 +30,7 @@ class Category_matcher:
         self.category_data = {}
 
     def match_category(self, str):
-        print(str)
         str = self.substitute_abbreviations(CONVERT_TERMS, str)
-        print('substituted!')
-        print(CONVERT_TERMS['hundo'])
-        print(str)
 
         # try exact matching
         match = self.find_exact_match(OOT_ID, str)
@@ -44,33 +41,34 @@ class Category_matcher:
         return match
 
     def match_stream_category(self):
+
+
         return
 
 
     def get_category_data(self, game_id):
         if game_id not in self.category_data.keys():
-            self.category_data[game_id] = readjson("https://www.speedrun.com/api/v1/games/" + OOT_ID + "/categories")['data']
+            self.category_data[game_id] = readjson("https://www.speedrun.com/api/v1/games/" + game_id + "/categories")['data']
         return self.category_data[game_id]
 
 
     def find_exact_match(self, category_id, str):
-
-        for category in self.get_category_data(category_id):
+        categories = self.get_category_data(category_id)
+        for category in categories:
 
             name = category['name'].lower()
-            if str == name:
-                return SRC.Category(category)
+
             if str.startswith(name):
-                found_category = SRC.Category(category)
+                found_category = Category(category)
 
-                if str == name:
-                    return found_category
+                # add selected subcategory if match can be found
+                remainder = str.replace(name + ' ', '')
+                if len(remainder) > 0:
+                    for subcategory in found_category.leaderboards.keys():
+                        if remainder == subcategory.lower():
+                            found_category.selected_subcategory = subcategory
 
-                remainder = str.replace(name, '')
-                for subcategory in found_category.leaderboards.keys():
-                    if remainder == subcategory:
-                        found_category.selected_subcategory = subcategory
-                        return found_category
+                return found_category
 
 
     def rule_based_match_OOT(self, category_id, str):
@@ -84,7 +82,7 @@ class Category_matcher:
         str = str.lower()
         for term, sub_term in CONVERT_TERMS.items():
             # only replace if surrounded by non-alfanumeric or string start/end
-            str = re.sub(r"(\W|^)" + term + r"(\W|$)", r"\1" + sub_term + r"\2", str)
+            str = re.sub(r"(\W|^)" + term + r"(\W|$)", r"\g<1>" + sub_term + r"\g<2>", str)
         return str
 
 
