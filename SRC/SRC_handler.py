@@ -7,17 +7,17 @@ class SRC_handler:
     def __init__(self):
         self.category_matcher = Category_matcher()
 
-    def handle_SRC_message(self, message):
-        split_message = message.split(' ')
-        type = split_message[0].replace('!', '')
+    def handle_SRC_message(self, msg):
+        split_msg = msg.split(' ')
+        type = split_msg[0].replace('!', '')
         if type == "userpb":
-            if len(split_message) < 2:
+            if len(split_msg) < 2:
                 return print("Please supply a user!")
-            user = split_message[1]
-            args = ' '.join(split_message[2:])
+            user = split_msg[1]
+            args = ' '.join(split_msg[2:])
         else:
             user = STREAMER
-            args = message.replace('!' + type + ' ', '')
+            args = msg.replace('!' + type + ' ', '')
 
         if args == "":
             category = self.category_matcher.match_stream_category()
