@@ -12,6 +12,9 @@ class Bingo_handler:
         split_msg = msg.lower().split(' ')
         command, player, n = self.parse_bingo_message(split_msg)
 
+        if not player:
+            return print("User not found!")
+
         if command in ['average', 'median']:
             avg = player.get_average(n=n, avg=command[1:])
             bingo_value = avg
@@ -42,9 +45,24 @@ class Bingo_handler:
                 user = word.lower()
                 #todo: convert with alias_dict
                 if user not in self.bingo_players:
-                    self.bingo_players[user] = Bingo_player(user)
+                    self.bingo_players[user] = self.get_bingo_player(user)
                 player = self.bingo_players[user]
-                #todo: check if player has 'races' attr, otherwise doesn't exist
 
         return command, player, n
+
+
+    def get_bingo_player(self, user):
+
+        json = readjson(f"http://api.speedrunslive.com/pastraces?player={user}&pageSize=1000")
+        # user not found
+        if not json:
+            userURL = f"https://www.speedrun.com/api/v1/users?lookup={user}"
+            userData = readjson(userURL)
+            if userData["data"] == []:
+                print("User not found.")
+            else:
+                name = userData['data'][0]['names']['international']
+                self.get_bingo_player(name)
+        else:
+            return Bingo_player(user, json)
 

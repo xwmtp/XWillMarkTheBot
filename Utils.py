@@ -9,6 +9,8 @@ def readjson(url, tries=5):
 
         if status == 200:
             return response.json()
+        if status == 404:
+            return
 
     print("Error in accessing api:", status, "(after", tries, "tries)")
 

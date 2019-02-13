@@ -1,34 +1,29 @@
 from Utils import *
+from Bingo.Bingo_race import *
 
 class Bingo_player:
 
-    def __init__(self, name, from_file=False):
+    def __init__(self, name, json):
         self.name = name
+        self.races = self.extract_races(json)
+        self.bingos = [race for race in self.races if race.type == "v92"] #todo: look v92 type shit
 
-        #try:
-        self.json = readjson("http://api.speedrunslive.com/pastraces?player=" + name + "&pageSize=1000")
-        if not self.json:
-            userURL = "https://www.speedrun.com/api/v1/users?lookup=" + name
-            userData = readjson(userURL)
-            if userData["data"] == []:
-                print("User not found.")
-            else:
-                name = userData['data'][0]['names']['international']
-                self.__init__(name, from_file)
-                return
-        results = []
-        for race in self.json["pastraces"]:
-            tuple = retrieve_race_info(race, name, rest=True)
-            if tuple != None:
-                (date, time, goal, comment) = tuple
-                results.append(Race(date, time, goal, comment, name))
-        self.races = results
-        self.bingos = [race for race in self.races if race.type == "v92"]
         if (self.bingos == []) or (self.bingos is None):
-            print("No recorded bingo races found for user {}.".format(self.name))
+            print(f"No recorded bingo races found for user {name}.")
 
-        if self.name.lower() in blacklist_dict.keys():
-            self.blacklist = blacklist_dict[self.name]
+        #todo: blacklisting races
+        #if self.name.lower() in blacklist_dict.keys():
+        #    self.blacklist = blacklist_dict[self.name]
+
+
+    def extract_races(self, json):
+        races = []
+        for race in json["pastraces"]:
+            bingo_race = Bingo_race(race)
+            races.append(bingo_race)
+        return races
+
+
 
     def get_races(self, n=-1, type = "v92", sort = "best"):
 
