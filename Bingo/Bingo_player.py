@@ -5,7 +5,7 @@ class Bingo_player:
 
     def __init__(self, name, json):
         self.name = name
-        self.races = self.extract_races(json)
+        self.races = self.extract_races_from_json(json)
         self.bingos = [race for race in self.races if race.type == "v92"] #todo: look v92 type shit
 
         if (self.bingos == []) or (self.bingos is None):
@@ -16,7 +16,7 @@ class Bingo_player:
         #    self.blacklist = blacklist_dict[self.name]
 
 
-    def extract_races(self, json):
+    def extract_races_from_json(self, json):
         races = []
         for race in json["pastraces"]:
             bingo_race = Bingo_race(race)
@@ -25,40 +25,29 @@ class Bingo_player:
 
 
 
-    def get_races(self, n=-1, type = "v92", sort = "best"):
+    def get_average(self, n=15, type = "v92", method="average"):
+        races = self.select_races(n, type, sort="latest")[:n]
 
-        races = self.select_races(type)
+        times = [race.get_result(self.name).get_time() for race in races]
 
-        if n==-1:
-            n = len(races)
-
-        if sort == "best":
-            sorted_bingos = sorted(races, key=lambda r: r.time)
-        elif sort == "latest":
-            sorted_bingos = sorted(races, key=lambda r: r.date, reverse=True)
-        else:
-            sorted_bingos = races
-        return sorted_bingos[:n]
-
-    def get_average(self, n=15, type = "v92", avg="average"):
-        races = self.select_races(type, sort="latest")[:n]
-
-        times = extract_times(races, seconds=True)
         if times == []:
-            return
+            return print('No races found to take average.')
 
-        if avg == "average" or avg == "mean":
+        logging.debug(f'Using method {method}.')
+        if method in ['average', 'mean']:
             res = int(mean(times))
         else:
             res = int(median(times))
         return datetime.timedelta(seconds=res)#.replace(microseconds = 0)
 
+
+
     def get_pb(self, type = "v92"):
-        race = self.select_races(type)[0]
-        return race.time
+        race = self.select_races(type=type, sort='best')[0]
+        return race.get_result(self.name).get_time()
 
 
-    def select_races(self, type="v92", sort="best", remove_blacklisted=True):
+    def select_races(self, n=-1, type="v92", sort="best", remove_blacklisted=True):
         if type == "bingo":
             races = self.bingos
         elif type == "v92":
@@ -75,7 +64,11 @@ class Bingo_player:
         elif sort == "latest":
             races = sorted(races, key=lambda r: r.date, reverse=True)
 
-        if remove_blacklisted and self.name in blacklist_dict.keys():
-            races = [race for race in races if str(race.time) not in self.blacklist]
+        #todo: blacklist
+        #if remove_blacklisted and self.name in blacklist_dict.keys():
+        #    races = [race for race in races if str(race.time) not in self.blacklist]
 
-        return races
+        if (n > len(races)) or (n == -1):
+            n = len(races)
+
+        return races[:n]

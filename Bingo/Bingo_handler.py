@@ -5,7 +5,7 @@ STREAMER = 'xwillmarktheplace'
 class Bingo_handler:
 
     def __init__(self):
-        self.bingo_players = {STREAMER : Bingo_player(STREAMER)}
+        self.bingo_players = {STREAMER : self.get_bingo_player(STREAMER)}
 
 
     def handle_bingo_message(self, msg):
@@ -15,13 +15,13 @@ class Bingo_handler:
         if not player:
             return print("User not found!")
 
-        if command in ['average', 'median']:
-            avg = player.get_average(n=n, avg=command[1:])
+        if command in ['average', 'mean', 'median']:
+            avg = player.get_average(n=n, method=command)
             bingo_value = avg
         if command in ['results']:
             #todo: bingo types
-            result_races = player.get_races(n=n, type='v92', sort='latest')
-            times = [str(race.time) for race in result_races]
+            result_races = player.select_races(n=n, type='v92', sort='latest')
+            times = [str(race.get_player_time(player.name)) for race in result_races]
             bingo_value = ', '.join(times)
 
         print(f"{player.name}'s {command} for the last {str(n)} bingos: {bingo_value}")
@@ -34,6 +34,7 @@ class Bingo_handler:
         player = self.bingo_players[STREAMER]
 
         if len(split_msg) > 3:
+            print(split_msg) #t
             raise ValueError('Too many arguments! Please only add a username and integer.')
 
         command = split_msg[0][1:]
@@ -58,9 +59,7 @@ class Bingo_handler:
         if not json:
             userURL = f"https://www.speedrun.com/api/v1/users?lookup={user}"
             userData = readjson(userURL)
-            if userData["data"] == []:
-                print("User not found.")
-            else:
+            if userData["data"] != []:
                 name = userData['data'][0]['names']['international']
                 self.get_bingo_player(name)
         else:

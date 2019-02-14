@@ -11,16 +11,20 @@ class Bingo_race:
         self.seed = self.extract_seed()
         self.entrants = {}
 
-    def get_entrant_result(self, user):
+    def get_result(self, user):
         if user in self.entrants:
             return self.entrants[user]
 
         for entrant in self.json['results']:
             time = entrant['time']
-            if entrant['player'] == user.lower() & time != -1:
+            if (entrant['player'] == user.lower()) & (time != -1):
                 bingo_result = Bingo_result(entrant)
                 self.entrants[user] = bingo_result
                 return bingo_result
+
+    def get_player_time(self, user):
+        race_result = self.get_result(user)
+        return race_result.get_time()
             
             
     def extract_type(self):
@@ -59,10 +63,12 @@ class Bingo_race:
 
 
 
+
+
+
 class Bingo_result:
 
-    def __init__(self, parent_race, entrant):
-        self.bingo_race = parent_race
+    def __init__(self, entrant):
         self.name = entrant['player']
         self.time = datetime.timedelta(seconds=entrant['time'])
         self.comment = entrant['message']
@@ -77,6 +83,14 @@ class Bingo_result:
             return match.group().lower()
         else:
             return "BLANK"
+
+    def get_time(self, seconds=True):
+        if seconds:
+            return self.time.total_seconds()
+        else:
+            return self.time
+
+
 
 
 
