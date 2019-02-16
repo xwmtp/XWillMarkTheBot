@@ -16,11 +16,11 @@ class Bingo_race:
             return self.entrants[user]
 
         for entrant in self.json['results']:
-            time = entrant['time']
-            if (entrant['player'] == user.lower()) & (time != -1):
+            if entrant['player'].lower() == user.lower():
                 bingo_result = Bingo_result(entrant)
                 self.entrants[user] = bingo_result
                 return bingo_result
+
 
     def get_player_time(self, user):
         race_result = self.get_result(user)
@@ -70,10 +70,11 @@ class Bingo_result:
 
     def __init__(self, entrant):
         self.name = entrant['player']
-        self.time = datetime.timedelta(seconds=entrant['time'])
+        time = entrant['time']
+        self.time = datetime.timedelta(seconds=time)
         self.comment = entrant['message']
         self.row = self.extract_row(self.comment)
-
+        self.forfeit = time == -1
 
     def extract_row(self, comment):
         str = "((((r(ow)?)|(c(ol)?))( )?(\d))|(tl(-| )?br)|(bl(-| )?tr))"
@@ -84,7 +85,7 @@ class Bingo_result:
         else:
             return "BLANK"
 
-    def get_time(self, seconds=True):
+    def get_time(self, seconds=False):
         if seconds:
             return self.time.total_seconds()
         else:

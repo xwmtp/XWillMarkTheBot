@@ -28,7 +28,7 @@ class Bingo_player:
     def get_average(self, n=15, type = "v92", method="average"):
         races = self.select_races(n, type, sort="latest")[:n]
 
-        times = [race.get_result(self.name).get_time() for race in races]
+        times = [race.get_result(self.name).get_time(seconds=True) for race in races]
 
         if times == []:
             return print('No races found to take average.')
@@ -47,17 +47,21 @@ class Bingo_player:
         return race.get_result(self.name).get_time()
 
 
-    def select_races(self, n=-1, type="v92", sort="best", remove_blacklisted=True):
+    def select_races(self, n=-1, type="v92", sort="best", forfeits=False, remove_blacklisted=True):
+        if forfeits:
+            all_races = self.races
+        else:
+            all_races = [race for race in self.races if not race.get_result(self.name).forfeit]
         if type == "bingo":
             races = self.bingos
         elif type == "v92":
-            races = [race for race in self.races if race.type == "v92"]
+            races = [race for race in all_races if race.type == "v92"]
         elif type == "v93":
-            races = [race for race in self.races if race.type == "v93"]
+            races = [race for race in all_races if race.type == "v93"]
         elif type == "v92+":
-            races = [race for race in self.races if ((race.type == "v92") | (race.type == "v93"))]
+            races = [race for race in all_races if ((race.type == "v92") | (race.type == "v93"))]
         else:
-            races = self.races
+            races = all_races
 
         if sort == "best":
             races = sorted(races, key=lambda r: r.time)

@@ -22,9 +22,12 @@ class Bingo_handler:
             #todo: bingo types
             result_races = player.select_races(n=n, type='v92', sort='latest')
             times = [str(race.get_player_time(player.name)) for race in result_races]
+            comments = [race.get_result(player.name).comment for race in result_races] #t
             bingo_value = ', '.join(times)
+            print("Comments: ", '; '.join(comments))
 
         print(f"{player.name}'s {command} for the last {str(n)} bingos: {bingo_value}")
+
 
 
 
@@ -53,7 +56,7 @@ class Bingo_handler:
 
 
     def get_bingo_player(self, user):
-
+        print(f"Loading Bingo results for player {user}...")
         json = readjson(f"http://api.speedrunslive.com/pastraces?player={user}&pageSize=1000")
         # user not found
         if not json:

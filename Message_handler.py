@@ -8,20 +8,25 @@ class Message_handler:
         self.SRC_handler = SRC_handler()
         self.Bingo_handler = Bingo_handler()
         self.command_base = Database()
-        self.command_base[('!pb', '!userpb', '!wr')] = self.SRC_handler.handle_SRC_message
-        self.command_base[('!average', '!mean', '!median', '!results')] = self.Bingo_handler.handle_bingo_message
+        #self.command_base[('!pb', '!userpb', '!wr')] = self.SRC_handler.handle_SRC_message
+        #self.command_base[('!average', '!mean', '!median', '!results')] = self.Bingo_handler.handle_bingo_message
 
 
     def find_command(self, message):
         m = message.lower().split(' ')[0]
 
 
-        self.command_base.keys()
+        if m in ['!pb', '!userpb', '!wr']:
+            self.SRC_handler.handle_SRC_message(message)
+        if m in ['!average', '!mean', '!median', '!results']:
+            self.Bingo_handler.handle_bingo_message(message)
+
+     #   self.command_base.keys()
 
 
-        for commands, method in self.command_base.items():
-            if m in commands:
-                method()
+        #for commands, method in self.command_base.items():
+        #    if m in commands:
+        #        method()
 
 
 
