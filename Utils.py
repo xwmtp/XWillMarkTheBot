@@ -3,7 +3,7 @@ import logging
 
 def readjson(url, tries=5):
 
-    for i in range(1):
+    for i in range(tries):
         response = requests.get(url)
 
         status = response.status_code
@@ -13,17 +13,17 @@ def readjson(url, tries=5):
         if status == 404:
             return
 
-    print("Error in accessing api:", status, "(after", tries, "tries)")
+    error_message = "Error in accessing api:", status, "(after", tries, "tries)"
+    print(error_message)
+    logging.critical(error_message)
 
 
 
 def mean(lst):
-    logging.debug('Calculating average...')
     lst = sorted(lst)
     return sum(lst) / len(lst)
 
 def median(lst):
-    logging.debug('Calculating median...')
     times = sorted(lst)
 
     mid = int(len(lst) / 2)

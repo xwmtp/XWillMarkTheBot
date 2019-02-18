@@ -16,17 +16,12 @@ class Bingo_handler:
             return print("User not found!")
 
         if command in ['average', 'mean', 'median']:
-            avg = player.get_average(n=n, method=command)
-            bingo_value = avg
+            bingo_value = player.get_average(n=n, method=command)
         if command in ['results']:
-            #todo: bingo types
-            result_races = player.select_races(n=n, type='v92', sort='latest')
-            times = [str(race.get_player_time(player.name)) for race in result_races]
-            comments = [race.get_result(player.name).comment for race in result_races] #t
-            bingo_value = ', '.join(times)
-            print("Comments: ", '; '.join(comments))
+            bingo_value = player.get_results(n=n)
 
-        print(f"{player.name}'s {command} for the last {str(n)} bingos: {bingo_value}")
+        if (bingo_value is not None) & (bingo_value != ''):
+            print(f"{player.name}'s {command} for the last {str(n)} bingos: {bingo_value}")
 
 
 
@@ -56,7 +51,7 @@ class Bingo_handler:
 
 
     def get_bingo_player(self, user):
-        print(f"Loading Bingo results for player {user}...")
+        print(f"Looking up user {user}...")
         json = readjson(f"http://api.speedrunslive.com/pastraces?player={user}&pageSize=1000")
         # user not found
         if not json:
@@ -64,7 +59,13 @@ class Bingo_handler:
             userData = readjson(userURL)
             if userData["data"] != []:
                 name = userData['data'][0]['names']['international']
-                self.get_bingo_player(name)
+                if name.lower() == user:
+                    if userData['data'][0]['speedrunslive']:
+                        srl_name = userData['data'][0]['speedrunslive']['uri'].replace('http://www.speedrunslive.com/profiles/#!/', '')
+                        return self.get_bingo_player(srl_name)
+                else:
+                    return self.get_bingo_player(name)
+        # user found
         else:
             return Bingo_player(user, json)
 

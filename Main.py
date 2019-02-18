@@ -13,3 +13,9 @@ if __name__ == '__main__':
     while(True):
         message_handler.find_command(message)
         message = input().lower()
+
+
+
+# IDEAS
+# - most common word in comments?
+# - derive most common row from comments

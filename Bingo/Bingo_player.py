@@ -31,7 +31,7 @@ class Bingo_player:
         times = [race.get_result(self.name).get_time(seconds=True) for race in races]
 
         if times == []:
-            return print('No races found to take average.')
+            return logging.DEBUG('No races found to take average.')
 
         logging.debug(f'Using method {method}.')
         if method in ['average', 'mean']:
@@ -40,7 +40,12 @@ class Bingo_player:
             res = int(median(times))
         return datetime.timedelta(seconds=res)#.replace(microseconds = 0)
 
-
+    def get_results(self, n=15, type = 'v92', sort='latest'):
+        """Return latest or best bingo results in a comma separated string."""
+        # todo: bingo types
+        result_races = self.select_races(n, type, sort)
+        times = [str(race.get_player_time(self.name)) for race in result_races]
+        return ', '.join(times)
 
     def get_pb(self, type = "v92"):
         race = self.select_races(type=type, sort='best')[0]
