@@ -6,10 +6,8 @@ class Bingo_player:
     def __init__(self, name, json):
         self.name = name
         self.races = self.extract_races_from_json(json)
-        self.bingos = [race for race in self.races if race.type == "v92"] #todo: look v92 type shit
+        #todo: look v92 type shit
 
-        if (self.bingos == []) or (self.bingos is None):
-            print(f"No recorded bingo races found for user {name}.")
 
         #todo: blacklisting races
         #if self.name.lower() in blacklist_dict.keys():
@@ -31,7 +29,8 @@ class Bingo_player:
         times = [race.get_result(self.name).get_time(seconds=True) for race in races]
 
         if times == []:
-            return logging.DEBUG('No races found to take average.')
+            logging.debug('No races found to take average.')
+            return
 
         logging.debug(f'Using method {method}.')
         if method in ['average', 'mean']:
@@ -57,9 +56,8 @@ class Bingo_player:
             all_races = self.races
         else:
             all_races = [race for race in self.races if not race.get_result(self.name).forfeit]
-        if type == "bingo":
-            races = self.bingos
-        elif type == "v92":
+
+        if type == "v92":
             races = [race for race in all_races if race.type == "v92"]
         elif type == "v93":
             races = [race for race in all_races if race.type == "v93"]
@@ -79,5 +77,8 @@ class Bingo_player:
 
         if (n > len(races)) or (n == -1):
             n = len(races)
+
+        if len(races) == 0:
+            print(f'No recorded bingo races found for user {self.name}.')
 
         return races[:n]

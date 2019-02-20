@@ -8,7 +8,7 @@ if __name__ == '__main__':
     message_handler = Message_handler()
 
     #message = input("Chat message:").lower()
-    message = "!average"
+    message = "!results zfg1"
 
     while(True):
         message_handler.find_command(message)

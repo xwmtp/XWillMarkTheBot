@@ -1,32 +1,34 @@
 from SRC.SRC_handler import SRC_handler
 from Bingo.Bingo_handler import Bingo_handler
-from Utils import Database
+from Simple_commands import Simple_commands
+from Utils import *
 
 class Message_handler:
 
     def __init__(self):
         self.SRC_handler = SRC_handler()
         self.Bingo_handler = Bingo_handler()
-        self.command_base = Database()
-        #self.command_base[('!pb', '!userpb', '!wr')] = self.SRC_handler.handle_SRC_message
-        #self.command_base[('!average', '!mean', '!median', '!results')] = self.Bingo_handler.handle_bingo_message
+        self.Simple_commands = Simple_commands()
+
+        self.commands_dictionary = {
+            self.SRC_handler.handle_SRC_message     : ['!pb', '!userpb', '!wr'],
+            self.Bingo_handler.handle_bingo_message : ['!average', '!mean', '!median', '!results'],
+            self.Simple_commands.monka              : ['!monka', '!monkas'],
+        }
+
+        self.commands_dictionary = reverse_dictionary(self.commands_dictionary)
 
 
     def find_command(self, message):
-        m = message.lower().split(' ')[0]
+        m = message.split(' ')[0]
 
 
-        if m in ['!pb', '!userpb', '!wr']:
-            self.SRC_handler.handle_SRC_message(message)
-        if m in ['!average', '!mean', '!median', '!results']:
-            self.Bingo_handler.handle_bingo_message(message)
+        for command, function in self.commands_dictionary.items():
 
-     #   self.command_base.keys()
+            if m in command:
+                function(message)
+                return
 
-
-        #for commands, method in self.command_base.items():
-        #    if m in commands:
-        #        method()
 
 
 
