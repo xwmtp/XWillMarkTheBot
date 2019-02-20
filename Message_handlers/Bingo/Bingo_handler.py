@@ -1,41 +1,46 @@
-from Bingo.Bingo_player_lookup import get_bingo_player
+from Message_handlers.Bingo.Bingo_player_lookup import get_bingo_player
+from Message_handlers.Message_handler import Message_handler
+import Settings
 
-STREAMER = 'xwillmarktheplace'
-
-class Bingo_handler:
+class Bingo_handler(Message_handler):
 
     def __init__(self):
-        self.bingo_players = {STREAMER : get_bingo_player(STREAMER)}
+        self.bingo_players = {Settings.STREAMER : get_bingo_player(Settings.STREAMER)}
+        self.commands = {
+            'average' : ['!average', '!mean', '!median'],
+            'results' : ['!results']
+        }
 
 
-    def handle_bingo_message(self, msg):
+    def handle_message(self, msg, sender):
         split_msg = msg.lower().split(' ')
         command, player, n = self.parse_bingo_message(split_msg)
 
         if not player:
             return print("SRL user not found!")
 
-        if command in ['average', 'mean', 'median']:
+        bingo_value = ''
+
+        if command in self.commands['average']:
             bingo_value = player.get_average(n=n, method=command)
-        if command in ['results']:
+        if command in self.commands['results']:
             bingo_value = player.get_results(n=n)
 
         if (bingo_value is not None) & (bingo_value != ''):
-            print(f"{player.name}'s {command} for the last {str(n)} bingos: {bingo_value}")
-
+            print(f"{player.name}'s {command[1:]} for the last {str(n)} bingos: {bingo_value}")
 
 
 
     def parse_bingo_message(self, split_msg):
         # default settings
         n = 15
-        player = self.bingo_players[STREAMER]
+        player = self.bingo_players[Settings.STREAMER]
 
         if len(split_msg) > 3:
             print(split_msg) #t
             raise ValueError('Too many arguments! Please only add a username and integer.')
 
-        command = split_msg[0][1:]
+        command = split_msg[0]
 
         for word in split_msg[1:]:
             if word.isdigit():

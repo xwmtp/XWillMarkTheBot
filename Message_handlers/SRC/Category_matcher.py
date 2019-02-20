@@ -1,5 +1,4 @@
-from Utils import *
-from SRC.SRC import *
+from Message_handlers.SRC.SRC import *
 import re
 
 OOT_ID     = "j1l9qz1g"

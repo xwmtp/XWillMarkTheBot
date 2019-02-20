@@ -1,5 +1,5 @@
 from Utils import *
-from Bingo.Bingo_race import *
+from Message_handlers.Bingo.Bingo_race import *
 
 class Bingo_player:
 
