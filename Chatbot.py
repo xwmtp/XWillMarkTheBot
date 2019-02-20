@@ -29,7 +29,7 @@ class Chatbot:
         for handler in self.handlers:
             for command in handler.get_commands():
                 if (command[0] != '!') & (command in message):
-                    return
+                    return handler.handle_message(message, Settings.STREAMER)
 
 
 

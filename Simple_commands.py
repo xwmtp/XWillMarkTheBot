@@ -10,7 +10,8 @@ class Simple_commands(Message_handler):
         self.monka_emotes = []
 
         self.commands = {
-            'monka' : ['!monkas', '!monka']
+            'monka' : ['!monkas', '!monka'],
+            'tunic' : ['zora tunic', 'blue tunic', 'blauwe tuniek', 'zora tuniek', 'tunique bleu', 'blaue tunika']
         }
 
     def handle_message(self, msg, sender):
@@ -18,9 +19,13 @@ class Simple_commands(Message_handler):
         command = split_msg[0]
 
         if command in self.commands['monka']:
-            self.monka(msg)
+            return self.monka()
 
-    def monka(self, msg):
+        for command in self.commands['tunic']:
+            if command in msg:
+                return self.tunic()
+
+    def monka(self):
         if self.monka_emotes == []:
             url = "https://api.frankerfacez.com/v1/room/" + Settings.STREAMER
             json = readjson(url)
@@ -39,5 +44,5 @@ class Simple_commands(Message_handler):
 
 
     # Post badTunic
-    def tunic(data, msg):
+    def tunic(data):
         print("BadTunic")
