@@ -5,7 +5,7 @@ import Settings
 class Bingo_handler(Message_handler):
 
     def __init__(self):
-        self.bingo_players = {Settings.STREAMER : get_bingo_player(Settings.STREAMER)}
+        self.bingo_players = {}#{Settings.STREAMER : get_bingo_player(Settings.STREAMER)}
         self.commands = {
             'average' : ['!average', '!mean', '!median'],
             'results' : ['!results']

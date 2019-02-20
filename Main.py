@@ -8,7 +8,7 @@ if __name__ == '__main__':
     bot = Chatbot()
 
     #message = input("Chat message:").lower()
-    message = "!card"
+    message = "#srl-xk8w7"
 
     while(True):
         bot.find_command(message)

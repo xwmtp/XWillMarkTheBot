@@ -1,6 +1,7 @@
 from Message_handlers.Message_handler import Message_handler
-import Settings
 from Utils import *
+import Settings
+import json as json_module
 
 class Race_handler(Message_handler):
 
@@ -9,7 +10,9 @@ class Race_handler(Message_handler):
 
         self.commands = {
             'race' : ['!race'],
-            'card' : ['!card', '!board', '!chart']
+            'card' : ['!card', '!board', '!chart'],
+            'goal' : ['!goal'],
+            'id'   : ['#srl']
         }
 
 
@@ -22,6 +25,8 @@ class Race_handler(Message_handler):
         elif self.race.race_id != '':
             if command in self.commands['race']:
                 self.race.print_info()
+            elif command in self.commands['goal']:
+                self.race.print_goal()
             elif command in self.commands['card']:
                 self.race.print_card()
         else:
@@ -31,14 +36,14 @@ class Race_handler(Message_handler):
         return flatten(self.commands.values())
 
 
+
+
+
 class Current_race:
 
     def __init__(self):
-
         self.goal = ''
         self.race_id = ''
-
-
 
 
     def set(self, msg, sender):
@@ -60,9 +65,15 @@ class Current_race:
         str = f"Goal: {self.goal} SRL link: {url} Entrants: {entrants}"
         print(str)
 
+
+    def print_goal(self):
+        self._update()
+        if self.goal != '':
+            print(self.goal)
+
+
     def print_card(self):
         self._update()
-
         if self.goal != '':
             if self.goal.startswith('http://www.speedrunslive.com/tools/oot-bingo'):
                 print(self.goal)
@@ -70,18 +81,20 @@ class Current_race:
                 print("Current race not recognized as bingo race. Use !goal to see the goal.")
 
 
-
     def _update(self):
-        json = readjson(f"http://api.speedrunslive.com/races/{self.race_id}?callback=renderEntrants")
+        text = readjson(f"http://api.speedrunslive.com/races/{self.race_id}?callback=renderEntrants", text_only=True)
+        text = text.replace('renderEntrants(', '')
+        text = text.replace('})', '}')
+        json = json_module.loads(text)
+
         if not json:
             print(f"No SRL race found for current race id #srl-{self.race_id}")
 
         self.goal = json['goal']
-        self.entrants = self.get_entrants()
+        self.entrants = self.get_entrants(json)
 
 
     def get_entrants(self, json):
-
         entrants = []
         for entrant in json['entrants'].values():
             entrants.append(Entrant(entrant))
@@ -96,7 +109,7 @@ class Entrant:
     def __init__(self, json):
         self.name = json['displayname']
         self.trueskill = json['trueskill']
-        self.rank = json['rank']
+        self.rank = json['place']
         self.time = json['time']
         self.comment = json['message']
 

@@ -1,7 +1,7 @@
 import requests
 import logging
 
-def readjson(url, tries=5):
+def readjson(url, text_only=False, tries=5):
 
     for i in range(tries):
         response = requests.get(url)
@@ -9,7 +9,10 @@ def readjson(url, tries=5):
         status = response.status_code
 
         if status == 200:
-            return response.json()
+            if text_only:
+                return response.text
+            else:
+                return response.json()
         if status == 404:
             return
 

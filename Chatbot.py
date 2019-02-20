@@ -14,9 +14,22 @@ class Chatbot:
     def find_command(self, message):
         m = message.split(' ')[0]
 
+        # exact match
         for handler in self.handlers:
             if m in handler.get_commands():
-                handler.handle_message(message, Settings.STREAMER)
+                return handler.handle_message(message, Settings.STREAMER)
+
+        # starts with
+        for handler in self.handlers:
+            for command in handler.get_commands():
+                if m.startswith(command):
+                    return handler.handle_message(message, Settings.STREAMER)
+
+        # command present in message (no '!' commands)
+        for handler in self.handlers:
+            for command in handler.get_commands():
+                if (command[0] != '!') & (command in message):
+                    return
 
 
 
