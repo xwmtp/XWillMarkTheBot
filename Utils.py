@@ -56,3 +56,6 @@ def is_lowercase_elem(item, lst):
 def complement(lst1, lst2):
     return [x for x in lst1 if x not in lst2]
 
+def flatten(lst):
+    return [item for sublst in lst for item in sublst]
+

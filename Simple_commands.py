@@ -1,16 +1,28 @@
+from Message_handlers.Message_handler import Message_handler
 from Utils import *
+import Settings
+
 import random
 
-STREAMER = 'xwillmarktheplace'
-
-class Simple_commands():
+class Simple_commands(Message_handler):
 
     def __init__(self):
         self.monka_emotes = []
 
+        self.commands = {
+            'monka' : ['!monkas', '!monka']
+        }
+
+    def handle_message(self, msg, sender):
+        split_msg = msg.lower().split(' ')
+        command = split_msg[0]
+
+        if command in self.commands['monka']:
+            self.monka(msg)
+
     def monka(self, msg):
         if self.monka_emotes == []:
-            url = "https://api.frankerfacez.com/v1/room/" + STREAMER
+            url = "https://api.frankerfacez.com/v1/room/" + Settings.STREAMER
             json = readjson(url)
             emotes = json['sets']['164185']['emoticons']
 

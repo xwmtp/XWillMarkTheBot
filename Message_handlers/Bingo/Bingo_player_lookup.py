@@ -1,5 +1,5 @@
 from Utils import *
-from Bingo.Bingo_player import Bingo_player
+from Message_handlers.Bingo.Bingo_player import Bingo_player
 
 
 def get_bingo_player(user):

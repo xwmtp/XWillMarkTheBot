@@ -1,17 +1,17 @@
-from Message_handler import *
+from Chatbot import Chatbot
 import logging
 
 if __name__ == '__main__':
 
     logging.basicConfig(level=logging.DEBUG)
 
-    message_handler = Message_handler()
+    bot = Chatbot()
 
     #message = input("Chat message:").lower()
-    message = "!results zfg1"
+    message = "!card"
 
     while(True):
-        message_handler.find_command(message)
+        bot.find_command(message)
         message = input().lower()
 
 

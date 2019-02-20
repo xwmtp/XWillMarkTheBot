@@ -1,25 +1,31 @@
-from SRC.Category_matcher import *
+from Message_handlers.SRC.Category_matcher import Category_matcher
+from Message_handlers.Message_handler import Message_handler
+from Utils import *
+import Settings
 
-STREAMER='xwillmarktheplace'
-
-class SRC_handler:
+class SRC_handler(Message_handler):
 
     def __init__(self):
         self.category_matcher = Category_matcher()
+        self.commands = {
+            'user_lookup' : ['!userpb'],
+            'default'     : ['!pb', '!wr']
+        }
 
-    def handle_SRC_message(self, msg):
+    def handle_message(self, msg, sender):
         split_msg = msg.split(' ')
-        type = split_msg[0].replace('!', '')
-        if type == "userpb":
+        command = split_msg[0]
+
+        if command in self.commands['user_lookup']:
             if len(split_msg) < 2:
                 return print("Please supply a user!")
             user = split_msg[1]
             args = ' '.join(split_msg[2:])
         else:
-            user = STREAMER
-            args = msg.replace('!' + type + ' ', '')
+            user = Settings.STREAMER
+            args = msg.replace(f'{command} ', '')
 
-        if args == "":
+        if args == '':
             category = self.category_matcher.match_stream_category()
         else:
             category = self.category_matcher.match_category(args)
@@ -30,7 +36,7 @@ class SRC_handler:
         # if the selected subcategory remained None, the default will be taken.
         leaderboard = category.get_leaderboard(category.selected_subcategory)
 
-        self.print_wr_pb(type, leaderboard, category, user)
+        self.print_wr_pb(command[1:], leaderboard, category, user)
 
 
     def print_wr_pb(self, type, leaderboard, category, user):
@@ -52,5 +58,5 @@ class SRC_handler:
             print(run.player + "'s PB for OoT " + full_category_name + " is " + run.time + ".")
 
 
-    def retrieve_stream_title(self, streamer=STREAMER):
+    def retrieve_stream_title(self, streamer=Settings.STREAMER):
         stream_title = readjson("https://decapi.me/twitch/title/" + streamer)

@@ -1,7 +1,7 @@
 import time
+import Settings
 from Utils import *
 
-STREAMER='xwillmarktheplace'
 
 class Category:
     def __init__(self, cat):
@@ -53,7 +53,7 @@ class Leaderboard:
         assert run.rank == rank
         return run
 
-    def get_user_run(self, user=STREAMER):
+    def get_user_run(self, user=Settings.STREAMER):
         user_id = username_to_id(user)
         if user_id is None:
             return print('User name not found!')
@@ -61,8 +61,6 @@ class Leaderboard:
             player = entry['run']['players'][0]
             if 'id' in player.keys() and player['id'] == user_id:
                 return Run(entry)
-
-
 
 
 
