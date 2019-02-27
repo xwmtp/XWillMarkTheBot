@@ -57,24 +57,22 @@ class Current_race:
 
 
     def print_info(self):
-        self._update()
+        if self._update():
 
-        url = 'http://www.speedrunslive.com/race/?id='
-        entrants = ', '.join([e.get_string() for e in self.entrants])
+            url = 'http://www.speedrunslive.com/race/?id='
+            entrants = ', '.join([e.get_string() for e in self.entrants])
 
-        str = f"Goal: {self.goal} SRL link: {url} Entrants: {entrants}"
-        print(str)
+            str = f"Goal: {self.goal} SRL link: {url} Entrants: {entrants}"
+            print(str)
 
 
     def print_goal(self):
-        self._update()
-        if self.goal != '':
+        if self._update():
             print(self.goal)
 
 
     def print_card(self):
-        self._update()
-        if self.goal != '':
+        if self._update():
             if self.goal.startswith('http://www.speedrunslive.com/tools/oot-bingo'):
                 print(self.goal)
             else:
@@ -89,9 +87,11 @@ class Current_race:
 
         if not json:
             print(f"No SRL race found for current race id #srl-{self.race_id}")
+            return False
 
         self.goal = json['goal']
         self.entrants = self.get_entrants(json)
+        return True
 
 
     def get_entrants(self, json):
