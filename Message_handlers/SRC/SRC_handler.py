@@ -23,20 +23,20 @@ class SRC_handler(Message_handler):
             args = ' '.join(split_msg[2:])
         else:
             user = Settings.STREAMER
-            args = msg.replace(f'{command} ', '')
+            args = msg.replace(f'{command}', '')
+            args = args.strip(' ')
 
         if args == '':
+            logging.debug('Matching category on stream title...')
             category = self.category_matcher.match_stream_category()
         else:
             category = self.category_matcher.match_category(args)
 
-        if category is None:
-            return print("Category " + args + " was not found.")
+        if category is not None:
+            # if the selected subcategory remained None, the default will be taken.
+            leaderboard = category.get_leaderboard(category.selected_subcategory)
 
-        # if the selected subcategory remained None, the default will be taken.
-        leaderboard = category.get_leaderboard(category.selected_subcategory)
-
-        self.print_wr_pb(command[1:], leaderboard, category, user)
+            self.print_wr_pb(command[1:], leaderboard, category, user)
 
 
     def print_wr_pb(self, type, leaderboard, category, user):
