@@ -55,12 +55,12 @@ class Leaderboard:
 
     def get_user_run(self, user=Settings.STREAMER):
         user_id = username_to_id(user)
-        if user_id is None:
-            return print('User name not found!')
-        for entry in self.runs:
-            player = entry['run']['players'][0]
-            if 'id' in player.keys() and player['id'] == user_id:
-                return Run(entry)
+        if user_id is not None:
+        
+            for entry in self.runs:
+                player = entry['run']['players'][0]
+                if 'id' in player.keys() and player['id'] == user_id:
+                    return Run(entry)
 
 
 

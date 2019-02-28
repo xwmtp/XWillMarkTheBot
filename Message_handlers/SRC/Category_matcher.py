@@ -30,7 +30,7 @@ CONVERT_CATS = {
     '100% unrestricted' : '100%',
 }
 
-TITLE_BLACKLIST = ['run', 'runs', 'speed', 'short', 'stream', 'playthrough', 'blind']
+TITLE_BLACKLIST = ['runs', 'run', 'speed', 'short', 'stream', 'playthrough', 'blind']
 
 
 
@@ -90,7 +90,7 @@ class Category_matcher:
 
     def get_category_data(self, game_id):
         if game_id not in self.category_data.keys():
-            self.category_data[game_id] = readjson("https://www.speedrun.com/api/v1/games/" + game_id + "/categories")['data']
+            self.category_data[game_id] = readjson(f'https://www.speedrun.com/api/v1/games/{game_id}/categories')['data']
         return self.category_data[game_id]
 
 
