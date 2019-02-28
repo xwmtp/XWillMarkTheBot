@@ -1,4 +1,4 @@
-from Chatbot import Chatbot
+from xwillmarktheBot.Chatbot import Chatbot
 import logging
 
 if __name__ == '__main__':

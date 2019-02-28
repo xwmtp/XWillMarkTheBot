@@ -1,4 +1,4 @@
-from Message_handlers.Message_handler import Message_handler
+from xwillmarktheBot.Message_handlers.Message_handler import Message_handler
 from xwillmarktheBot.Utils import *
 from xwillmarktheBot import Settings
 import json as json_module

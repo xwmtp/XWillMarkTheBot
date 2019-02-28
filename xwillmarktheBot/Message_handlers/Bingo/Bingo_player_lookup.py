@@ -1,5 +1,5 @@
 from xwillmarktheBot.Utils import *
-from Message_handlers.Bingo.Bingo_player import Bingo_player
+from xwillmarktheBot.Message_handlers.Bingo.Bingo_player import Bingo_player
 
 
 def get_bingo_player(user):

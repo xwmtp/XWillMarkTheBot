@@ -2,7 +2,8 @@ from Message_handlers.SRC.SRC_handler import SRC_handler
 from Message_handlers.Bingo.Bingo_handler import Bingo_handler
 from Message_handlers.SRL_races.Race_handler import Race_handler
 from Message_handlers.Simple_commands import Simple_commands
-import Settings
+from xwillmarktheBot import Settings
+
 
 class Chatbot:
 

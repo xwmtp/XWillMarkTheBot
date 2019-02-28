@@ -1,5 +1,5 @@
-from Message_handlers.Bingo.Bingo_player_lookup import get_bingo_player
-from Message_handlers.Message_handler import Message_handler
+from xwillmarktheBot.Message_handlers.Bingo.Bingo_player_lookup import get_bingo_player
+from xwillmarktheBot.Message_handlers.Message_handler import Message_handler
 from xwillmarktheBot import Settings
 
 

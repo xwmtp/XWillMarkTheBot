@@ -1,5 +1,5 @@
-from Message_handlers.SRC.Category_matcher import Category_matcher
-from Message_handlers.Message_handler import Message_handler
+from xwillmarktheBot.Message_handlers.SRC.Category_matcher import Category_matcher
+from xwillmarktheBot.Message_handlers.Message_handler import Message_handler
 from xwillmarktheBot.Utils import *
 from xwillmarktheBot import Settings
 

@@ -1,5 +1,7 @@
+from xwillmarktheBot.Message_handlers.Bingo.Bingo_race import Bingo_race
 from xwillmarktheBot.Utils import *
-from Message_handlers.Bingo.Bingo_race import *
+import datetime
+
 
 class Bingo_player:
 
