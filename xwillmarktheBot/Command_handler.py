@@ -5,7 +5,7 @@ from Message_handlers.Simple_commands import Simple_commands
 from xwillmarktheBot import Settings
 
 
-class Chatbot:
+class Command_handler:
 
     def __init__(self):
         self.handlers = [Race_handler(), Bingo_handler(), SRC_handler(), Simple_commands()]
