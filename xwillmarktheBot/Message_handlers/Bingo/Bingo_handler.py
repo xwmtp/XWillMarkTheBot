@@ -5,7 +5,8 @@ from xwillmarktheBot import Settings
 
 class Bingo_handler(Message_handler):
 
-    def __init__(self):
+    def __init__(self, irc_connection):
+        super().__init__(irc_connection)
         self.bingo_players = {Settings.STREAMER : get_bingo_player(Settings.STREAMER)}
         self.commands = {
             'average' : ['!average', '!mean', '!median'],
@@ -18,18 +19,19 @@ class Bingo_handler(Message_handler):
         command, player, n = self.parse_bingo_message(split_msg)
 
         if not player:
-            return print("SRL user not found!")
+            return self.send("SRL user not found!")
 
         bingo_value = ''
 
         if command in self.commands['average']:
-            bingo_value = player.get_average(n=n, method=command)
+            bingo_value, amount = player.get_average(n=n, method=command[1:])
         if command in self.commands['results']:
-            bingo_value = player.get_results(n=n)
+            bingo_value, amount = player.get_results(n=n)
 
         if (bingo_value is not None) & (bingo_value != ''):
-            print(f"{player.name}'s {command[1:]} for the last {str(n)} bingos: {bingo_value}")
-
+            self.send(f"{player.name}'s {command[1:]} for the last {amount} bingos: {bingo_value}")
+        else:
+            self.send(f"No recorded bingo races found for user {player.name}")
 
 
     def parse_bingo_message(self, split_msg):
@@ -38,7 +40,6 @@ class Bingo_handler(Message_handler):
         player = self.bingo_players[Settings.STREAMER]
 
         if len(split_msg) > 3:
-            print(split_msg) #t
             raise ValueError('Too many arguments! Please only add a username and integer.')
 
         command = split_msg[0]
@@ -50,6 +51,7 @@ class Bingo_handler(Message_handler):
                 user = word.lower()
                 #todo: convert with alias_dict
                 if user not in self.bingo_players:
+                    self.send(f"Looking up user {user}...")
                     self.bingo_players[user] = get_bingo_player(user)
                 player = self.bingo_players[user]
 

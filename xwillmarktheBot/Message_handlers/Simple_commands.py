@@ -6,7 +6,8 @@ import random
 
 class Simple_commands(Message_handler):
 
-    def __init__(self):
+    def __init__(self, irc_connection):
+        super().__init__(irc_connection)
         self.monka_emotes = []
 
         self.commands = {
@@ -39,10 +40,10 @@ class Simple_commands(Message_handler):
             self.monka_emotes = monka_emotes
         else:
             monka_emotes = self.monka_emotes
-        print(random.choice(monka_emotes))
+        self.send(random.choice(monka_emotes))
 
 
 
     # Post badTunic
-    def tunic(data):
-        print("BadTunic")
+    def tunic(self):
+        self.send("BadTunic")

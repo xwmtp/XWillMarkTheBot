@@ -1,19 +1,20 @@
-from xwillmarktheBot.Chatbot import Chatbot
+from xwillmarktheBot.IRC_connection.IRC_messages import IRC_message_handler
 import logging
+import sys
 
 if __name__ == '__main__':
 
+    if len(sys.argv) < 2:
+        raise ValueError('No OAUTH provided, please provide it as a sys arg.')
+    else:
+        oauth = sys.argv[1]
+
     logging.basicConfig(level=logging.DEBUG)
 
-    bot = Chatbot()
 
-    #message = input("Chat message:").lower()
-    message = "!wr nocturne rta"
 
-    while(True):
-        bot.find_command(message)
-        message = input().lower()
-
+    bot = IRC_message_handler(oauth)
+    bot.run_irc_chat()
 
 
 # IDEAS

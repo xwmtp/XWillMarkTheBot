@@ -48,7 +48,7 @@ class Leaderboard:
     def get_rank_run(self, rank=1):
         if rank > len(self.runs):
             rank = len(self.runs)
-            print("WARNING: rank higher than amount of submissions. Last place is returned.")
+            logging.warning("WARNING: rank higher than amount of submissions. Last place is returned.")
         run = Run(self.runs[rank - 1])
         assert run.rank == rank
         return run

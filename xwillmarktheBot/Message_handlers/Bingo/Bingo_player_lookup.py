@@ -4,7 +4,6 @@ from xwillmarktheBot.Message_handlers.Bingo.Bingo_player import Bingo_player
 
 def get_bingo_player(user):
 
-    print(f"Looking up user {user}...")
     json = _get_srl_json(user)
 
     # user found

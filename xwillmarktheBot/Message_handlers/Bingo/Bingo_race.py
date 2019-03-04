@@ -91,14 +91,3 @@ class Bingo_result:
         else:
             return self.time
 
-
-
-
-
-    #todo is this function needed?
-    #
-    # def print_race(self, url = False):
-    #     print_list = [str(self.date), str(self.time), self.type, self.seed, self.row, self.comment,]
-    #     if url:
-    #         print_list.append(self.url)
-    #     print("\t".join(print_list))

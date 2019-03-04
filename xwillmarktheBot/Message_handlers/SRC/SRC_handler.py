@@ -1,12 +1,14 @@
 from xwillmarktheBot.Message_handlers.SRC.Category_matcher import Category_matcher
 from xwillmarktheBot.Message_handlers.Message_handler import Message_handler
+from xwillmarktheBot.Message_handlers.SRC import Stream_title
 from xwillmarktheBot.Utils import *
 from xwillmarktheBot import Settings
 
 
 class SRC_handler(Message_handler):
 
-    def __init__(self):
+    def __init__(self, irc_connection):
+        super().__init__(irc_connection)
         self.category_matcher = Category_matcher()
         self.commands = {
             'user_lookup' : ['!userpb'],
@@ -19,7 +21,7 @@ class SRC_handler(Message_handler):
 
         if command in self.commands['user_lookup']:
             if len(split_msg) < 2:
-                return print("Please supply a user!")
+                return self.send("Please supply a user!")
             user = split_msg[1]
             args = ' '.join(split_msg[2:])
         else:
@@ -28,36 +30,34 @@ class SRC_handler(Message_handler):
             args = args.strip(' ')
 
         if args == '':
-            logging.debug('Matching category on stream title...')
-            category = self.category_matcher.match_stream_category()
-        else:
-            category = self.category_matcher.match_category(args)
+            args = Stream_title.get_stream_category()
 
-        if category is not None:
-            # if the selected subcategory remained None, the default will be taken.
-            leaderboard = category.get_leaderboard(category.selected_subcategory)
+        logging.debug('Matching category on stream title...')
+        self.send(f'Looking up category {args}...')
+        category = self.category_matcher.match_category(args)
 
-            self.print_wr_pb(command[1:], leaderboard, category, user)
+        if category is None:
+            return self.send(f"Category was not found.")
+
+        # if the selected subcategory remained None, the default will be taken.
+        leaderboard = category.get_leaderboard(category.selected_subcategory)
+
+        self.send_wr_pb(command[1:], leaderboard, category, user)
 
 
-    def print_wr_pb(self, type, leaderboard, category, user):
+    def send_wr_pb(self, type, leaderboard, category, user):
         space = '' if leaderboard.name == '' else ' - '
         full_category_name = category.name + space + leaderboard.name
 
         if type == "wr":
             run = leaderboard.get_rank_run()
             if run is None:
-                print("No world record found for OoT" + full_category_name)
+                self.send("No world record found for OoT" + full_category_name)
                 return
-            print(
-                "The current WR for OoT " + full_category_name + " is " + run.time + " by " + run.player + ".")
+            self.send("The current WR for OoT " + full_category_name + " is " + run.time + " by " + run.player + ".")
         else:
             run = leaderboard.get_user_run(user)
             if run is None:
-                print("No PB found for OoT " + full_category_name + " by " + user + ".")
+                self.send("No PB found for OoT " + full_category_name + " by " + user + ".")
                 return
-            print(run.player + "'s PB for OoT " + full_category_name + " is " + run.time + ".")
-
-
-    def retrieve_stream_title(self, streamer=Settings.STREAMER):
-        stream_title = readjson("https://decapi.me/twitch/title/" + streamer)
+            self.send(run.player + "'s PB for OoT " + full_category_name + " is " + run.time + ".")
