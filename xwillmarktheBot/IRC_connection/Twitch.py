@@ -1,5 +1,3 @@
-from xwillmarktheBot.IRC_connection.IRC_messages import IRC_message_handler
-import xwillmarktheBot.Settings as Settings
 import socket
 import logging
 
@@ -38,5 +36,3 @@ class Twitch_IRC:
     def receive_data(self, characters = 1024):
         logging.debug(f"Receiving irc data ({characters} characters)")
         return self.connection.recv(characters).decode('UTF-8')
-
-

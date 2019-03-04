@@ -1,6 +1,6 @@
+from xwillmarktheBot.Message_handlers.SRC.SRC import Category
 from xwillmarktheBot import Settings
 from xwillmarktheBot.Utils import *
-from xwillmarktheBot.Message_handlers.SRC.SRC import Category
 import re
 
 OOT_ID     = "j1l9qz1g"
@@ -31,7 +31,6 @@ CONVERT_CATS = {
     '100% unrestricted' : '100%',
 }
 
-TITLE_BLACKLIST = ['runs', 'run', 'speed', 'short', 'stream', 'playthrough', 'blind']
 
 
 
@@ -41,7 +40,6 @@ class Category_matcher:
         self.category_data = {}
 
     def match_category(self, str):
-        print(f'Looking up category {str}...')
         sub_str = self.substitute_abbreviations(CONVERT_TERMS, str)
 
         # try exact matching
@@ -49,44 +47,13 @@ class Category_matcher:
         if not match:
             match = self.find_exact_match(OOT_EXT_ID, sub_str)
 
+        # logging
         if match is None:
             logging.info(f"Couldn't find category {str}, searched for {sub_str}.")
-            return print(f"Category {sub_str} was not found.")
         else:
             logging.debug(f"Found category match: {match.name}")
 
         return match
-
-    def match_stream_category(self):
-        stream_title = self.get_stream_title()
-        title = self.clean_stream_title(stream_title)
-
-        logging.debug(f'Found following stream title: {title}')
-        return self.match_category(title)
-
-
-    def get_stream_title(self):
-        return readjson(f"https://decapi.me/twitch/title/{Settings.STREAMER}", text_only=True).lower()
-
-
-    def clean_stream_title(self, title):
-        # remove everything after |
-        title = title.split('|', 1)[0]
-
-        # remove everything in () [] brackets
-        title = re.sub(r"[\[].*?[\]]", '', title)
-
-        # remove common stream title words
-        for term in TITLE_BLACKLIST:
-            title = title.replace(term, '')
-
-        # remove any multiple spaces and start/end spaces
-        title = ' '.join(title.split())
-
-        return title
-
-
-
 
 
     def get_category_data(self, game_id):

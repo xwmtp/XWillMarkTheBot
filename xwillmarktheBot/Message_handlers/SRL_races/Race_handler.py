@@ -5,8 +5,9 @@ import json as json_module
 
 class Race_handler(Message_handler):
 
-    def __init__(self):
-        self.race = Current_race()
+    def __init__(self, irc_connection):
+        super().__init__(irc_connection)
+        self.race = Current_race(irc_connection)
 
         self.commands = {
             'race' : ['!race'],
@@ -22,15 +23,14 @@ class Race_handler(Message_handler):
 
         if command.startswith('#srl'):
             self.race.set(command, sender)
-        elif self.race.race_id != '':
-            if command in self.commands['race']:
-                self.race.print_info()
-            elif command in self.commands['goal']:
-                self.race.print_goal()
-            elif command in self.commands['card']:
-                self.race.print_card()
-        else:
-            print("No SRL race set yet!")
+        elif self.race.race_id == '':
+            self.send("No SRL race set yet!")
+        elif command in self.commands['race']:
+            self.race.send_info()
+        elif command in self.commands['goal']:
+            self.race.send_goal()
+        elif command in self.commands['card']:
+            self.race.send_card()
 
     def get_commands(self):
         return flatten(self.commands.values())
@@ -41,9 +41,10 @@ class Race_handler(Message_handler):
 
 class Current_race:
 
-    def __init__(self):
+    def __init__(self, irc_connection):
         self.goal = ''
         self.race_id = ''
+        self.irc = irc_connection
 
 
     def set(self, msg, sender):
@@ -52,42 +53,41 @@ class Current_race:
 
             self.race_id = race_id
 
-            print(f"The !race command has been updated (#srl-{race_id}).")
-            self.print_info()
+            self.irc.send_message(f"The !race command has been updated (#srl-{race_id}).")
+            self.send_info()
 
 
-    def print_info(self):
+    def send_info(self):
         if self._update():
 
-            url = 'http://www.speedrunslive.com/race/?id='
+            url = 'http://www.speedrunslive.com/race/?id=' + self.race_id
             entrants = ', '.join([e.get_string() for e in self.entrants])
 
-            str = f"Goal: {self.goal} SRL link: {url} Entrants: {entrants}"
-            print(str)
+            self.irc.send_message(f"Goal: {self.goal}, SRL link: {url} Entrants: {entrants}")
 
 
-    def print_goal(self):
+    def goal_string(self):
         if self._update():
-            print(self.goal)
+            return self.goal
 
 
-    def print_card(self):
+    def card_string(self):
         if self._update():
             if self.goal.startswith('http://www.speedrunslive.com/tools/oot-bingo'):
-                print(self.goal)
+                self.irc.send_message(self.goal)
             else:
-                print("Current race not recognized as bingo race. Use !goal to see the goal.")
+                self.irc.send_message("Current race not recognized as bingo race. Use !goal to see the goal.")
 
 
     def _update(self):
         text = readjson(f"http://api.speedrunslive.com/races/{self.race_id}?callback=renderEntrants", text_only=True)
+        # fix invalid json format
         text = text.replace('renderEntrants(', '')
         text = text.replace('})', '}')
         json = json_module.loads(text)
 
         if not json:
-            print(f"No SRL race found for current race id #srl-{self.race_id}")
-            return False
+            return self.send(f"No SRL race found for current race id #srl-{self.race_id}")
 
         self.goal = json['goal']
         self.entrants = self.get_entrants(json)
