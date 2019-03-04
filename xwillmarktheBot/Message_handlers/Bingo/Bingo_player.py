@@ -39,14 +39,14 @@ class Bingo_player:
             res = int(mean(times))
         else:
             res = int(median(times))
-        return datetime.timedelta(seconds=res)#.replace(microseconds = 0)
+        return datetime.timedelta(seconds=res), len(races)#.replace(microseconds = 0)
 
     def get_results(self, n=15, type = 'v92', sort='latest'):
         """Return latest or best bingo results in a comma separated string."""
         # todo: bingo types
         result_races = self.select_races(n, type, sort)
         times = [str(race.get_player_time(self.name)) for race in result_races]
-        return ', '.join(times)
+        return ', '.join(times), len(result_races)
 
     def get_pb(self, type = "v92"):
         race = self.select_races(type=type, sort='best')[0]
@@ -79,8 +79,5 @@ class Bingo_player:
 
         if (n > len(races)) or (n == -1):
             n = len(races)
-
-        if len(races) == 0:
-            print(f'No recorded bingo races found for user {self.name}.')
 
         return races[:n]

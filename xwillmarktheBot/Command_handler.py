@@ -7,8 +7,11 @@ from xwillmarktheBot import Settings
 
 class Command_handler:
 
-    def __init__(self):
-        self.handlers = [Race_handler(), Bingo_handler(), SRC_handler(), Simple_commands()]
+    def __init__(self, irc_connection):
+        self.handlers = [Race_handler(irc_connection),
+                         Bingo_handler(irc_connection),
+                         SRC_handler(irc_connection),
+                         Simple_commands(irc_connection)]
 
 
     def find_command(self, message):

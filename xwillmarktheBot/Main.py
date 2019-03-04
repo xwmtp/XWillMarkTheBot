@@ -1,4 +1,3 @@
-from xwillmarktheBot.Command_handler import Chatbot
 from xwillmarktheBot.IRC_connection.IRC_messages import IRC_message_handler
 import logging
 import sys
@@ -6,7 +5,7 @@ import sys
 if __name__ == '__main__':
 
     if len(sys.argv) < 2:
-        logging.critical('No OAUTH provided, please provide it as a sys arg.')
+        raise ValueError('No OAUTH provided, please provide it as a sys arg.')
     else:
         oauth = sys.argv[1]
 

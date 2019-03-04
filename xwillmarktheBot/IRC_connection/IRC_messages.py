@@ -1,5 +1,5 @@
 from xwillmarktheBot.IRC_connection.Twitch import Twitch_IRC
-from xwillmarktheBot import Command_handler
+from xwillmarktheBot.Command_handler import Command_handler
 from xwillmarktheBot import Settings
 import re
 import socket
@@ -9,14 +9,17 @@ class IRC_message_handler:
 
     def __init__(self, OAUTH):
         self.irc = Twitch_IRC(Settings.STREAMER, Settings.BOT, OAUTH)
-        self.commands = Command_handler()
+        self.chatbot = Command_handler(self.irc)
 
 
     def run_irc_chat(self):
+        self.irc.send_message("Bot succesfully connected.")
 
-        try:
+        while (True):
 
-            while (True):
+            try:
+
+
                 logging.debug("\n\nNew irc message:\n-------------------")
 
                 data = self.irc.receive_data()
@@ -34,26 +37,27 @@ class IRC_message_handler:
                         self.irc.send_pong(line[1])
 
                     if line[1] == 'PRIVMSG':
-                        msg = line[3][1:] # get rid of starting :
+                        msg = self.extract_message(line) # get rid of starting :
                         self.parse_message(msg)
 
-        except socket.error:
-            logging.warning("IRC Socket died.")
+            except socket.error:
+                logging.warning("IRC Socket died.")
 
-        except socket.timeout:
-            logging.warning("IRC Socket timeout.")
+            except socket.timeout:
+                logging.warning("IRC Socket timeout.")
 
-        except Exception as e:
-            logging.critical("Other exception in IRC:", e)
+            except Exception as e:
+                logging.critical("Other exception in IRC:", e)
+                self.irc.send_message("Error occured, please try a different command.")
 
 
-    def extract_sender(msg):
+    def extract_sender(self, msg):
         """Extract sender from message. Returns None if none is found."""
         match = re.search(r"(?<=:)\w+(?=!)", msg)
         if match:
             return match.group()
 
-    def extract_message(msg):
+    def extract_message(self, msg):
         """Extract message from data. Located from 3rd position in list, then get rid of starting ':' """
         return ' '.join(msg[3:])[1:]
 
@@ -61,6 +65,4 @@ class IRC_message_handler:
         logging.debug("Parsing message: " + msg)
         msg = msg.lower()
 
-
-        if msg.startswith('!monkas'):
-            self.irc.send_message('monkaStare')
+        self.chatbot.find_command(msg)

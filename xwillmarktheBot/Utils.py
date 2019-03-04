@@ -28,6 +28,7 @@ def readjson(url, text_only=False, tries=5):
 
 def mean(lst):
     lst = sorted(lst)
+    logging.debug(f"Taking average over: {lst}")
     return sum(lst) / len(lst)
 
 def median(lst):
