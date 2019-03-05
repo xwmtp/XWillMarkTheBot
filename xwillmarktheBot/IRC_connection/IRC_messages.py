@@ -4,21 +4,27 @@ from xwillmarktheBot import Settings
 import re
 import socket
 import logging
+import traceback
 
 class IRC_message_handler:
 
     def __init__(self, OAUTH):
+        self.OAUTH = OAUTH
         self.irc = Twitch_IRC(Settings.STREAMER, Settings.BOT, OAUTH)
-        self.chatbot = Command_handler(self.irc)
+
+        self.timeouts = 0
 
 
     def run_irc_chat(self):
         self.irc.send_message("Bot succesfully connected.")
+        self.chatbot = Command_handler(self.irc)
 
         while (True):
 
-            try:
 
+            try:
+                if not self.irc.is_connected():
+                    return
 
                 logging.debug("\n\nNew irc message:\n-------------------")
 
@@ -38,16 +44,19 @@ class IRC_message_handler:
 
                     if line[1] == 'PRIVMSG':
                         msg = self.extract_message(line) # get rid of starting :
-                        self.parse_message(msg)
+                        sender = self.extract_sender(line[0])
+                        self.parse_message(msg, sender)
 
-            except socket.error:
-                logging.warning("IRC Socket died.")
 
-            except socket.timeout:
-                logging.warning("IRC Socket timeout.")
+            except (socket.error, socket.timeout) as e:
+                logging.warning(f"IRC Socket error: {repr(e)}.")
+                if not self.reconnect_irc():
+                    return logging.critical("Unable to reconnect, shutting down chatbot.")
 
             except Exception as e:
-                logging.critical("Other exception in IRC:", e)
+                logging.critical(f"Other exception in IRC: {repr(e)}")
+                logging.critical(f"In message: {line}")
+                logging.error(traceback.format_exc())
                 self.irc.send_message("Error occured, please try a different command.")
 
 
@@ -61,8 +70,24 @@ class IRC_message_handler:
         """Extract message from data. Located from 3rd position in list, then get rid of starting ':' """
         return ' '.join(msg[3:])[1:]
 
-    def parse_message(self, msg):
-        logging.debug("Parsing message: " + msg)
+    def parse_message(self, msg, sender):
+        logging.info(f"Received message from {sender}: {msg}")
         msg = msg.lower()
 
-        self.chatbot.find_command(msg)
+        if msg == "!throw_error":
+            raise ValueError("test error")
+        elif msg == "!throw_socket":
+            raise socket.error("test socket died")
+
+        self.chatbot.find_command(msg, sender)
+
+    def reconnect_irc(self):
+        if self.timeouts < Settings.CONNECTION_RETRIES:
+            self.timeouts = self.timeouts + 1
+            logging.critical(f"Attempting to reconnect (try {self.timeouts}).")
+            self.irc = Twitch_IRC(Settings.STREAMER, Settings.BOT, self.OAUTH)
+
+            #self.test = 1
+            return True
+        else:
+            return False
