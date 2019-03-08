@@ -3,6 +3,7 @@ from xwillmarktheBot.Message_handlers.Bingo.Bingo_handler import Bingo_handler
 from xwillmarktheBot.Message_handlers.SRL_races.Race_handler import Race_handler
 from xwillmarktheBot.Message_handlers.Simple_commands import Simple_commands
 from xwillmarktheBot import Settings
+import logging
 
 
 class Command_handler:
@@ -15,23 +16,23 @@ class Command_handler:
 
 
     def find_command(self, message, sender):
-        m = message.split(' ')[0]
+        command = message.split(' ')[0]
+        msg = message
 
         # exact match
         for handler in self.handlers:
-            if m in handler.get_commands():
+            logging.debug(handler.get_triggers())
+            trigger_matches = [tr for tr in handler.get_triggers() if tr in msg]
+            logging.debug(f"trigger matches: {trigger_matches}")
+            if (command in handler.get_commands()) | any(trigger_matches):
+                logging.debug('found')
                 return handler.handle_message(message, sender)
+
 
         # starts with
         for handler in self.handlers:
             for command in handler.get_commands():
-                if m.startswith(command):
-                    return handler.handle_message(message, sender)
-
-        # command present in message (no '!' commands)
-        for handler in self.handlers:
-            for command in handler.get_commands():
-                if (command[0] != '!') & (command in message):
+                if msg.startswith(command):
                     return handler.handle_message(message, sender)
 
 

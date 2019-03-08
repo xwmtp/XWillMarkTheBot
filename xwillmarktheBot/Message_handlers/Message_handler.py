@@ -3,7 +3,11 @@ from xwillmarktheBot.Utils import *
 class Message_handler():
 
     def __init__(self, irc_connection):
+        # commands in the class
         self.commands = {}
+        # triggers in the class (words anywhere in message that may trigger the bot, like blue tunic)
+        self.triggers = {}
+
         self.irc = irc_connection
 
     # abstract method
@@ -18,3 +22,7 @@ class Message_handler():
         if self.commands == {}:
             raise NotImplementedError('Subclasses must have self.commands attribute.')
         return flatten(self.commands.values())
+
+    def get_triggers(self):
+        # could possibly be empty, which is fine
+        return flatten(self.triggers.values())

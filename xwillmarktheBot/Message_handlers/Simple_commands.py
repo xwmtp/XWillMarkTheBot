@@ -12,21 +12,27 @@ class Simple_commands(Message_handler):
 
         self.commands = {
             'monka' : ['!monkas', '!monka'],
-            'tunic' : ['zora tunic', 'blue tunic', 'blauwe tuniek', 'zora tuniek', 'tunique bleu', 'blaue tunika']
+            'social': ['!social', '!discord', '!twitter', '!socialmedia']
+        }
+
+        self.triggers = {
+            'tunic'  : ['zora tunic', 'blue tunic', 'blauwe tuniek', 'zora tuniek', 'tunique bleu', 'blaue tunika']
         }
 
     def handle_message(self, msg, sender):
         split_msg = msg.lower().split(' ')
         command = split_msg[0]
 
-        if command in self.commands['monka']:
-            return self.monka()
+        for func, command_group in self.commands.items():
+            if command in command_group:
+                return eval(f'self.{func}("{command}")')
 
-        for command in self.commands['tunic']:
-            if command in msg:
-                return self.tunic()
+        for func, triggers in self.triggers.items():
+            if  any([tr for tr in triggers if tr in msg]):
+                return eval(f'self.{func}("{msg}")')
 
-    def monka(self):
+
+    def monka(self, command):
         if self.monka_emotes == []:
             url = "https://api.frankerfacez.com/v1/room/" + Settings.STREAMER
             json = readjson(url)
@@ -45,5 +51,19 @@ class Simple_commands(Message_handler):
 
 
     # Post badTunic
-    def tunic(self):
+    def tunic(self, msg):
         self.send("BadTunic")
+
+
+
+    def social(self, command):
+        socials = {
+            'discord' : "Join my Discord: https://discord.gg/DuayYUV",
+            'twitter' : "Follow me on Twitter: https://twitter.com/xwmtp"
+        }
+
+        for social, link in socials.items():
+            if social in command:
+                return self.send(link)
+
+        self.send(' '.join(socials.values()))

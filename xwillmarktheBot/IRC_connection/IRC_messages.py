@@ -22,42 +22,42 @@ class IRC_message_handler:
         while (True):
 
 
-            try:
-                if not self.irc.is_connected():
-                    return
+            #try:
+            if not self.irc.is_connected():
+                return
 
-                logging.debug("\n\nNew irc message:\n-------------------")
+            logging.debug("\n\nNew irc message:\n-------------------")
 
-                data = self.irc.receive_data()
-                data_lines = re.split(r"[~\r\n]+", data)[:-1]
+            data = self.irc.receive_data()
+            data_lines = re.split(r"[~\r\n]+", data)[:-1]
 
-                for line in data_lines:
-                    logging.debug(line)
-                    line = str.rstrip(line)
-                    line = line.split(' ')
+            for line in data_lines:
+                logging.debug(line)
+                line = str.rstrip(line)
+                line = line.split(' ')
 
-                    if len(line) == 0:
-                        continue
+                if len(line) == 0:
+                    continue
 
-                    if line[0] == 'PING':
-                        self.irc.send_pong(line[1])
+                if line[0] == 'PING':
+                    self.irc.send_pong(line[1])
 
-                    if line[1] == 'PRIVMSG':
-                        msg = self.extract_message(line) # get rid of starting :
-                        sender = self.extract_sender(line[0])
-                        self.parse_message(msg, sender)
+                if line[1] == 'PRIVMSG':
+                    msg = self.extract_message(line) # get rid of starting :
+                    sender = self.extract_sender(line[0])
+                    self.parse_message(msg, sender)
 
-
-            except (socket.error, socket.timeout) as e:
-                logging.warning(f"IRC Socket error: {repr(e)}.")
-                if not self.reconnect_irc():
-                    return logging.critical("Unable to reconnect, shutting down chatbot.")
-
-            except Exception as e:
-                logging.critical(f"Other exception in IRC: {repr(e)}")
-                logging.critical(f"In message: {line}")
-                logging.error(traceback.format_exc())
-                self.irc.send_message("Error occured, please try a different command.")
+            #
+            # except (socket.error, socket.timeout) as e:
+            #     logging.warning(f"IRC Socket error: {repr(e)}.")
+            #     if not self.reconnect_irc():
+            #         return logging.critical("Unable to reconnect, shutting down chatbot.")
+            #
+            # except Exception as e:
+            #     logging.critical(f"Other exception in IRC: {repr(e)}")
+            #     logging.critical(f"In message: {line}")
+            #     logging.error(traceback.format_exc())
+            #     self.irc.send_message("Error occured, please try a different command.")
 
 
     def extract_sender(self, msg):
