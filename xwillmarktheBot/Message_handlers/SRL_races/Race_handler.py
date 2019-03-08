@@ -21,7 +21,7 @@ class Race_handler(Message_handler):
         split_msg = msg.lower().split(' ')
         command = split_msg[0]
 
-        self.SRL.update_current_race('Gymnast86')
+        self.SRL.update_current_race('vs_DEluge')
 
         if self.SRL.current_race is None:
             return self.send("No SRL race found.")
@@ -47,8 +47,6 @@ class Race_handler(Message_handler):
             answer = f"{answer} Entrants: {self.SRL.current_race.get_entrants_string()}"
 
         return answer
-
-
 
 
 

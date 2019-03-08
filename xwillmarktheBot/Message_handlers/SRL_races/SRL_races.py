@@ -1,4 +1,5 @@
 from xwillmarktheBot.Utils import *
+import datetime
 
 class SRL():
 
@@ -42,13 +43,15 @@ class Race:
         else:
             return 'other'
 
-    def get_entrants_string(self):
-        entrants_string = ', '.join([e.get_string() for e in self.entrants])
-        return entrants_string
 
     def get_race_link(self):
         return 'http://www.speedrunslive.com/race/?id=' + self.id
 
+
+    def get_entrants_string(self):
+        entrants = sorted(self.entrants, key=lambda x: x.rank)
+        entrants_string = ' | '.join([e.get_string() for e in entrants])
+        return entrants_string
 
 
 
@@ -61,6 +64,46 @@ class Entrant:
         self.rank = json['place']
         self.time = json['time']
         self.comment = json['message']
+        self.place = json['place']
+        self.status = json['statetext']
 
     def get_string(self):
-        return f"{self.name} ({self.trueskill})"
+        strings = [self.name, f'({self.trueskill})']
+        if self.status == 'Finished':
+            strings = [f'{str(self.rank)}.'] + strings
+            strings.append(f'{self.get_time()}')
+        elif self.status == 'Forfeit':
+            strings.append('forfeit')
+
+        return ' '.join(strings)
+
+    def get_time(self):
+        return datetime.timedelta(seconds=self.time)
+
+
+# {'id': 'kc1li',
+#  'game': {'id': 3977,
+#   'name': 'The Legend of Zelda: A Link to the Past Hacks',
+#   'abbrev': 'alttphacks',
+#   'popularity': 101.0,
+#   'popularityrank': 13},
+#  'goal': 'SGDE Tournament Race Brogor vs JulienBerlin',
+#  'time': 1552050008,
+#  'state': 4,
+#  'statetext': 'Complete',
+#  'filename': '',
+#  'numentrants': 2,
+#  'entrants': {'Zouizid': {'displayname': 'Zouizid',
+#    'place': 1,
+#    'time': 6457,
+#    'message': '',
+#    'statetext': 'Finished',
+#    'twitch': 'zouizid',
+#    'trueskill': '0'},
+#   'julien-berlin': {'displayname': 'julien-berlin',
+#    'place': 9998,
+#    'time': -1,
+#    'message': '',
+#    'statetext': 'Forfeit',
+#    'twitch': 'julienberlin',
+#    'trueskill': '0'}}}
