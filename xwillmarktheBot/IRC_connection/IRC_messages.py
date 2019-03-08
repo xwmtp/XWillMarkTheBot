@@ -82,7 +82,7 @@ class IRC_message_handler:
         self.chatbot.find_command(msg, sender)
 
     def reconnect_irc(self):
-        if self.timeouts < Settings.CONNECTION_RETRIES:
+        if self.timeouts < 5:
             self.timeouts = self.timeouts + 1
             logging.critical(f"Attempting to reconnect (try {self.timeouts}).")
             self.irc = Twitch_IRC(Settings.STREAMER, Settings.BOT, self.OAUTH)

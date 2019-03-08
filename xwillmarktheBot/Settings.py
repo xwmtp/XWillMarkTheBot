@@ -10,14 +10,20 @@ EDITORS = [STREAMER, 'scaramangado', 'jelster64', 'juwk']
 
 
 
-# IRC CONNECTION
+# SOCIAL
 # ------------------
-CONNECTION_RETRIES = 5
 
 
 
-# LOGGING
-# -------------------
+# RACES
+# ------------------
+
+# !race: in addition to SRL link, print all the current entrants
+# note that !entrants can always be used to look up the entrants
+PRINT_ENTRANTS = True
+
+
+
 
 
 

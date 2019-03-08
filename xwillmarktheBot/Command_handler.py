@@ -21,9 +21,8 @@ class Command_handler:
 
         # exact match
         for handler in self.handlers:
-            logging.debug(handler.get_triggers())
             trigger_matches = [tr for tr in handler.get_triggers() if tr in msg]
-            logging.debug(f"trigger matches: {trigger_matches}")
+
             if (command in handler.get_commands()) | any(trigger_matches):
                 logging.debug('found')
                 return handler.handle_message(message, sender)
