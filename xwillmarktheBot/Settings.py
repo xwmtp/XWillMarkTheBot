@@ -10,14 +10,12 @@ EDITORS = [STREAMER, 'scaramangado', 'jelster64', 'juwk']
 
 
 
-# IRC CONNECTION
+# SOCIAL
 # ------------------
-CONNECTION_RETRIES = 5
 
 
 
-# LOGGING
-# -------------------
+
 
 
 

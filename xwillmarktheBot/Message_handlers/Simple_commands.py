@@ -62,8 +62,10 @@ class Simple_commands(Message_handler):
             'twitter' : "Follow me on Twitter: https://twitter.com/xwmtp"
         }
 
+        # send just one social link (if found in message command)
         for social, link in socials.items():
             if social in command:
                 return self.send(link)
 
+        # send all social links
         self.send(' '.join(socials.values()))
