@@ -23,7 +23,7 @@ class Race_handler(Message_handler):
         split_msg = msg.lower().split(' ')
         command = split_msg[0]
 
-        self.SRL.update_current_race('vs_DEluge')
+        self.SRL.update_current_race(Settings.STREAMER)
 
         if self.SRL.current_race is None:
             return self.send("No SRL race found.")
@@ -47,6 +47,7 @@ class Race_handler(Message_handler):
 
         if command in self.commands['goal'] + self.commands['card']:
             answer = self.SRL.current_race.goal
+
         elif command in self.commands['race']:
             answer = self.SRL.current_race.get_race_link()
 

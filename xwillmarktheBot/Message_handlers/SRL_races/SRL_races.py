@@ -69,9 +69,11 @@ class Entrant:
 
     def get_string(self):
         strings = [self.name, f'({self.trueskill})']
+
         if self.status == 'Finished':
             strings = [f'{str(self.rank)}.'] + strings
             strings.append(f'{self.get_time()}')
+
         elif self.status == 'Forfeit':
             strings.append('forfeit')
 
@@ -79,31 +81,3 @@ class Entrant:
 
     def get_time(self):
         return datetime.timedelta(seconds=self.time)
-
-
-# {'id': 'kc1li',
-#  'game': {'id': 3977,
-#   'name': 'The Legend of Zelda: A Link to the Past Hacks',
-#   'abbrev': 'alttphacks',
-#   'popularity': 101.0,
-#   'popularityrank': 13},
-#  'goal': 'SGDE Tournament Race Brogor vs JulienBerlin',
-#  'time': 1552050008,
-#  'state': 4,
-#  'statetext': 'Complete',
-#  'filename': '',
-#  'numentrants': 2,
-#  'entrants': {'Zouizid': {'displayname': 'Zouizid',
-#    'place': 1,
-#    'time': 6457,
-#    'message': '',
-#    'statetext': 'Finished',
-#    'twitch': 'zouizid',
-#    'trueskill': '0'},
-#   'julien-berlin': {'displayname': 'julien-berlin',
-#    'place': 9998,
-#    'time': -1,
-#    'message': '',
-#    'statetext': 'Forfeit',
-#    'twitch': 'julienberlin',
-#    'trueskill': '0'}}}
