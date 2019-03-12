@@ -29,6 +29,7 @@ CONVERT_TERMS = {
 
 CONVERT_CATS = {
     '100% unrestricted' : '100%',
+    'glitchless unrestricted' : 'glitchless any% unrestricted '
 }
 
 
@@ -67,24 +68,34 @@ class Category_matcher:
         for category in categories:
             name = category['name'].lower()
             category_names = self.get_category_alternatives(name)
-            for category_name in category_names:
 
-                if str.startswith(category_name):
-                    found_category = Category(category)
+            found_name = self.simple_match(str, category_names)
 
-                    # add selected subcategory if match can be found
-                    remainder = str.replace(category_name + ' ', '')
-                    if len(remainder) > 0:
-                        for subcategory in found_category.leaderboards.keys():
-                            subcat_names = self.get_category_alternatives(subcategory.lower())
-                            for subcat in subcat_names:
-                                if remainder == subcat.lower():
-                                    found_category.selected_subcategory = subcategory
+            if found_name is not None:
+                logging.debug(f'Match on main catgeory: {found_name}')
+                found_category = Category(category)
 
-                    return found_category
+                remainder = str.replace(found_name + ' ', '')
+                if len(remainder) > 0:
+                    self.add_subcategory(remainder, found_category)
+
+                return found_category
+
+
+    def add_subcategory(self, str, category):
+        """Find subcategory name in str and add to given category"""
+        logging.debug(f'Looking up subcategories of {str} in {category.leaderboards.keys()} ')
+
+        for subcategory in category.leaderboards.keys():
+            subcat_names = self.get_category_alternatives(subcategory.lower())
+            found_subcat = self.simple_match(str, subcat_names)
+            if found_subcat is not None:
+                logging.debug(f'Found subcategory: {found_subcat}')
+                category.selected_subcategory = subcategory
+        return category
 
     def get_category_alternatives(self, category):
-        """Returns a list of possible alternative names for a categoryegory (i.e. bug limit for unrestricted)"""
+        """Returns a list of possible alternative names for a category (i.e. bug limit for unrestricted)"""
 
         def delete_brackets(str):
             bracketless = re.sub(r"[\[\(].*?[\]\)]", '', str)
@@ -102,11 +113,16 @@ class Category_matcher:
         return category_names
 
 
-    def rule_based_match_OOT(self, category_id, str):
+    def simple_match(self, word, list):
+        """Return the closest match of a word with elements in a list.
+        First tries exact match, then tries if any of the word starts with any of the elements."""
+        for elem in list:
+            if word == elem:
+                return elem
+        for elem in list:
+            if word.startswith(elem):
+                return elem
 
-        for category in self.get_category_data(category_id):
-
-            name = category['name'].lower()
 
 
     def substitute_abbreviations(self, dictionary, str):
