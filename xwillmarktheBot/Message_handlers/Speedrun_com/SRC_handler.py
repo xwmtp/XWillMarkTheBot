@@ -19,25 +19,32 @@ class SRC_handler(Message_handler):
         split_msg = msg.split(' ')
         command = split_msg[0]
 
+        # pb of specific user
         if command in self.commands['user_lookup']:
             if len(split_msg) < 2:
                 return self.send("Please supply a user!")
             user = split_msg[1]
             args = ' '.join(split_msg[2:])
         else:
+        # pb of streamer
             user = Settings.STREAMER
-            args = msg.replace(f'{command}', '')
-            args = args.strip(' ')
+            args = msg.replace(f'{command}', '').strip(' ')
 
+        # extract pb from title
         if args == '':
+            from_title = True
             args = Stream_title.get_stream_category()
+        else:
+            from_title = False
 
-        logging.debug('Matching category on stream title...')
-        self.send(f'Looking up category {args}...')
+
+        if from_title:
+            self.send(f'Looking up category from stream title: {args}')
         category = self.category_matcher.match_category(args)
 
         if category is None:
-            return self.send(f"Category was not found.")
+            str = ' Try adding a category as an argument (i.e. !pb no im/ww).' if from_title else ''
+            return self.send('Category not found.' + str)
 
         # if the selected subcategory remained None, the default will be taken.
         leaderboard = category.get_leaderboard(category.selected_subcategory)
