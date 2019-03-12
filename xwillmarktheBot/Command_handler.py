@@ -1,4 +1,4 @@
-from xwillmarktheBot.Message_handlers.SRC.SRC_handler import SRC_handler
+from xwillmarktheBot.Message_handlers.Speedrun_com.SRC_handler import SRC_handler
 from xwillmarktheBot.Message_handlers.Bingo.Bingo_handler import Bingo_handler
 from xwillmarktheBot.Message_handlers.SRL_races.Race_handler import Race_handler
 from xwillmarktheBot.Message_handlers.Simple_commands import Simple_commands

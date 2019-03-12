@@ -18,7 +18,7 @@ EDITORS = [STREAMER, 'scaramangado', 'jelster64', 'juwk']
 # RACES
 # ------------------
 
-# !race: in addition to SRL link, print all the current entrants
+# !race: in addition to the SRL link, print all the current entrants of the race
 # note that !entrants can always be used to look up the entrants
 PRINT_ENTRANTS = True
 

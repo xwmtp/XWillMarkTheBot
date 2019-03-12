@@ -16,6 +16,9 @@ def clean_stream_title(title):
     # remove everything in () [] brackets
     title = re.sub(r"[\[].*?[\]]", '', title)
 
+    # remove everthing following a !
+    title = re.sub(r"!\S+", '', title)
+
     # remove common stream title words
     for term in TITLE_BLACKLIST:
         title = title.replace(term, '')
