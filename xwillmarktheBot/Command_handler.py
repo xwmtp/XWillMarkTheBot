@@ -9,10 +9,21 @@ import logging
 class Command_handler:
 
     def __init__(self, irc_connection):
-        self.handlers = [Race_handler(irc_connection),
-                         Bingo_handler(irc_connection),
-                         SRC_handler(irc_connection),
-                         Simple_commands(irc_connection)]
+        self.handlers = self.get_handlers(irc_connection)
+
+
+    def get_handlers(self, irc):
+        handlers = []
+        if Settings.SPEEDRUN_COM:
+            handlers.append(SRC_handler(irc))
+        if Settings.SRL_RACES:
+            handlers.append(SRC_handler(irc))
+        if Settings.SRL_RESULTS:
+            handlers.append(Bingo_handler(irc))
+
+        handlers.append(Simple_commands(irc))
+
+        return handlers
 
 
     def find_command(self, message, sender):
