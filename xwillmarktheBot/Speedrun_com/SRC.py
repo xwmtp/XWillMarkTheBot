@@ -1,5 +1,5 @@
 import time
-from xwillmarktheBot import Settings
+from xwillmarktheBot.Settings import Settings
 from xwillmarktheBot.Utils import *
 
 

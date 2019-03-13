@@ -1,8 +1,8 @@
 from xwillmarktheBot.Speedrun_com.SRC_handler import SRC_handler
-from xwillmarktheBot.SpeedRunsLive.SRL_results.Result_handler import Result_handler
-from xwillmarktheBot.SpeedRunsLive.SRL_races.Race_handler import Race_handler
+from xwillmarktheBot.SpeedRunsLive.Results.Result_handler import Result_handler
+from xwillmarktheBot.SpeedRunsLive.Live_races.Race_handler import Race_handler
 from xwillmarktheBot.Other_commands.Simple_commands import Simple_commands
-from xwillmarktheBot import Settings
+from xwillmarktheBot.Settings import Settings
 import logging
 
 

@@ -1,6 +1,6 @@
-from xwillmarktheBot.SpeedRunsLive.SRL_results.Player_lookup import get_SRL_player
+from xwillmarktheBot.SpeedRunsLive.Results.Player_lookup import get_SRL_player
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
-from xwillmarktheBot import Settings
+from xwillmarktheBot.Settings import Settings
 
 
 class Result_handler(Message_handler):

@@ -1,10 +1,10 @@
 from xwillmarktheBot.IRC_connection.Twitch import Twitch_IRC
 from xwillmarktheBot.Message_distributor import Message_distributor
-from xwillmarktheBot import Settings
+from xwillmarktheBot.Settings import Settings
 import re
 import socket
 import logging
-import traceback
+
 
 class IRC_message_handler:
 

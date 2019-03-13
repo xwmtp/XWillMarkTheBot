@@ -1,9 +1,10 @@
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
 from xwillmarktheBot.SpeedRunsLive.Race import LiveRace
-from xwillmarktheBot import Settings
+from xwillmarktheBot.Settings import Settings
 from xwillmarktheBot.Utils import *
 
 class Race_handler(Message_handler):
+    """Handles messages concerning ongoing races (live races), with commands like !race, !entrants, etc."""
 
     def __init__(self, irc_connection):
 

@@ -1,5 +1,5 @@
 from xwillmarktheBot.Utils import *
-from xwillmarktheBot.SpeedRunsLive.SRL_results.Player import SRL_player
+from xwillmarktheBot.SpeedRunsLive.Results.Player import SRL_player
 
 
 def get_SRL_player(user):

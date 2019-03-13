@@ -1,4 +1,6 @@
 from xwillmarktheBot.SpeedRunsLive.Entrant import LiveEntrant, PastEntrant
+from xwillmarktheBot.Settings import Definitions
+import logging
 
 class Race:
 
@@ -7,6 +9,8 @@ class Race:
         self.game = json['game']['name']
         self.goal = json['goal']
         self.type = self.determine_type(self.goal)
+        if self.type not in Definitions.RACE_TYPES:
+            logging.CRITICAL(f'Race got assigned an undefined type ({self.type})!')
         self.entrants = [] # to be defined in child classes
 
     def get_entrant(self, name):
@@ -16,11 +20,20 @@ class Race:
 
 
     def determine_type(self, goal):
-        for type in ['bingo', 'rando']:
+        # search term same as type
+        for type in ['rando']:
             if type in goal:
                 return type
-        else:
-            return 'other'
+
+        # bingo types
+        if 'bingo' in goal:
+            if 'blackout' in goal:
+                return 'blackout'
+            if 'short' in goal:
+                return 'short-bingo'
+            return 'bingo'
+
+        return 'other'
 
 
     def get_race_link(self):
