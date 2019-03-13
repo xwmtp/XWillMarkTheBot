@@ -1,4 +1,4 @@
-from xwillmarktheBot.Speedrun_com.SRC import Category
+from xwillmarktheBot.Speedrun_com.Category import Category
 from xwillmarktheBot.Utils import *
 import re
 

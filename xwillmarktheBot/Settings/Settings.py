@@ -31,7 +31,7 @@ SRL_RESULTS  = True    # !average, !median, !results,
 # ================
 
 # What type of races should the bot use for !average, !median and !results?
-DEFAULT_RESULT_TYPE = 'blackout'  # options: 'bingo', 'blackout', 'short-bingo', 'rando', 'other'
+DEFAULT_RESULT_TYPE = 'bingo'  # options: 'bingo', 'blackout', 'short-bingo', 'rando', 'other'
 
 
 # Whether the entrants should be printed along with the SRL link when using the !race command
