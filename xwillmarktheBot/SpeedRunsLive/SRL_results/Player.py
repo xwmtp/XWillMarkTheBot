@@ -1,4 +1,4 @@
-from xwillmarktheBot.SpeedRunsLive.SRL_races.SRL_races import LiveRace, PastRace
+from xwillmarktheBot.SpeedRunsLive.Race import PastRace
 from xwillmarktheBot.Utils import *
 import datetime
 

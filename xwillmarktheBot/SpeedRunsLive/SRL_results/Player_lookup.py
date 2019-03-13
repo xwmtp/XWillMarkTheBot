@@ -1,14 +1,14 @@
 from xwillmarktheBot.Utils import *
-from xwillmarktheBot.Message_handlers.Bingo.Bingo_player import Bingo_player
+from xwillmarktheBot.SpeedRunsLive.SRL_results.Player import SRL_player
 
 
-def get_bingo_player(user):
+def get_SRL_player(user):
 
     json = _get_srl_json(user)
 
     # user found
     if json:
-        return Bingo_player(user, json)
+        return SRL_player(user, json)
     # user not found, try to look up
     else:
         logging.info(f"Trying alternative names for user {user}.")
@@ -30,7 +30,7 @@ def _try_alt_names(user):
         for alt in alt_names:
             srl_json = _get_srl_json(alt)
             if srl_json:
-                return Bingo_player(alt, srl_json)
+                return SRL_player(alt, srl_json)
 
 
 
