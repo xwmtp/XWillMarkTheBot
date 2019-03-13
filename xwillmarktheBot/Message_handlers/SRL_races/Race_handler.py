@@ -51,7 +51,7 @@ class Race_handler(Message_handler):
         elif command in self.commands['race']:
             answer = self.SRL.current_race.get_race_link()
 
-        if (command in self.commands['entrants']) | (Settings.PRINT_ENTRANTS & (command in self.commands['race'])):
+        if (command in self.commands['entrants']) | (Settings.PRINT_RACE_ENTRANTS & (command in self.commands['race'])):
             answer = f"{answer} Entrants: {self.SRL.current_race.get_entrants_string()}"
 
         return answer.strip()

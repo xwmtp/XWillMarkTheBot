@@ -1,6 +1,6 @@
 
 
-# STREAM
+# STREAM SETTINGS
 # ================
 STREAMER = 'xwillmarktheplace'
 BOT      = 'xwillmarktheBot'
@@ -11,19 +11,19 @@ EDITORS  = [STREAMER, 'scaramangado', 'jelster64', 'juwk']
 # COMMANDS
 # ================
 # Select which commands to use.
+# Set to false to disable a module for the bot
 
-SPEEDRUN_COM = True
-SRL_RACES    = True
-SRL_RESULTS  = True
+SPEEDRUN_COM = True    # !pb, !wr, !userpb
+SRL_RACES    = True    # !race, !card, !entrants, !goal
+SRL_RESULTS  = True    # !average, !median, !results,
 
 
 
-# RACES
+# SRL_RACES
 # ================-
-
-# !race: in addition to the SRL link, print all the current entrants of the race
-# note that !entrants can always be used to look up the entrants
-PRINT_ENTRANTS = True
+# Whether the entrants should be printed along with the SRL link when using the !race command
+# (Entrants can also be printed with !entrants)
+PRINT_RACE_ENTRANTS = True
 
 
 
