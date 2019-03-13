@@ -1,12 +1,12 @@
-from xwillmarktheBot.Message_handlers.Speedrun_com.SRC_handler import SRC_handler
-from xwillmarktheBot.Message_handlers.Bingo.Bingo_handler import Bingo_handler
-from xwillmarktheBot.Message_handlers.SRL_races.Race_handler import Race_handler
-from xwillmarktheBot.Message_handlers.Simple_commands import Simple_commands
+from xwillmarktheBot.Speedrun_com.SRC_handler import SRC_handler
+from xwillmarktheBot.SpeedRunsLive.SRL_results.Result_handler import Result_handler
+from xwillmarktheBot.SpeedRunsLive.SRL_races.Race_handler import Race_handler
+from xwillmarktheBot.Other_commands.Simple_commands import Simple_commands
 from xwillmarktheBot import Settings
 import logging
 
 
-class Command_handler:
+class Message_distributor:
 
     def __init__(self, irc_connection):
         self.handlers = self.get_handlers(irc_connection)
@@ -17,9 +17,9 @@ class Command_handler:
         if Settings.SPEEDRUN_COM:
             handlers.append(SRC_handler(irc))
         if Settings.SRL_RACES:
-            handlers.append(SRC_handler(irc))
+            handlers.append(Race_handler(irc))
         if Settings.SRL_RESULTS:
-            handlers.append(Bingo_handler(irc))
+            handlers.append(Result_handler(irc))
 
         handlers.append(Simple_commands(irc))
 
@@ -27,6 +27,7 @@ class Command_handler:
 
 
     def find_command(self, message, sender):
+        """Looks for commands in message to send the command to the right message handler."""
         command = message.split(' ')[0]
         msg = message
 

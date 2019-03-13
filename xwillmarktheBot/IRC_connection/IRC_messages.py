@@ -1,5 +1,5 @@
 from xwillmarktheBot.IRC_connection.Twitch import Twitch_IRC
-from xwillmarktheBot.Command_handler import Command_handler
+from xwillmarktheBot.Message_distributor import Message_distributor
 from xwillmarktheBot import Settings
 import re
 import socket
@@ -17,7 +17,7 @@ class IRC_message_handler:
 
     def run_irc_chat(self):
         self.irc.send_message("Bot succesfully connected.")
-        self.chatbot = Command_handler(self.irc)
+        self.chatbot = Message_distributor(self.irc)
 
         while (True):
 

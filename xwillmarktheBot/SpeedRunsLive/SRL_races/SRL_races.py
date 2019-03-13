@@ -28,13 +28,14 @@ class Race:
         self.id = json['id']
         self.game = json['game']['name']
         self.goal = json['goal']
-        self.state = json['statetext']
-        self.entrants = self.get_entrants(json)
         self.type = self.determine_type(self.goal)
+        self.entrants = [] # to be defined in child classes
 
+    def get_entrant(self, name):
+        for entrant in self.entrants:
+            if entrant.name.lower() == name.lower():
+                return entrant
 
-    def get_entrants(self, json):
-        return [Entrant(e) for e in json['entrants'].values()]
 
     def determine_type(self, goal):
         for type in ['bingo', 'rando']:
@@ -55,17 +56,54 @@ class Race:
 
 
 
+class LiveRace(Race):
+
+    def __init__(self, json):
+        super().__init__(json)
+        self.state = json['statetext']
+        self.entrants = [LiveEntrant(e) for e in json['entrants'].values()]
+
+
+class PastRace(Race):
+
+    def __init__(self, json):
+        super().__init__(json)
+        self.entrants = [PastEntrant(e) for e in json['results']]
+        self.date = int(json['date'])
+
+
+
+
+
+
+
 
 class Entrant:
 
     def __init__(self, json):
-        self.name = json['displayname']
-        self.trueskill = json['trueskill']
         self.rank = json['place']
         self.time = json['time']
         self.comment = json['message']
         self.place = json['place']
+
+
+    def get_time(self, seconds=False):
+        if seconds:
+            return self.time
+        else:
+            return datetime.timedelta(seconds=self.time)
+
+
+class LiveEntrant(Entrant):
+
+    def __init__(self, json):
+        super().__init__(json)
+
+        self.name = json['displayname']
         self.status = json['statetext']
+        self.trueskill = json['trueskill']
+        self.forfeit = self.status.lower() == 'Forfeit'
+
 
     def get_string(self):
         strings = [self.name, f'({self.trueskill})']
@@ -79,5 +117,13 @@ class Entrant:
 
         return ' '.join(strings)
 
-    def get_time(self):
-        return datetime.timedelta(seconds=self.time)
+
+
+class PastEntrant(Entrant):
+
+    def __init__(self, json):
+        super().__init__(json)
+
+        self.name = json['player']
+        self.forfeit = self.time == -1
+

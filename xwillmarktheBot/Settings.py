@@ -20,7 +20,12 @@ SRL_RESULTS  = True    # !average, !median, !results,
 
 
 # SRL_RACES
-# ================-
+# ================
+
+DEFAULT_RESULT_TYPE = 'bingo'  # options: 'bingo', 'rando'
+
+
+
 # Whether the entrants should be printed along with the SRL link when using the !race command
 # (Entrants can also be printed with !entrants)
 PRINT_RACE_ENTRANTS = True

@@ -1,4 +1,4 @@
-from xwillmarktheBot.Message_handlers.Message_handler import Message_handler
+from xwillmarktheBot.Abstract_Message_Handler import Message_handler
 from xwillmarktheBot.Utils import *
 from xwillmarktheBot import Settings
 
