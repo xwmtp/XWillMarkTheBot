@@ -10,7 +10,8 @@ class Result_handler(Message_handler):
         self.SRL_players = {Settings.STREAMER : get_SRL_player(Settings.STREAMER)}
         self.commands = {
             'average' : ['!average', '!mean', '!median'],
-            'results' : ['!results']
+            'results' : ['!results'],
+            'pb'      : ['!racepb', '!srlpb']
         }
         self.race_type = Settings.DEFAULT_RESULT_TYPE
 
