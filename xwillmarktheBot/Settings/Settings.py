@@ -1,3 +1,4 @@
+from xwillmarktheBot.Settings import Definitions
 import logging
 
 
@@ -10,9 +11,11 @@ import logging
 
 # STREAM SETTINGS
 # ================
+
 STREAMER = 'xwillmarktheplace'
 BOT      = 'xwillmarktheBot'
 
+# Editors are Twitch users with rights to use all commands (like resetting rando hints)
 EDITORS  = [STREAMER, 'scaramangado', 'jelster64', 'juwk']
 
 
@@ -63,6 +66,14 @@ PRINT_RACE_ENTRANTS = True
 # logging.WARNING  only warnings and errors
 # logging.ERROR    only errors
 CONSOLE_LOGGING_LEVEL = logging.DEBUG
+
+
+# RANDO HINTS
+# =================
+
+# Location of rando hint files! Please keep their names at default (rando_hints.txt and rando_hints_template.txt)
+# If you'd like to change the location, put a string with the full path to the folder containing those two files.
+RANDO_HINTS_DIR = Definitions.ROOT_DIR / 'RandoHints'
 
 
 
