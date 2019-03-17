@@ -29,7 +29,7 @@ class Race_handler(Message_handler):
         if self.live_race is None:
             return self.send("No SRL race found.")
 
-        def live_race_commands(self):
+        def live_race_commands():
             live_race_groups = ['race', 'goal', 'card', 'entrants']
             return flatten([self.commands[group] for group in live_race_groups])
 
@@ -56,7 +56,7 @@ class Race_handler(Message_handler):
 
 
     def get_live_race_info(self, command):
-        if (command in self.commands['card']) & (self.SRL.live_race.type != 'bingo'):
+        if (command in self.commands['card']) & (self.live_race.type != 'bingo'):
             return "Current race is not a bingo. Use !race or !goal."
 
         answer = ''
