@@ -1,8 +1,7 @@
-from xwillmarktheBot.Message_handlers.Speedrun_com.Category_matcher import Category_matcher
-from xwillmarktheBot.Message_handlers.Message_handler import Message_handler
-from xwillmarktheBot.Message_handlers.Speedrun_com import Stream_title
-from xwillmarktheBot.Utils import *
-from xwillmarktheBot import Settings
+from xwillmarktheBot.Speedrun_com.Category_matcher import Category_matcher
+from xwillmarktheBot.Abstract_Message_Handler import Message_handler
+from xwillmarktheBot.Speedrun_com import Stream_title
+from xwillmarktheBot.Settings import Settings
 
 
 class SRC_handler(Message_handler):

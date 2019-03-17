@@ -1,5 +1,10 @@
 import requests
 import logging
+import shutil
+import os
+
+
+### File Handling ###
 
 def readjson(url, text_only=False, tries=5):
 
@@ -21,6 +26,17 @@ def readjson(url, text_only=False, tries=5):
     error_message = "Error in accessing api:", status, "(after", tries, "tries)"
     print(error_message)
     logging.critical(error_message)
+
+
+def copy_file(path, old_file_name, new_file_name):
+    try:
+        old = os.path.join(path, old_file_name)
+        new = os.path.join(path, new_file_name)
+        shutil.copy(old, new)
+        return True
+    except Exception:
+        logging.critical(f"Error while copying {old_file_name} to {new_file_name} in {path}")
+        return False
 
 
 ### Arithmetic ###

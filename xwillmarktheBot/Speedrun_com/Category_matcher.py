@@ -1,5 +1,4 @@
-from xwillmarktheBot.Message_handlers.Speedrun_com.SRC import Category
-from xwillmarktheBot import Settings
+from xwillmarktheBot.Speedrun_com.Category import Category
 from xwillmarktheBot.Utils import *
 import re
 

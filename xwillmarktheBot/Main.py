@@ -1,41 +1,14 @@
 from xwillmarktheBot.IRC_connection.IRC_messages import IRC_message_handler
-import logging
+from xwillmarktheBot.Settings.Validate_settings import validate_settings
+from xwillmarktheBot.Logger import initalize_logger
 import sys
-
-def initalize_logger():
-    logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s: %(message)s')
-
-
-    # console handler
-    stream_handler = logging.StreamHandler()
-    stream_handler.setLevel(logging.DEBUG)
-    stream_handler.setFormatter(formatter)
-    logger.addHandler(stream_handler)
-
-    # file handler (errors)
-    handler = logging.FileHandler("logs/ERROR_log.log", "a")
-    handler.setLevel(logging.WARNING)
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
-
-    # file handler (info)
-    handler = logging.FileHandler("logs/INFO_log.log", "a")
-    handler.setLevel(logging.INFO)
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
-
-
-
-
-
 
 
 if __name__ == '__main__':
 
 
     initalize_logger()
+    validate_settings()
 
 
     if len(sys.argv) < 2:

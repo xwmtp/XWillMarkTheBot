@@ -1,5 +1,5 @@
 from xwillmarktheBot.Utils import *
-from xwillmarktheBot import Settings
+from xwillmarktheBot.Settings import Settings
 import re
 
 TITLE_BLACKLIST = ['runs', 'run', 'speed', 'short', 'stream', 'playthrough', 'blind']
