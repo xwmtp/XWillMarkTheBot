@@ -88,7 +88,6 @@ class IRC_message_handler:
             logging.critical(f"Attempting to reconnect (try {self.timeouts}).")
             self.irc = Twitch_IRC(Settings.STREAMER, Settings.BOT, self.OAUTH)
 
-            #self.test = 1
             return True
         else:
             return False
