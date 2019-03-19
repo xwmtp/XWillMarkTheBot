@@ -31,7 +31,7 @@ def validate_string_settings():
         assert (isinstance(setting, str)), "One of the string settings in Settings.py is not a string!"
 
 def validate_race_types():
-    race_type_setting = Settings.DEFAULT_RESULT_TYPE
+    race_type_setting = Settings.DEFAULT_RACE_TYPE
     assert (isinstance(race_type_setting, str)), "The default (race) result type in Settings.py is not a string!"
     assert (race_type_setting in Definitions.RACE_TYPES), f"{race_type_setting} in Settings.py is not a valid default (race) result type. Pick one from {Definitions.RACE_TYPES}."
 

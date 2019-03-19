@@ -1,4 +1,4 @@
-from xwillmarktheBot.Speedrun_com.Category import Category
+from xwillmarktheBot.Speedrun_stats.Speedrun_com.Category import Category
 from xwillmarktheBot.Utils import *
 import re
 
@@ -63,6 +63,7 @@ class Category_matcher:
 
 
     def find_exact_match(self, category_id, str):
+        logging.debug(f"Looking for matching category with {str} for game {category_id}")
         categories = self.get_category_data(category_id)
         for category in categories:
             name = category['name'].lower()
@@ -95,12 +96,12 @@ class Category_matcher:
 
     def get_category_alternatives(self, category):
         """Returns a list of possible alternative names for a category (i.e. bug limit for unrestricted)"""
-
         def delete_brackets(str):
             bracketless = re.sub(r"[\[\(].*?[\]\)]", '', str)
             spaceless = ' '.join(bracketless.split())
             return spaceless
 
+        # deleting [] makes this not work
         category_names = set([category])
         category_names.add(delete_brackets(category))
         for name, sub_name in CONVERT_CATS.items():

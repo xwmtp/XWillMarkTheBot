@@ -1,6 +1,5 @@
-from xwillmarktheBot.Speedrun_com.SRC_handler import SRC_handler
-from xwillmarktheBot.SpeedRunsLive.Results.Result_handler import Result_handler
-from xwillmarktheBot.SpeedRunsLive.Live_races.Race_handler import Race_handler
+from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Live_races.Race_handler import Race_handler
+from xwillmarktheBot.Speedrun_stats.Speedrun_handler import Speedrun_handler
 from xwillmarktheBot.Randomizer.Rando_handler import Rando_handler
 from xwillmarktheBot.Other_commands.Setting_commands import Setting_commands
 from xwillmarktheBot.Settings import Settings
@@ -15,12 +14,12 @@ class Message_distributor:
 
     def get_handlers(self, irc):
         handlers = []
-        if Settings.SPEEDRUN_COM:
-            handlers.append(SRC_handler(irc))
+        #if Settings.SPEEDRUN_COM:
+        handlers.append(Speedrun_handler(irc))
         if Settings.SRL_RACES:
             handlers.append(Race_handler(irc))
-        if Settings.SRL_RESULTS:
-            handlers.append(Result_handler(irc))
+        #if Settings.SRL_RESULTS:
+        #    handlers.append(Result_handler(irc))
 
         handlers.append(Rando_handler(irc))
 
