@@ -38,7 +38,6 @@ class Message_distributor:
             trigger_matches = [tr for tr in handler.get_triggers() if tr in msg]
 
             if (command in handler.get_commands()) | any(trigger_matches):
-                logging.debug('found')
                 return handler.handle_message(message, sender)
 
 

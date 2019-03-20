@@ -18,7 +18,7 @@ class Speedrun_handler(Message_handler):
         self.result_handler = Result_handler(irc_connection)
 
         self.commands = {
-            'handle_pb' : ['!pb']
+            'handle_pb' : ['!pb', '!userpb']
         }
 
         # add child message handler commands to the command dict
@@ -45,13 +45,18 @@ class Speedrun_handler(Message_handler):
         """In case of !pb command: decide whether to send to SRL result handler or SRC.
         If there's a race type involved, it goes to SRL."""
         split_msg = msg.split(' ')
+        command = split_msg[0]
+
+        num_args = 1
+        if command == '!userpb':
+            num_args = 2
 
         # check in stream title
-        if len(split_msg) == 1:
+        if len(split_msg) <= num_args:
             arg = get_stream_category()
         # argument
         else:
-            arg = split_msg[1]
+            arg = ' '.join(split_msg[1:])
 
         logging.debug(f"Comparing argument {arg} with race types: {Definitions.RACE_TYPES}")
         if any(type in arg for type in Definitions.RACE_TYPES):
