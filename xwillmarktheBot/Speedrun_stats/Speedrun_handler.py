@@ -58,7 +58,7 @@ class Speedrun_handler(Message_handler):
         else:
             arg = ' '.join(split_msg[1:])
 
-        logging.debug(f"Comparing argument {arg} with race types: {Definitions.RACE_TYPES}")
+        logging.debug(f"Comparing argument '{arg}' to race types: {Definitions.RACE_TYPES}")
         if any(type in arg for type in Definitions.RACE_TYPES):
             self.result_handler.handle_message(msg, sender)
         else:

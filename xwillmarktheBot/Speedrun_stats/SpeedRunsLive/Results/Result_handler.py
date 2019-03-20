@@ -29,7 +29,7 @@ class Result_handler(Message_handler):
             if command in self.commands['average'] + self.commands['results']:
                 self.handle_results(split_msg, result_info)
             else:
-                self.handle_pb(split_msg, result_info)
+                self.handle_pb(result_info)
 
 
     def handle_results(self, split_msg, args):
@@ -51,7 +51,7 @@ class Result_handler(Message_handler):
             self.send(f"No recorded {args.type} races found for user {args.player.name}")
 
 
-    def handle_pb(self, split_msg, args):
+    def handle_pb(self, args):
         logging.debug("Looking up SRL result PB...")
 
         if args.player:
@@ -100,29 +100,47 @@ class Result_handler(Message_handler):
 class Result_info:
 
     def __init__(self, split_msg, result_handler):
-        self.n = 15
-        self.player = None
-        self.type = Settings.DEFAULT_RACE_TYPE
+        self.n = self.get_n(split_msg)
+        self.player = self.get_player(split_msg, result_handler)
+        self.type = self.get_type(split_msg, result_handler)
 
-        self.parse_SRL_message(split_msg, result_handler)
         logging.debug(f"Found race arguments. n: {self.n}, player: {self.player.name if self.player is not None else None}, type: {self.type}.")
 
-    def parse_SRL_message(self, split_msg, result_handler):
-        """Overwrites default result arguments with info found in message"""
+
+    def get_player(self, split_msg, result_handler):
+        player = None
+        for word in split_msg[1:]:
+            if (not word.isdigit()) & (not word in Definitions.RACE_TYPES):
+                player = result_handler.get_SRL_player(word)
+
+        if not player:
+            if (split_msg[0] in result_handler.commands['user_pb']):
+                return result_handler.send("SRL user not found!")
+            else:
+                return result_handler.SRL_players[Settings.STREAMER]
+        return player
+
+    def get_n(self, split_msg):
+        n = 15
         for word in split_msg[1:]:
             if word.isdigit():
-                self.n = int(word)
-            elif word in Definitions.RACE_TYPES:
-                self.type = word
-            else:
-                user = word
-                # todo: convert with alias_dict
-                self.player = result_handler.get_SRL_player(user)
+                n = word
+        return n
 
-        if not self.player:
-            if (split_msg[0] in result_handler.commands['user_pb']):
-                result_handler.send("SRL user not found!")
-            else:
-                self.player = result_handler.SRL_players[Settings.STREAMER]
+    def get_type(self, split_msg, result_handler):
+        # look in arguments
+        for word in split_msg[1:]:
+            if word in Definitions.RACE_TYPES:
+                return word
+        # look in stream title
+        type = result_handler.get_stream_title_type()
+
+        # pick default
+        if not type:
+            return Settings.DEFAULT_RACE_TYPE
+        return type
+
+
+
 
 
