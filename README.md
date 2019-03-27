@@ -25,13 +25,13 @@ The bot has a few settings that can be adjusted. They can all be found in ```xwi
 
 ### Command modules
 You can deactivate command modules that you don't want to use in your bot. By default, all modules are activated with the keyword ```True```. Put ```False``` for any module you don't want to use.
-* **Speedrun_com**: commands to look up records on Speedrun.com, like *!pb*, *!wr* and *!userpb*.
-* **SRL_races**: ccommands for ongoing SRL races, like *!race*, *!entrants* and *!goal*.
-* **SRL_results**: commands to get information about past races, like *!average*, *!results* and *!pb*.
+* **Speedrun_com**: commands to look up records on Speedrun.com, like ```!pb```, ```!wr``` and ```!userpb```.
+* **SRL_races**: ccommands for ongoing SRL races, like ```!race```, ```!entrants``` and ```!goal```.
+* **SRL_results**: commands to get information about past races, like ```!average```, ```!results``` and ```!pb```.
 
 ### Speedrunslive
-* **Default_race_type**: pick the default type of srl race you want the SRL results module to work on. You can pick from *bingo*, *blackout*, *short-bingo*, *rando*, *other* and *all*. By default this will be set to *bingo*. Note that the default can be changed while the program is running, but when the bot restarts it will use the default in the settings file again. It's possible to get information about non-default race types by adding arguments.
-* **Print_race_entrants**: when set to *True*, the commands *!race* will print all the race entrants in addition to the SRL race url. If you don't want this behavior (for example if you often race with a large amount of entrants), you can set this to *False*. Note that you can always use *!entrants* to print all the entrants, as long as it fits within one twitch chat message!
+* **Default_race_type**: pick the default type of srl race you want the SRL results module to work on. You can pick from ```bingo```, ```blackout```, ```short-bingo```, ```rando```, ```other``` and ```all```. By default this will be set to ```bingo```. Note that the default can be changed while the program is running, but when the bot restarts it will use the default in the settings file again. It's possible to get information about non-default race types by adding arguments.
+* **Print_race_entrants**: when set to ```True```, the commands ```!race``` will print all the race entrants in addition to the SRL race url. If you don't want this behavior (for example if you often race with a large amount of entrants), you can set this to ```False```. Note that you can always use ```!entrants``` to print all the entrants, as long as it fits within one twitch chat message!
 
 ## Commands
 A nice overview of all commands that can be used with the bot can be found [here](https://xwmtp.github.io/xwillmarktheBot). It also explains the usage of the commands.
