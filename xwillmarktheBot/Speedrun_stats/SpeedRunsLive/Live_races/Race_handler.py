@@ -1,5 +1,5 @@
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
-from xwillmarktheBot.SpeedRunsLive.Race import LiveRace
+from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Race import LiveRace
 from xwillmarktheBot.Settings import Settings
 from xwillmarktheBot.Utils import *
 

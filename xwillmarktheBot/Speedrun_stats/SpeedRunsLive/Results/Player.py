@@ -1,4 +1,5 @@
-from xwillmarktheBot.SpeedRunsLive.Race import PastRace
+from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Race import PastRace
+from xwillmarktheBot.Settings import Definitions
 from xwillmarktheBot.Utils import *
 import datetime
 
@@ -32,18 +33,24 @@ class SRL_player:
             res = int(median(times))
         return datetime.timedelta(seconds=res), len(races)#.replace(microseconds = 0)
 
+
     def get_results(self, n=15, type='bingo', sort='latest'):
         """Return latest or best race results in a comma separated string."""
         result_races = self.select_races(n, type, sort)
         times = [str(race.get_entrant(self.name).get_time()) for race in result_races]
         return ', '.join(times), len(result_races)
 
+
     def get_pb(self, type='bingo'):
-        race = self.select_races(type=type, sort='best')[0]
-        return race.get_entrant(self.name).get_time()
+        races = self.select_races(type=type, sort='best')
+        if races != []:
+            return races[0].get_entrant(self.name).get_time()
 
 
     def select_races(self, n=-1, type='bingo', sort='best', forfeits=False, remove_blacklisted=True):
+        if type not in Definitions.RACE_TYPES:
+            return []
+
         if forfeits:
             all_races = self.races
         else:
@@ -53,7 +60,7 @@ class SRL_player:
 
 
         if sort == 'best':
-            selected_races = sorted(selected_races, key=lambda r: r.time)
+            selected_races = sorted(selected_races, key=lambda r: r.get_entrant(self.name).get_time())
         elif sort == 'latest':
             selected_races = sorted(selected_races, key=lambda r: r.date, reverse=True)
 

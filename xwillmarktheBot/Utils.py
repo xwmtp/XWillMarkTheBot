@@ -81,3 +81,13 @@ def complement(lst1, lst2):
 def flatten(lst):
     return [item for sublst in lst for item in sublst]
 
+def merge_list_dictionaries(d1, d2):
+    """Merge two dictionaries that both have lists as their values"""
+    new_dict = d1.copy()
+    for key, item in d2.items():
+        if key in d1.keys():
+            new_dict[key] = list(set(d1[key] + d2[key]))
+        else:
+            new_dict[key] = d2[key]
+    return new_dict
+
