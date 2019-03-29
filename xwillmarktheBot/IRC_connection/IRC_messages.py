@@ -48,7 +48,6 @@ class IRC_message_handler:
                         sender = self.extract_sender(line[0])
                         self.parse_message(msg, sender)
 
-
             except (socket.error, socket.timeout) as e:
                 logging.warning(f"IRC Socket error: {repr(e)}.")
                 if not self.reconnect_irc():
