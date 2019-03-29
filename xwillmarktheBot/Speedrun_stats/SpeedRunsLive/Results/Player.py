@@ -1,5 +1,5 @@
 from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Race import PastRace
-from xwillmarktheBot.Settings import Definitions
+from xwillmarktheBot.Settings import Definitions, Settings
 from xwillmarktheBot.Utils import *
 import datetime
 
@@ -50,13 +50,19 @@ class SRL_player:
     def select_races(self, n=-1, type='bingo', sort='best', forfeits=False, remove_blacklisted=True):
         if type not in Definitions.RACE_TYPES:
             return []
+        race_type = str.replace(type, 'all-', '')
 
         if forfeits:
             all_races = self.races
         else:
             all_races = [race for race in self.races if not race.get_entrant(self.name).forfeit]
 
-        selected_races = [race for race in all_races if race.type == type]
+        if type == 'srl':
+            selected_races = all_races
+        else:
+            selected_races = [race for race in all_races if race.type == race_type]
+
+        selected_races = self.select_dates(selected_races, type)
 
 
         if sort == 'best':
@@ -72,3 +78,14 @@ class SRL_player:
         if (n > len(selected_races)) or (n == -1):
             n = len(selected_races)
         return selected_races[:n]
+
+    def select_dates(self, races, type):
+
+        if ('bingo' in type) & ('all' not in type):
+            if Settings.LATEST_BINGO_VERSION_DATE != '':
+                version_date = datetime.datetime.strptime(Settings.LATEST_BINGO_VERSION_DATE, '%d-%m-%Y')
+
+                races = [race for race in races if race.get_date() >= version_date]
+
+        return races
+

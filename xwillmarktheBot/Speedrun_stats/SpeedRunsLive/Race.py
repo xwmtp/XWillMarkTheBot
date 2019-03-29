@@ -1,6 +1,7 @@
 from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Entrant import LiveEntrant, PastEntrant
 from xwillmarktheBot.Settings import Definitions
 import logging
+from datetime import datetime
 
 class Race:
 
@@ -61,3 +62,6 @@ class PastRace(Race):
         super().__init__(json)
         self.entrants = [PastEntrant(e) for e in json['results']]
         self.date = int(json['date'])
+
+    def get_date(self):
+        return datetime.utcfromtimestamp(int(self.date))
