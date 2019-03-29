@@ -34,7 +34,13 @@ SRL_RESULTS  = True    # !average, !median, !results,
 # ================
 
 # What type of races should the bot use for !average, !median and !results?
-DEFAULT_RACE_TYPE = 'bingo'  # options: 'bingo', 'blackout', 'short-bingo', 'rando', 'other'
+DEFAULT_RACE_TYPE = 'bingo'  # options: 'bingo', 'blackout', 'short-bingo', 'rando', 'other', 'srl'
+
+# Each race type containing the word 'bingo' only considers races after this date.
+# Put the date of the latest bingo version (for example v9.3), or leave an empty string '' if you always want all races.
+# The date will usually only affect the !pb command for races.
+# Format: 'DD-MM-YYYY'
+LATEST_BINGO_VERSION_DATE = '09-06-2018'
 
 
 # Whether the entrants should be printed along with the SRL link when using the !race command
