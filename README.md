@@ -31,6 +31,7 @@ You can deactivate command modules that you don't want to use in your bot. By de
 
 ### Speedrunslive
 * **Default_race_type**: pick the default type of srl race you want the SRL results module to work on. You can pick from ```bingo```, ```blackout```, ```short-bingo```, ```rando```, ```other``` and ```all```. By default this will be set to ```bingo```. Note that the default can be changed while the program is running, but when the bot restarts it will use the default in the settings file again. It's possible to get information about non-default race types by adding arguments.
+* **Latest_bingo_version_date**: if you want the !pb command to only consider races from the latest bingo version, put the date here that the latest version came out, formatted like 'DD-MM-YYYY'. Put an empty string '' if you always want all races to be considered. This wil only influence race types that have the word 'bingo' in them. If you put a date here but sometimes want to look up all the bingos, you can put 'all-' in front of the bingo type. For example: ```!pb all-bingo```.
 * **Print_race_entrants**: when set to ```True```, the command ```!race``` will print all the race entrants in addition to the SRL race url. If you don't want this behavior (for example if you often race with a large amount of entrants), you can set this to ```False```. Note that you can always use ```!entrants``` to print all the entrants, as long as it fits within one twitch chat message!
 
 ## Commands
