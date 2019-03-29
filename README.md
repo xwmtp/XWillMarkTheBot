@@ -7,7 +7,7 @@ To run the bot, you need Python 3.7. The bot was created on Windows and has not 
 
 1. Get [Python 3.7](https://www.python.org/downloads/release/python-370/) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html). The chatbot might run on older versions as well, but I did not test this and used newer Python features.
 2. You need a Twitch account for the bot to send messages. Make one if you don't have one. Don't forget to make the account a mod or vip in your chat so it can send messages fast.
-3. Generate an OAuth token for the bot account, which can be done [here](https://twitchapps.com/tmi/)
+3. Generate an OAuth token for the bot account, which can be done [here](https://twitchapps.com/tmi/). Don't share this token!
 4. Download the program (in releases?)
 5. Unzip the file wherever you want on your computer.
 
@@ -35,5 +35,27 @@ You can deactivate command modules that you don't want to use in your bot. By de
 * **Print_race_entrants**: when set to ```True```, the command ```!race``` will print all the race entrants in addition to the SRL race url. If you don't want this behavior (for example if you often race with a large amount of entrants), you can set this to ```False```. Note that you can always use ```!entrants``` to print all the entrants, as long as it fits within one twitch chat message!
 
 ## Commands
-A nice overview of all commands that can be used with the bot can be found [here](https://xwmtp.github.io/xwillmarktheBot). It also explains the usage of the commands.
+A nice overview of all commands that can be used with the bot can be found [here](https://xwmtp.github.io/xwillmarktheBot). It also explains the usage of the commands. Using ```!commands``` will return a link to that page.
 
+### Speedrun.com
+The Speedrun.com module contains commands to look up records and pb's.
+* If you don't add an argument to ```!pb``` or ```!wr```, the bot will look at your current stream title. Everything between square brackets or after the | symbol will be ignored.
+* If you look up a category which has subcategories like for example Glitchless, you get the first tab as a default answer. Add the subtab to find a specific subcategory. Example: ````!wr glitchless any% unrestricted```
+* To get the pb of someone other than the streamer, use ````!userpb```. Example: ````!userpb scaramanga 37 water keys```. Again, not adding a category will result in looking at the stream title.
+
+### SRL results
+The SRL results module can look up statistics on *past* SRL races. There are a few types of races that the bot can distinguish. These are ```bingo```, ```short-bingo```, ```blackout```, ```rando```, ```other``` and ```srl```. The ```srl``` type means 'all' races.   
+* If you use ```!pb```, the module will look if any of the above mentioned SRL race types are in your stream title. If not, it will send the title to the Speedrun.com module and look for an rta category instead. Of course you can also add an argument yourself, like ```!pb blackout``` if you want to find the best blackout race you did.
+* The other SRL result commands (```!average```, ```!median``` and ```!results```) will use the default race type. You can set this in the settings file ```Settings.py```, or use the ```!setsrl``` command. It's possible to add an integer for how many races you want to consider, and a user name to get someone else's stats.
+
+### SRL races
+The SRL races module has commands to get information on a current race. The bot automatically looks at the race the streamer has entered.
+* Use ```!race``` and ```!entrants``` to get info on your current race. If you don't want ```!race``` to show all the entrants (if you often join very large races for example), you can edit this in ```Settings.py```.
+
+
+### Rando
+The rando module allows you to have an up-to-date command with the hints you already found in your oot rando.
+* While playing, have ```RandoHints/rando_hints.txt``` open in a text editor. Everytime you find a hint, double click on 'location' or 'item' and type what you find. Make sure to hit ctrl + s afterwards to save. When a viewer uses the ```!hints``` command, only the hints that you filled in will show up.
+* After playing, use the ```!resethints``` command to restore the file to default. The contents of ```RandoHints/rando_hints_template.txt``` will be copied to the file, so it's strongly recommended to not change the template.
+* It's possible to alter the template a bit to your own liking, by adding another group of hints with a different title. Keep it close to the template though (with ascending numbers and a semi-colon as a separator), or the code won't be able to parse it.
+* You can put the two rando text files in a different directory if you'd like, but you have to put the path in the advanced settings of ```Settings.py```. The file names have to stay the same though!
