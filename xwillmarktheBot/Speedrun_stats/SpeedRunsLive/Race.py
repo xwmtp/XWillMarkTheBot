@@ -1,4 +1,4 @@
-from xwillmarktheBot.SpeedRunsLive.Entrant import LiveEntrant, PastEntrant
+from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Entrant import LiveEntrant, PastEntrant
 from xwillmarktheBot.Settings import Definitions
 import logging
 

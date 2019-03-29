@@ -1,8 +1,8 @@
 from xwillmarktheBot.Utils import *
-from xwillmarktheBot.SpeedRunsLive.Results.Player import SRL_player
+from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Results.Player import SRL_player
 
 
-def get_SRL_player(user):
+def lookup_SRL_player(user):
 
     json = _get_srl_json(user)
 
