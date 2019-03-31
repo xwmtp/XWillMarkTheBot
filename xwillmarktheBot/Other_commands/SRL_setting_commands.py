@@ -1,8 +1,7 @@
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
-from xwillmarktheBot.Utils import *
 from xwillmarktheBot.Settings import Settings, Definitions
 
-class Setting_commands(Message_handler):
+class SRL_setting_commands(Message_handler):
 
     def __init__(self, irc_connection):
         super().__init__(irc_connection)

@@ -27,6 +27,7 @@ EDITORS  = [STREAMER, 'scaramangado', 'jelster64', 'juwk']
 SPEEDRUN_COM = True    # !pb, !wr, !userpb
 SRL_RACES    = True    # !race, !card, !entrants, !goal
 SRL_RESULTS  = True    # !average, !median, !results,
+RANDO        = True    # !hints, !resethints
 
 
 

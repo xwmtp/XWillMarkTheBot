@@ -1,6 +1,6 @@
 from xwillmarktheBot.Settings import Settings
 from xwillmarktheBot.Settings import Definitions
-import logging
+from datetime import datetime
 
 
 
@@ -20,6 +20,9 @@ def validate_settings():
 
     # default logging level is valid
     validate_logging_level()
+
+    # check if all dates are correct
+    validate_dates()
 
 
 def validate_boolean_settings():
@@ -41,3 +44,12 @@ def validate_editors():
 
 def validate_logging_level():
     assert (Settings.CONSOLE_LOGGING_LEVEL in Definitions.LOGGING_LEVELS), f"The selected console logging level in Settings.py is not a valid logging level! Select on from {Definitions.LOGGGING_LEVELS}."
+
+def validate_dates():
+    date = Settings.LATEST_BINGO_VERSION_DATE
+    assert (isinstance(date, str)), "The latest bingo version date in Settings.py is not a string!"
+    try:
+        date = datetime.strptime(date, '%d-%m-%Y')
+    except:
+        raise ValueError("The latest bingo version date could not be parsed correctly. Please verify that it's in the right format DD-MM-YYYY.")
+    assert (date <= datetime.today()), "Please pick a latest bingo version date that is in the past."

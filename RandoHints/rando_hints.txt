@@ -1,0 +1,23 @@
+Way of The Hero
+1. location ; found_item
+2. location ; found_item
+3. location ; found_item
+4. location ; found_item
+
+Generic hints
+1. location ; item
+2. location ; item
+3. location ; item
+4. location ; item
+
+Barren
+1. location
+2. location
+
+Specific hints
+1. 30 skulls; item
+2. 40 skulls; item
+3. 50 skulls; item
+4. biggoron ; item
+5. frogs    ; item
+6. oot      ; item
