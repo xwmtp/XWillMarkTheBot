@@ -80,7 +80,7 @@ CONSOLE_LOGGING_LEVEL = logging.DEBUG
 
 # Location of rando hint files! Please keep their names at default (rando_hints.txt and rando_hints_template.txt)
 # If you'd like to change the location, put a string with the full path to the folder containing those two files.
-RANDO_HINTS_DIR = Definitions.ROOT_DIR / 'RandoHints'
+RANDO_HINTS_DIR = Definitions.ROOT_DIR / 'randohints'
 
 
 
