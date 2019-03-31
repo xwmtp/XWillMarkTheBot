@@ -19,35 +19,17 @@ class IRC_message_handler:
     def run_irc_chat(self):
         self.irc.send_message("Bot succesfully connected.")
         self.chatbot = Message_distributor(self.irc)
+        data = ''
 
         while (True):
-
-
             try:
                 if not self.irc.is_connected():
                     return
 
-                logging.debug("\n\nNew irc message:\n-------------------")
+                logging.info("\n\nNew irc message:\n-------------------")
 
                 data = self.irc.receive_data()
-                data_lines = re.split(r"[~\r\n]+", data)[:-1]
-
-                for line in data_lines:
-                    logging.debug(line)
-                    line = str.rstrip(line)
-                    line = line.split(' ')
-
-                    if len(line) == 0:
-                        continue
-
-                    if line[0] == 'PING':
-                        self.irc.send_pong(line[1])
-
-                    if line[1] == 'PRIVMSG':
-                        msg = self.extract_message(line) # get rid of starting :
-                        sender = self.extract_sender(line[0])
-                        self.parse_message(msg, sender)
-
+                self.parse_data(data)
 
             except (socket.error, socket.timeout) as e:
                 logging.warning(f"IRC Socket error: {repr(e)}.")
@@ -56,9 +38,28 @@ class IRC_message_handler:
 
             except Exception as e:
                 logging.critical(f"Other exception in IRC: {repr(e)}")
-                logging.critical(f"In message: {line}")
+                logging.critical(f"In message: {data}")
                 logging.error(traceback.format_exc())
                 self.irc.send_message("Error occured, please try a different command.")
+
+
+    def parse_data(self, data):
+        # split on new lines, get rid of empty '' in the end
+        data_lines = re.split(r"[\r\n]+", data)[:-1]
+
+        for line in data_lines:
+            logging.debug(line)
+            words = str.rstrip(line).split(' ')
+
+            if len(words) > 0:
+
+                if words[0] == 'PING':
+                    self.irc.send_pong(line[1])
+
+                if words[1] == 'PRIVMSG':
+                    msg = self.extract_message(words)
+                    sender = self.extract_sender(words[0])
+                    self.parse_message(msg, sender)
 
 
     def extract_sender(self, msg):

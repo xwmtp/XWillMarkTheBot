@@ -34,7 +34,7 @@ class Rando_handler(Message_handler):
         elif to_send == []:
             self.send("No hints found yet.")
         else:
-            self.send("Error while trying to parse rando hints file. Make sure it's correctly formatted and the file name is unchanged.")
+            self.send("Hints couldn't be read.")
 
 
     def reset_hints(self, sender):
@@ -42,7 +42,7 @@ class Rando_handler(Message_handler):
             if reset_hints():
                 self.send("Hints file reset to default.")
             else:
-                self.send("Error while trying to reset hints. Make sure the directory for the hint files is correct and the file names are unchanged.")
+                self.send("Hints couldn't be reset.")
         else:
             self.send(sender + "does not have the rights to use this command.")
 
