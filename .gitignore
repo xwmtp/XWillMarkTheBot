@@ -2,6 +2,10 @@
 *.txt
 *.log
 
+# except
+!randohints/rando_hints.txt
+!randohints/rando_hints_template.txt
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

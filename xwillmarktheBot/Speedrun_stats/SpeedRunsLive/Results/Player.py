@@ -79,8 +79,8 @@ class SRL_player:
             n = len(selected_races)
         return selected_races[:n]
 
-    def select_dates(self, races, type):
 
+    def select_dates(self, races, type):
         if ('bingo' in type) & ('all' not in type):
             if Settings.LATEST_BINGO_VERSION_DATE != '':
                 version_date = datetime.datetime.strptime(Settings.LATEST_BINGO_VERSION_DATE, '%d-%m-%Y')

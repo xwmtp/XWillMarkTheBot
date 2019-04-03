@@ -16,6 +16,7 @@ STREAMER = 'xwillmarktheplace'
 BOT      = 'xwillmarktheBot'
 
 # Editors are Twitch users with rights to use all commands (like resetting rando hints)
+# You could add your moderators. The STREAMER has to be in the list. Example: [STREAMER, 'user1', 'user2']
 EDITORS  = [STREAMER, 'scaramangado', 'jelster64', 'juwk']
 
 
@@ -27,6 +28,7 @@ EDITORS  = [STREAMER, 'scaramangado', 'jelster64', 'juwk']
 SPEEDRUN_COM = True    # !pb, !wr, !userpb
 SRL_RACES    = True    # !race, !card, !entrants, !goal
 SRL_RESULTS  = True    # !average, !median, !results,
+RANDO        = True    # !hints, !resethints
 
 
 
@@ -71,7 +73,7 @@ PRINT_RACE_ENTRANTS = True
 # logging.INFO     recommended level. information about sent and received messages, and warning/errors
 # logging.WARNING  only warnings and errors
 # logging.ERROR    only errors
-CONSOLE_LOGGING_LEVEL = logging.DEBUG
+CONSOLE_LOGGING_LEVEL = logging.INFO
 
 
 # RANDO HINTS
@@ -79,7 +81,7 @@ CONSOLE_LOGGING_LEVEL = logging.DEBUG
 
 # Location of rando hint files! Please keep their names at default (rando_hints.txt and rando_hints_template.txt)
 # If you'd like to change the location, put a string with the full path to the folder containing those two files.
-RANDO_HINTS_DIR = Definitions.ROOT_DIR / 'RandoHints'
+RANDO_HINTS_DIR = Definitions.ROOT_DIR / 'randohints'
 
 
 

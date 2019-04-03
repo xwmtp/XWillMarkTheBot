@@ -7,7 +7,7 @@ class Race:
 
     def __init__(self, json):
         self.id = json['id']
-        self.game = json['game']['name']
+        self.game = json['game']['abbrev']
         self.goal = json['goal']
         self.type = self.determine_type(self.goal)
         if self.type not in Definitions.RACE_TYPES:
@@ -27,7 +27,7 @@ class Race:
                 return type
 
         # bingo types
-        if 'bingo' in goal:
+        if 'bingo' in goal and self.game == 'oot':
             if 'blackout' in goal:
                 return 'blackout'
             if 'short' in goal:
