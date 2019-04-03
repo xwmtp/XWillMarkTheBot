@@ -38,12 +38,16 @@ You need Python 3.7 to run the bot. The bot was created on Windows and has not b
 You need to use your Python (3.7) installation to run the bot. You can use the included bat script to run the bot, or run it yourself from the command line.
 
 ### With bat script
-Double click ```run.bat``` to run the bot. If you get an error, you may have multiple Python installations on your computer and the wrong one might be used. In that case, open the bat file in a text editor and replace ```python``` with the path to your Python 3.7 installation, for example: ```C:\Users\<user>\Anaconda3\python.exe```
+1. Open ```run.bat``` in a text editor. Replace the default ```oauth:test123``` with your bot account's OAuth token (generated during the [installation](#installation)).
+2. Double click ```run.bat``` to run the bot.
+
+If you get an error, you may have multiple Python installations on your computer and the wrong one might be used. In that case, open the bat file in a text editor and replace ```python``` with the path to your Python 3.7 installation, for example: ```C:\Users\<user>\Anaconda3\python.exe```
 
 ### From command line
 1. Open a command prompt (cmd or the anaconda prompt)
 2. Go to the bot's folder. Example: ```cd C:\Users\<user>\Documents\xwillmarktheBot```
 3. Run the main file as follows, adding your bot's OAuth token as an argument: ```python -m xwillmarktheBot.Main oauth:123test``` 
+
 If you have trouble running the bot, please contact me.
 
 ## Settings
@@ -78,11 +82,11 @@ The *Speedrun.com* module contains commands to look up records and pb's.
 ### SRL results
 The *SRL results* module can look up statistics from *past* SRL races. There are a few types of races that the bot can distinguish. These are ```bingo```, ```short-bingo```, ```blackout```, ```rando```, ```other``` and ```srl```. The ```srl``` type stands for *all* races.   
 * If you use ```!pb```, the module will look if any of the above mentioned SRL race types are in your stream title. If not, it will send the title to the Speedrun.com module and look for an rta category instead. Of course you can also add an argument yourself, like ```!pb blackout``` if you want to find the best blackout race you did.
-* The other SRL result commands (```!average```, ```!median``` and ```!results```) will use the default race type. You can set this in the settings file ```Settings.py```, or use the ```!setsrl``` command to change it.
+* The other SRL result commands (```!average```, ```!median``` and ```!results```) will use the default race type. You can [set](#speedrunslive) this in the settings file ```Settings.py```, or use the ```!setsrl``` command to change it.
 
 ### SRL races
 The *SRL races* module has commands to get information on a current race. The bot automatically finds which SRL race the streamer has entered.
-* Use ```!race```, ```!goal``` ```!entrants``` to get info on your current race. If you don't want ```!race``` to show all the entrants (for example if you often join very large races), you can change this settings in ```Settings.py```.
+* Use ```!race```, ```!goal``` ```!entrants``` to get info on your current race. If you don't want ```!race``` to show all the entrants (for example if you often join very large races), you can change this [setting](#speedrunslive) in ```Settings.py```.
 * The ```!card``` command will only return the goal if the current race is classified as a bingo.
 
 
