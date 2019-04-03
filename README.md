@@ -1,24 +1,27 @@
 # xwillmarktheBot
 
-A Twitch bot for (Ocarina of Time) Speedrunners by [xwillmarktheplace](https://twitch.tv/xwillmarktheplace). It can lookup world records and pb's on [Speedrun.com](https://www.speedrun.com/), provide information about your ongoing [SRL](http://www.speedrunslive.com/) race, summarize recent SRL results and post the hints you found in your randomizer playthrough. 
+A Twitch bot for (Ocarina of Time) Speedrunners by [xwillmarktheplace](https://twitch.tv/xwillmarktheplace). It can look up world records and pb's on [Speedrun.com](https://www.speedrun.com/), provide information about your ongoing [SRL](http://www.speedrunslive.com/) race, summarize recent SRL results and post the hints you found in your randomizer playthrough. 
 
 ## Installation
-To run the bot, you need Python 3.7. The bot was created on Windows and has not been tested for any other platform.
+You need Python 3.7 to run the bot. The bot was created on Windows and has not been tested on any other platform.
 
-1. Get [Python 3.7](https://www.python.org/downloads/release/python-370/) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html). The chatbot might run on older versions as well, but I did not test this and used newer Python features.
+1. Get [Python 3.7](https://www.python.org/downloads/release/python-370/) or [Miniconda3](https://docs.conda.io/en/latest/miniconda.html). The chatbot might run on older versions as well, but I did not test this and used newer Python features.
 2. You need a Twitch account for the bot to send messages. Make one if you don't have one. Don't forget to make the account a mod or vip in your chat so it can send messages fast.
-3. Generate an OAuth token for the bot account, which can be done [here](https://twitchapps.com/tmi/). Don't share this token!
-4. Download the program (in releases?)
-5. Unzip the file wherever you want on your computer.
+3. Generate an **OAuth** token for the bot account, which can be done [here](https://twitchapps.com/tmi/). Don't share this token!
+4. Download the program (in releases?) and unzip the folder wherever you want on your computer.
+6. Go to ```xwillmarktheBot/Settings/Settings.py``` and add your Twitch account and that of your bot. Scroll down for more information on the different settings. 
 
 ## Running
-You need to use your Python (3.7) installation to run the bot. This can be by done using one of the following methods.
-* Run Main.py from the command prompt. You need to add the bot account's OAuth token as an argument and run as a module. Example:
-```python -m xwillmarktheBot.Main oauth:123test```
+You need to use your Python (3.7) installation to run the bot.
+1. Open a command prompt (cmd or the anaconda prompt)
+2. Go to the bot's folder, wherever you put it on your computer. Example: ```cd C:\Users\<user>\Documents\xwillmarktheBot```
+3. Run the main file as follows, adding your bot's OAuth token as an argument: ```python -m xwillmarktheBot.Main oauth:123test```
+If you have trouble running the bot, please contact me.
 
 ## Settings
 The bot has a few settings that can be adjusted. They can all be found in ```xwillmarktheBot/Settings/Settings.py```.
 ### Stream
+These settings have to be changed in order to run the bot!
 * **Streamer**: the name of the twitch channel where the bot should reside
 * **Bot**: the user name of the bot account on twitch
 * **Editors**: list of twitch users with extra permissions. It's advised to put your channel moderators here, but it's up to you. The streamer always has to be in here too (as they are by default)!
@@ -35,27 +38,29 @@ You can deactivate command modules that you don't want to use in your bot. By de
 * **Print_race_entrants**: when set to ```True```, the command ```!race``` will print all the race entrants in addition to the SRL race url. If you don't want this behavior (for example if you often race with a large amount of entrants), you can set this to ```False```. Note that you can always use ```!entrants``` to print all the entrants, as long as it fits within one twitch chat message!
 
 ## Commands
-A nice overview of all commands that can be used with the bot can be found [here](https://xwmtp.github.io/xwillmarktheBot). It also explains the usage of the commands. Using ```!commands``` will return a link to that page.
+A nice overview of all commands that can be used with the bot can be found [here](https://xwmtp.github.io/xwillmarktheBot). It also explains the usage of the commands. Using ```!commands``` will return a link to that page so your viewers will know what and how to use. Below are a few additions to the command overview page that might be important for you as the streamer.
 
 ### Speedrun.com
-The Speedrun.com module contains commands to look up records and pb's.
+The *Speedrun.com* module contains commands to look up records and pb's.
 * If you don't add an argument to ```!pb``` or ```!wr```, the bot will look at your current stream title. Everything between square brackets or after the | symbol will be ignored.
-* If you look up a category which has subcategories like for example Glitchless, you get the first tab as a default answer. Add the subtab to find a specific subcategory. Example: ````!wr glitchless any% unrestricted```
-* To get the pb of someone other than the streamer, use ````!userpb```. Example: ````!userpb scaramanga 37 water keys```. Again, not adding a category will result in looking at the stream title.
+* If you look up a category which has subcategories like Glitchless, you get the first subtab as the default answer. Add a subtab name to find a specific subcategory. Example: ```!wr glitchless any% unrestricted```
+* To get the pb of someone other than the streamer, use ```!userpb```. Example: ```!userpb scaramanga 37 water keys```. Again, not adding a category will result in looking at the stream title.
+* If you want the bot to find correct categories in your stream title, make sure the title starts with the category name.
 
 ### SRL results
-The SRL results module can look up statistics on *past* SRL races. There are a few types of races that the bot can distinguish. These are ```bingo```, ```short-bingo```, ```blackout```, ```rando```, ```other``` and ```srl```. The ```srl``` type means 'all' races.   
+The *SRL results* module can look up statistics from *past* SRL races. There are a few types of races that the bot can distinguish. These are ```bingo```, ```short-bingo```, ```blackout```, ```rando```, ```other``` and ```srl```. The ```srl``` type stands for *all* races.   
 * If you use ```!pb```, the module will look if any of the above mentioned SRL race types are in your stream title. If not, it will send the title to the Speedrun.com module and look for an rta category instead. Of course you can also add an argument yourself, like ```!pb blackout``` if you want to find the best blackout race you did.
-* The other SRL result commands (```!average```, ```!median``` and ```!results```) will use the default race type. You can set this in the settings file ```Settings.py```, or use the ```!setsrl``` command. It's possible to add an integer for how many races you want to consider, and a user name to get someone else's stats.
+* The other SRL result commands (```!average```, ```!median``` and ```!results```) will use the default race type. You can set this in the settings file ```Settings.py```, or use the ```!setsrl``` command to change it.
 
 ### SRL races
-The SRL races module has commands to get information on a current race. The bot automatically looks at the race the streamer has entered.
-* Use ```!race``` and ```!entrants``` to get info on your current race. If you don't want ```!race``` to show all the entrants (if you often join very large races for example), you can edit this in ```Settings.py```.
+The *SRL races* module has commands to get information on a current race. The bot automatically finds which SRL race the streamer has entered.
+* Use ```!race```, ```!goal``` ```!entrants``` to get info on your current race. If you don't want ```!race``` to show all the entrants (for example if you often join very large races), you can change this settings in ```Settings.py```.
+* The ```!card``` command will only return the goal if the current race is classified as a bingo.
 
 
 ### Rando
-The rando module allows you to have an up-to-date command with the hints you already found in your oot rando.
-* While playing, have ```RandoHints/rando_hints.txt``` open in a text editor. Everytime you find a hint, double click on 'location' or 'item' and type what you find. Make sure to hit ctrl + s afterwards to save. When a viewer uses the ```!hints``` command, only the hints that you filled in will show up.
-* After playing, use the ```!resethints``` command to restore the file to default. The contents of ```RandoHints/rando_hints_template.txt``` will be copied to the file, so it's strongly recommended to not change the template.
-* It's possible to alter the template a bit to your own liking, by adding another group of hints with a different title. Keep it close to the template though (with ascending numbers and a semi-colon as a separator), or the code won't be able to parse it.
+The *randomizer* module allows you to have an up-to-date command with the hints you already found in your (oot) randomizer.
+* To use the rando hints command, you need to have ```RandoHints/rando_hints.txt``` open in a text editor while playing. Everytime you find a hint, double click on 'location' or 'item' and type what you found. Don't worry about extra spaces. Make sure to hit ctrl + s afterwards to save the file. When a viewer uses the ```!hints``` command, only the hints that you filled in will show up.
+* After playing, use the ```!resethints``` command to restore the file to default. The contents of ```RandoHints/rando_hints_template.txt``` will be copied to the file, so it's recommended to not change the template.
+* It's possible to alter the template a bit to your own liking, by adding another group of hints with a different title. Stay close to the original template though (with ascending numbers and a semi-colon as a separator), or the code won't be able to parse it.
 * You can put the two rando text files in a different directory if you'd like, but you have to put the path in the advanced settings of ```Settings.py```. The file names have to stay the same though!
