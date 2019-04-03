@@ -28,6 +28,8 @@ This is a Twitch bot developed for *Ocarina of Time* speedrunners, created by [x
 ## Installation
 You need Python 3.7 to run the bot. The bot was created on Windows and has not been tested on any other platform.
 
+
+
 1. Get [Python 3.7](https://www.python.org/downloads/release/python-370/) or [Miniconda3](https://docs.conda.io/en/latest/miniconda.html). The chatbot might run on older versions as well, but I did not test this and used newer Python features.
 2. You need a Twitch account for the bot to send messages. Make one if you don't have one. Don't forget to make the account a mod or vip in your chat so it can send messages fast.
 3. Generate an **OAuth** token for the bot account, which can be done [here](https://twitchapps.com/tmi/). Don't share this token!
@@ -60,7 +62,7 @@ These settings have to be changed in order to run the bot!
 
 ### Command modules
 You can deactivate command modules that you don't want to use in your bot. By default, all modules are activated with the keyword ```True```. Put ```False``` for any module you don't want to use.
-* **Speedrun_com**: commands to look up records on Speedrun.com, like *!pb```, ```!wr``` and ```!userpb```.
+* **Speedrun_com**: commands to look up records on Speedrun.com, like ```!pb```, ```!wr``` and ```!userpb```.
 * **SRL_races**: ccommands for ongoing SRL races, like ```!race```, ```!entrants``` and ```!goal```.
 * **SRL_results**: commands to get information about past races, like ```!average```, ```!results``` and ```!pb```.
 
