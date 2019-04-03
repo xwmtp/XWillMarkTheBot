@@ -1,6 +1,29 @@
 # xwillmarktheBot
 
-A Twitch bot for (Ocarina of Time) Speedrunners by [xwillmarktheplace](https://twitch.tv/xwillmarktheplace). It can look up world records and pb's on [Speedrun.com](https://www.speedrun.com/), provide information about your ongoing [SRL](http://www.speedrunslive.com/) race, summarize recent SRL results and post the hints you found in your randomizer playthrough. 
+## Table of contents
+-   [Introduction](#introduction)
+-   [Installation](#installation)
+-   [Running](#running)
+    - [With bat script](#with-bat-script)
+    - [From command line](#from-command-line)
+-   [Settings](#settings)
+    - [Stream](#stream)
+    - [Command modules](#command-modules)
+    - [SpeedRunsLive](#speedrunslive)
+-   [Commands](#commands)
+    - [Speedrun.com](#speedrun_com)
+    - [SRL results](#srl-results)
+    - [SRL races](#srl-races)
+    - [Randomizer](#rando)
+
+
+## Introduction
+This is a Twitch bot developed for *Ocarina of Time* speedrunners, created by [xwillmarktheplace](https://twitch.tv/xwillmarktheplace). It includes various modules to provide viewers with information about your speedruns and races. Currently it can:
+* Fetch up-to-date records from [Speedrun.com](https://www.speedrun.com/)
+* Post the goal and entrants of your current [SRL](http://www.speedrunslive.com/) race
+* Return stats from past SRL races
+* Keep track of hints found in oot rando
+
 
 ## Installation
 You need Python 3.7 to run the bot. The bot was created on Windows and has not been tested on any other platform.
@@ -12,10 +35,15 @@ You need Python 3.7 to run the bot. The bot was created on Windows and has not b
 6. Go to ```xwillmarktheBot/Settings/Settings.py``` and add your Twitch account and that of your bot. Scroll down for more information on the different settings. 
 
 ## Running
-You need to use your Python (3.7) installation to run the bot.
+You need to use your Python (3.7) installation to run the bot. You can use the included bat script to run the bot, or run it yourself from the command line.
+
+### With bat script
+Double click ```run.bat``` to run the bot. If you get an error, you may have multiple Python installations on your computer and the wrong one might be used. In that case, open the bat file in a text editor and replace ```python``` with the path to your Python 3.7 installation, for example: ```C:\Users\<user>\Anaconda3\python.exe```
+
+### From command line
 1. Open a command prompt (cmd or the anaconda prompt)
-2. Go to the bot's folder, wherever you put it on your computer. Example: ```cd C:\Users\<user>\Documents\xwillmarktheBot```
-3. Run the main file as follows, adding your bot's OAuth token as an argument: ```python -m xwillmarktheBot.Main oauth:123test```
+2. Go to the bot's folder. Example: ```cd C:\Users\<user>\Documents\xwillmarktheBot```
+3. Run the main file as follows, adding your bot's OAuth token as an argument: ```python -m xwillmarktheBot.Main oauth:123test``` 
 If you have trouble running the bot, please contact me.
 
 ## Settings
@@ -40,7 +68,7 @@ You can deactivate command modules that you don't want to use in your bot. By de
 ## Commands
 A nice overview of all commands that can be used with the bot can be found [here](https://xwmtp.github.io/xwillmarktheBot). It also explains the usage of the commands. Using ```!commands``` will return a link to that page so your viewers will know what and how to use. Below are a few additions to the command overview page that might be important for you as the streamer.
 
-### Speedrun.com
+### Speedrun_com
 The *Speedrun.com* module contains commands to look up records and pb's.
 * If you don't add an argument to ```!pb``` or ```!wr```, the bot will look at your current stream title. Everything between square brackets or after the | symbol will be ignored.
 * If you look up a category which has subcategories like Glitchless, you get the first subtab as the default answer. Add a subtab name to find a specific subcategory. Example: ```!wr glitchless any% unrestricted```
