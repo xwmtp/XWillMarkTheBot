@@ -8,7 +8,7 @@ class Rando_handler(Message_handler):
         super().__init__(irc_connection)
 
         self.commands = {
-            'hints' : ['!hints', '!hint'],
+            'hints' : ['!hints', '!randohints', '!randohint', '!hint'],
             'reset_hints' : ['!resethints', '!resethint']
         }
 

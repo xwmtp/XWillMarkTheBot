@@ -23,7 +23,7 @@ def _read_hint_file():
         hint_lines = h.readlines()
 
     hints = [l.strip() for l in hint_lines]
-    logging.info('Succesfully read hints file from ' + str(hints_path))
+    logging.debug('Succesfully read hints file from ' + str(hints_path))
     return hints
 
 def _parse_hints(hints):
@@ -50,7 +50,7 @@ def _parse_hints(hints):
 
             hint_dict[hint_title].append(hint_string)
 
-    logging.info('Created hints dictionary: ' + str(hint_dict))
+    logging.debug('Created hints dictionary: ' + str(hint_dict))
     return hint_dict
 
 

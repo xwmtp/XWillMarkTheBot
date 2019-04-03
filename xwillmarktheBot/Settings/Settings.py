@@ -16,7 +16,8 @@ STREAMER = 'xwillmarktheplace'
 BOT      = 'xwillmarktheBot'
 
 # Editors are Twitch users with rights to use all commands (like resetting rando hints)
-EDITORS  = [STREAMER, 'scaramangado', 'jelster64', 'juwk']
+# You could add your moderators. The STREAMER has to be in the list. Example: [STREAMER, 'user1', 'user2']
+EDITORS  = [STREAMER]
 
 
 # COMMAND SETTINGS
@@ -72,7 +73,7 @@ PRINT_RACE_ENTRANTS = True
 # logging.INFO     recommended level. information about sent and received messages, and warning/errors
 # logging.WARNING  only warnings and errors
 # logging.ERROR    only errors
-CONSOLE_LOGGING_LEVEL = logging.DEBUG
+CONSOLE_LOGGING_LEVEL = logging.INFO
 
 
 # RANDO HINTS
