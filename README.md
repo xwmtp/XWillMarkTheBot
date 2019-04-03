@@ -83,6 +83,8 @@ The *Speedrun.com* module contains commands to look up records and pb's.
 The *SRL results* module can look up statistics from *past* SRL races. There are a few types of races that the bot can distinguish. These are ```bingo```, ```short-bingo```, ```blackout```, ```rando```, ```other``` and ```srl```. The ```srl``` type stands for *all* races.   
 * If you use ```!pb```, the module will look if any of the above mentioned SRL race types are in your stream title. If not, it will send the title to the Speedrun.com module and look for an rta category instead. Of course you can also add an argument yourself, like ```!pb blackout``` if you want to find the best blackout race you did.
 * The other SRL result commands (```!average```, ```!median``` and ```!results```) will use the default race type. You can [set](#speedrunslive) this in the settings file ```Settings.py```, or use the ```!setsrl``` command to change it.
+* The bingo race types (```bingo```, ```short-bingo```, ```blackout```) will only look at oot races.
+* For race types ```bingo``` and ```short-bingo```, only races after the 'latest bingo version date' in the [settings](#speedrunslive) will be considered. If you want to look at all races instead, either delete the date in the settings or add ```all-``` in front of the type. Example: ```!average all-short-bingo```
 
 ### SRL races
 The *SRL races* module has commands to get information on a current race. The bot automatically finds which SRL race the streamer has entered.
