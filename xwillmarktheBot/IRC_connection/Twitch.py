@@ -14,7 +14,7 @@ class Twitch_IRC:
             con = socket.socket()
             con.connect((self.HOST, self.PORT))
 
-            # Send nickname, password (OAUTH) and join channel).
+            # Send nickname, password (OAUTH) and join channel.
             logging.info(f"Connecting to bot {nickname}.")
             logging.info(f"Joining channel {self.CHAN}.")
             con.send(bytes('PASS %s\r\n' % password, 'UTF-8'))

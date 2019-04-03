@@ -13,11 +13,11 @@ class IRC_message_handler:
         self.OAUTH = OAUTH
         self.irc = Twitch_IRC(Settings.STREAMER, Settings.BOT, OAUTH)
 
+        self.connected = False
         self.timeouts = 0
 
 
     def run_irc_chat(self):
-        self.irc.send_message("Bot succesfully connected.")
         self.chatbot = Message_distributor(self.irc)
 
         data = ''
@@ -30,7 +30,8 @@ class IRC_message_handler:
                 logging.info("\n\nNew irc message:\n-------------------")
 
                 data = self.irc.receive_data()
-                self.parse_data(data)
+                if not self.parse_data(data):
+                    return
 
             except (socket.error, socket.timeout) as e:
                 logging.warning(f"IRC Socket error: {repr(e)}.")
@@ -53,15 +54,30 @@ class IRC_message_handler:
             words = str.rstrip(line).split(' ')
 
             if len(words) > 0:
+                msg = self.extract_message(words)
 
                 if words[0] == 'PING':
                     self.irc.send_pong(line[1])
 
-                if words[1] == 'PRIVMSG':
-                    msg = self.extract_message(words)
+                elif words[1] == 'PRIVMSG':
                     sender = self.extract_sender(words[0])
                     self.parse_message(msg, sender)
 
+                elif words[1] == 'NOTICE':
+                    logging.warning(f"Received NOTICE: {msg}")
+                    if msg == 'Login authentication failed':
+                        logging.critical(msg)
+                        logging.critical("Please check if OAuth token is correct.")
+                        return False
+
+                else:
+                    logging.info(f"Received: {msg}")
+                    self.check_first_connection(words)
+
+
+        return True
+
+#[':xwillmarktheplace!xwillmarktheplace@xwillmarktheplace.tmi.twitch.tv', 'PRIVMSG', '#xwillmarktheplace', ':test']
 
     def extract_sender(self, msg):
         """Extract sender from message. Returns None if none is found."""
@@ -84,13 +100,17 @@ class IRC_message_handler:
 
         self.chatbot.find_command(msg, sender)
 
+    def check_first_connection(self, words):
+        if not self.connected and words[0].startswith(':' + Settings.BOT.lower()):
+            self.irc.send_message('Succesfully connected.')
+            self.connected = True
+
+
     def reconnect_irc(self):
         if self.timeouts < 5:
             self.timeouts = self.timeouts + 1
             logging.critical(f"Attempting to reconnect (try {self.timeouts}).")
             self.irc = Twitch_IRC(Settings.STREAMER, Settings.BOT, self.OAUTH)
-
-            #self.test = 1
             return True
         else:
             return False
