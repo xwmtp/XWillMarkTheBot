@@ -19,6 +19,7 @@ class IRC_message_handler:
     def run_irc_chat(self):
         self.irc.send_message("Bot succesfully connected.")
         self.chatbot = Message_distributor(self.irc)
+
         data = ''
 
         while (True):

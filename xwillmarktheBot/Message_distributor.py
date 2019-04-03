@@ -2,6 +2,7 @@ from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Live_races.Race_handler import
 from xwillmarktheBot.Speedrun_stats.Speedrun_handler import Speedrun_handler
 from xwillmarktheBot.Randomizer.Rando_handler import Rando_handler
 from xwillmarktheBot.Other_commands.SRL_setting_commands import SRL_setting_commands
+from xwillmarktheBot.Other_commands.General_commands import General_commands
 from xwillmarktheBot.Settings import Settings
 import logging
 
@@ -23,6 +24,7 @@ class Message_distributor:
         if Settings.RANDO:
             handlers.append(Rando_handler(irc))
 
+        handlers.append(General_commands(irc))
         handlers.append(SRL_setting_commands(irc))
 
         return handlers
