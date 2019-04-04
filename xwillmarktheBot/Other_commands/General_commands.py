@@ -1,5 +1,4 @@
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
-from xwillmarktheBot.Settings import Settings, Definitions
 
 class General_commands(Message_handler):
 

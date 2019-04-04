@@ -28,6 +28,8 @@ This is a Twitch bot developed for *Ocarina of Time* speedrunners, created by [x
 ## Installation
 You need Python 3.7 to run the bot. The bot was created on Windows and has not been tested on any other platform.
 
+
+
 1. Get [Python 3.7](https://www.python.org/downloads/release/python-370/) or [Miniconda3](https://docs.conda.io/en/latest/miniconda.html). The chatbot might run on older versions as well, but I did not test this and used newer Python features.
 2. You need a Twitch account for the bot to send messages. Make one if you don't have one. Don't forget to make the account a mod or vip in your chat so it can send messages fast.
 3. Generate an **OAuth** token for the bot account, which can be done [here](https://twitchapps.com/tmi/). Don't share this token!
@@ -38,12 +40,16 @@ You need Python 3.7 to run the bot. The bot was created on Windows and has not b
 You need to use your Python (3.7) installation to run the bot. You can use the included bat script to run the bot, or run it yourself from the command line.
 
 ### With bat script
-Double click ```run.bat``` to run the bot. If you get an error, you may have multiple Python installations on your computer and the wrong one might be used. In that case, open the bat file in a text editor and replace ```python``` with the path to your Python 3.7 installation, for example: ```C:\Users\<user>\Anaconda3\python.exe```
+1. Open ```run.bat``` in a text editor. Replace the default ```oauth:test123``` with your bot account's OAuth token (generated during the [installation](#installation)).
+2. Double click ```run.bat``` to run the bot.
+
+If you get an error, you may have multiple Python installations on your computer and the wrong one might be used. In that case, open the bat file in a text editor and replace ```python``` with the path to your Python 3.7 installation, for example: ```C:\Users\<user>\Anaconda3\python.exe```
 
 ### From command line
 1. Open a command prompt (cmd or the anaconda prompt)
 2. Go to the bot's folder. Example: ```cd C:\Users\<user>\Documents\xwillmarktheBot```
 3. Run the main file as follows, adding your bot's OAuth token as an argument: ```python -m xwillmarktheBot.Main oauth:123test``` 
+
 If you have trouble running the bot, please contact me.
 
 ## Settings
@@ -56,7 +62,7 @@ These settings have to be changed in order to run the bot!
 
 ### Command modules
 You can deactivate command modules that you don't want to use in your bot. By default, all modules are activated with the keyword ```True```. Put ```False``` for any module you don't want to use.
-* **Speedrun_com**: commands to look up records on Speedrun.com, like *!pb```, ```!wr``` and ```!userpb```.
+* **Speedrun_com**: commands to look up records on Speedrun.com, like ```!pb```, ```!wr``` and ```!userpb```.
 * **SRL_races**: ccommands for ongoing SRL races, like ```!race```, ```!entrants``` and ```!goal```.
 * **SRL_results**: commands to get information about past races, like ```!average```, ```!results``` and ```!pb```.
 
@@ -78,11 +84,13 @@ The *Speedrun.com* module contains commands to look up records and pb's.
 ### SRL results
 The *SRL results* module can look up statistics from *past* SRL races. There are a few types of races that the bot can distinguish. These are ```bingo```, ```short-bingo```, ```blackout```, ```rando```, ```other``` and ```srl```. The ```srl``` type stands for *all* races.   
 * If you use ```!pb```, the module will look if any of the above mentioned SRL race types are in your stream title. If not, it will send the title to the Speedrun.com module and look for an rta category instead. Of course you can also add an argument yourself, like ```!pb blackout``` if you want to find the best blackout race you did.
-* The other SRL result commands (```!average```, ```!median``` and ```!results```) will use the default race type. You can set this in the settings file ```Settings.py```, or use the ```!setsrl``` command to change it.
+* The other SRL result commands (```!average```, ```!median``` and ```!results```) will use the default race type. You can [set](#speedrunslive) this in the settings file ```Settings.py```, or use the ```!setsrl``` command to change it.
+* The bingo race types (```bingo```, ```short-bingo```, ```blackout```) will only look at oot races.
+* For race types ```bingo``` and ```short-bingo```, only races after the 'latest bingo version date' in the [settings](#speedrunslive) will be considered. If you want to look at all races instead, either delete the date in the settings or add ```all-``` in front of the type. Example: ```!average all-short-bingo```
 
 ### SRL races
 The *SRL races* module has commands to get information on a current race. The bot automatically finds which SRL race the streamer has entered.
-* Use ```!race```, ```!goal``` ```!entrants``` to get info on your current race. If you don't want ```!race``` to show all the entrants (for example if you often join very large races), you can change this settings in ```Settings.py```.
+* Use ```!race```, ```!goal``` ```!entrants``` to get info on your current race. If you don't want ```!race``` to show all the entrants (for example if you often join very large races), you can change this [setting](#speedrunslive) in ```Settings.py```.
 * The ```!card``` command will only return the goal if the current race is classified as a bingo.
 
 
