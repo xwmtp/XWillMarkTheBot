@@ -26,11 +26,11 @@ This is a Twitch bot developed for *Ocarina of Time* speedrunners, created by [x
 
 
 ## Installation
-You need Python 3.7 to run the bot. The bot was created on Windows and has not been tested on any other platform.
+You need at least Python 3.7 to run the bot. The bot was created for **Windows** and has not been tested on any other platform.
 
 
 
-1. Get [Python 3.7](https://www.python.org/downloads/release/python-370/) or [Miniconda3](https://docs.conda.io/en/latest/miniconda.html). The chatbot might run on older versions as well, but I did not test this and used newer Python features.
+1. Get [Miniconda3](https://docs.conda.io/en/latest/miniconda.html) (with at least Python 3.7). If you use your own Python installation, you might have to install packages to make it work.
 2. You need a Twitch account for the bot to send messages. Make one if you don't have one. Don't forget to make the account a mod or vip in your chat so it can send messages fast.
 3. Generate an **OAuth** token for the bot account, which can be done [here](https://twitchapps.com/tmi/). Don't share this token!
 4. Download the program (in releases?) and unzip the folder wherever you want on your computer.
