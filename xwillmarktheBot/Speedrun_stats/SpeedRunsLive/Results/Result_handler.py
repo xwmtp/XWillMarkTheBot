@@ -124,7 +124,7 @@ class Result_info:
         n = 15
         for word in split_msg[1:]:
             if word.isdigit():
-                n = word
+                n = int(word)
         return n
 
     def get_type(self, split_msg, result_handler):

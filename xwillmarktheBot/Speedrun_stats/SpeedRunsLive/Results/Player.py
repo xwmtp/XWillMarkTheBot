@@ -9,6 +9,7 @@ class SRL_player:
     def __init__(self, name, json):
         self.name = name
         self.races = [PastRace(race) for race in json['pastraces']]
+        self.typeof = type
 
 
         #todo: blacklisting races
@@ -75,6 +76,7 @@ class SRL_player:
         #    races = [race for race in races if str(race.time) not in self.blacklist]
 
         # Can't select more races than have been found
+
         if (n > len(selected_races)) or (n == -1):
             n = len(selected_races)
         return selected_races[:n]
@@ -88,4 +90,5 @@ class SRL_player:
                 races = [race for race in races if race.get_date() >= version_date]
 
         return races
+
 
