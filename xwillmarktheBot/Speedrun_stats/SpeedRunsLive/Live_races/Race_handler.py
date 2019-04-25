@@ -62,7 +62,7 @@ class Race_handler(Message_handler):
         answer = ''
 
         if command in self.commands['goal'] + self.commands['card']:
-            answer = self.live_race.goal
+            answer = self.live_race.goal.replace('&amp;','&')
 
         elif command in self.commands['race']:
             answer = self.live_race.get_race_link()
