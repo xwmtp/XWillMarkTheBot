@@ -1,7 +1,8 @@
 from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Entrant import LiveEntrant, PastEntrant
 from xwillmarktheBot.Settings import Definitions
-import logging
 from datetime import datetime
+import logging
+import re
 
 class Race:
 
@@ -21,10 +22,11 @@ class Race:
 
 
     def determine_type(self, goal):
-        # search term same as type
-        for type in ['rando']:
-            if type in goal:
-                return type
+        goal = goal.lower()
+
+        # rando type
+        if 'rando' in goal or re.search(r'ootr([^A-Za-z]|$)', goal):
+            return 'rando'
 
         # bingo types
         if 'bingo' in goal and self.game == 'oot':

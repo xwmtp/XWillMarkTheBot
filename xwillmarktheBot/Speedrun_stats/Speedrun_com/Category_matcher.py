@@ -10,7 +10,7 @@ CONVERT_TERMS = {
     'ad' : 'all dungeons',
     'medallions, stones, trials' : 'mst',
     'medallions, stones, barrier' : 'msb',
-    'ww' : 'wrong warp',
+    'no ww' : 'no wrong warp',
     'no source requirement' : 'nsr',
     'real time attack' : 'rta',
     'heart piece' : 'hp',
@@ -27,7 +27,6 @@ CONVERT_TERMS = {
 }
 
 CONVERT_CATS = {
-    '100% unrestricted' : '100%',
     'glitchless unrestricted' : 'glitchless any% unrestricted '
 }
 
@@ -84,38 +83,51 @@ class Category_matcher:
 
     def add_subcategory(self, str, category):
         """Find subcategory name in str and add to given category"""
+
         logging.debug(f'Looking up subcategories of {str} in {category.leaderboards.keys()} ')
 
         for subcategory in category.leaderboards.keys():
-            subcat_names = self.get_category_alternatives(subcategory.lower())
+            subcat_names = self.get_category_alternatives(subcategory.lower(), is_subcat=True)
             found_subcat = self.simple_match(str, subcat_names)
             if found_subcat is not None:
                 logging.debug(f'Found subcategory: {found_subcat}')
                 category.selected_subcategory = subcategory
+                break
         return category
 
-    def get_category_alternatives(self, category):
+    def get_category_alternatives(self, category, is_subcat = False):
         """Returns a list of possible alternative names for a category (i.e. bug limit for unrestricted)"""
         def delete_brackets(str):
             bracketless = re.sub(r"[\[\(].*?[\]\)]", '', str)
             spaceless = ' '.join(bracketless.split())
             return spaceless
 
+
         # deleting [] makes this not work
         category_names = set([category])
+
+        # add all alternatives
         category_names.add(delete_brackets(category))
+        category_names.add(re.sub('[^\w ]','',category))
+
+        if is_subcat:
+            category_names.add(f'({category})')
+
         for name, sub_name in CONVERT_CATS.items():
             new_name = category.replace(name, sub_name)
             category_names.add(new_name)
 
+        # logging
         if len(category_names) > 1:
             logging.debug(f"Alternatives for categories found: {category_names}")
+
         return category_names
 
 
     def simple_match(self, word, list):
         """Return the closest match of a word with elements in a list.
         First tries exact match, then tries if any of the word starts with any of the elements."""
+        logging.debug(f'Matching {word} with {list}')
         for elem in list:
             if word == elem:
                 return elem

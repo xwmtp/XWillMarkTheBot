@@ -6,7 +6,8 @@ class General_commands(Message_handler):
         super().__init__(irc_connection)
 
         self.commands = {
-            'commands_list' : ['!command', '!commands']
+            'commands_list' : ['!command', '!commands'],
+            'repo_link' : ['!bot', '!xwillmarkthebot', '!repo']
         }
 
 
@@ -21,3 +22,6 @@ class General_commands(Message_handler):
 
     def commands_list(self, msg, sender):
         self.send("https://xwmtp.github.io/xwillmarktheBot/")
+
+    def repo_link(self, msg, sender):
+        self.send('https://github.com/xwmtp/xwillmarktheBot')

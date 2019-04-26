@@ -19,22 +19,30 @@
 
 ## Introduction
 This is a Twitch bot developed for *Ocarina of Time* speedrunners, created by [xwillmarktheplace](https://twitch.tv/xwillmarktheplace). It includes various modules to provide viewers with information about your speedruns and races. Currently it can:
+
 * Fetch up-to-date records from [Speedrun.com](https://www.speedrun.com/)
+![src](https://github.com/xwmtp/xwillmarktheBot/blob/master/images/Speedrun_com.PNG)
+
 * Post the goal and entrants of your current [SRL](http://www.speedrunslive.com/) race
+![race](https://github.com/xwmtp/xwillmarktheBot/blob/master/images/Race.PNG)
+
 * Return stats from past SRL races
+![results](https://github.com/xwmtp/xwillmarktheBot/blob/master/images/Results.PNG)
+
 * Keep track of hints found in oot rando
+![Rando](https://github.com/xwmtp/xwillmarktheBot/blob/master/images/Rando.PNG)
 
 
 ## Installation
-You need Python 3.7 to run the bot. The bot was created on Windows and has not been tested on any other platform.
+You need at least Python 3.7 to run the bot. The bot was created for **Windows** and has not been tested on any other platform.
 
 
 
-1. Get [Python 3.7](https://www.python.org/downloads/release/python-370/) or [Miniconda3](https://docs.conda.io/en/latest/miniconda.html). The chatbot might run on older versions as well, but I did not test this and used newer Python features.
+1. Get [Miniconda3](https://docs.conda.io/en/latest/miniconda.html) (with at least Python 3.7). If you use your own Python installation, you might have to install packages to make it work.
 2. You need a Twitch account for the bot to send messages. Make one if you don't have one. Don't forget to make the account a mod or vip in your chat so it can send messages fast.
 3. Generate an **OAuth** token for the bot account, which can be done [here](https://twitchapps.com/tmi/). Don't share this token!
 4. Download the program (in releases?) and unzip the folder wherever you want on your computer.
-6. Go to ```xwillmarktheBot/Settings/Settings.py``` and add your Twitch account and that of your bot. Scroll down for more information on the different settings. 
+6. Go to ```xwillmarktheBot/Settings/Settings.py``` and add your Twitch account and that of your bot. Go to [Settings](#settings) for more information on the different settings. 
 
 ## Running
 You need to use your Python (3.7) installation to run the bot. You can use the included bat script to run the bot, or run it yourself from the command line.
