@@ -27,7 +27,6 @@ CONVERT_TERMS = {
 }
 
 CONVERT_CATS = {
-    '100% unrestricted' : '100%',
     'glitchless unrestricted' : 'glitchless any% unrestricted '
 }
 
@@ -93,6 +92,7 @@ class Category_matcher:
             if found_subcat is not None:
                 logging.debug(f'Found subcategory: {found_subcat}')
                 category.selected_subcategory = subcategory
+                break
         return category
 
     def get_category_alternatives(self, category, is_subcat = False):
