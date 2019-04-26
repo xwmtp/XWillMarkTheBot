@@ -19,10 +19,18 @@
 
 ## Introduction
 This is a Twitch bot developed for *Ocarina of Time* speedrunners, created by [xwillmarktheplace](https://twitch.tv/xwillmarktheplace). It includes various modules to provide viewers with information about your speedruns and races. Currently it can:
+
 * Fetch up-to-date records from [Speedrun.com](https://www.speedrun.com/)
+![src](https://github.com/xwmtp/xwillmarktheBot/blob/master/images/Speedrun_com.PNG)
+
 * Post the goal and entrants of your current [SRL](http://www.speedrunslive.com/) race
+![race](https://github.com/xwmtp/xwillmarktheBot/blob/master/images/Race.PNG)
+
 * Return stats from past SRL races
+![results](https://github.com/xwmtp/xwillmarktheBot/blob/master/images/Results.PNG)
+
 * Keep track of hints found in oot rando
+![Rando](https://github.com/xwmtp/xwillmarktheBot/blob/master/images/Rando.PNG)
 
 
 ## Installation
