@@ -36,9 +36,6 @@ class SRC_handler(Message_handler):
         else:
             from_title = False
 
-
-        if from_title:
-            self.send(f'Looking up category from stream title: {args}')
         category = self.category_matcher.match_category(args)
 
         if category is None:
