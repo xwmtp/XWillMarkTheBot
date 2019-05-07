@@ -21,7 +21,7 @@ class General_commands(Message_handler):
                 return eval(f'self.{func}("{msg}","{sender}")')
 
     def commands_list(self, msg, sender):
-        self.send("https://xwmtp.github.io/xwillmarktheBot-Streamlabs/")
+        self.send("https://xwmtp.github.io/xwmtp_bot/")
 
     def repo_link(self, msg, sender):
         self.send('https://github.com/xwmtp/xwillmarktheBot')
