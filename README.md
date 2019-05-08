@@ -15,6 +15,7 @@
     - [SRL results](#srl-results)
     - [SRL races](#srl-races)
     - [Randomizer](#rando)
+-   [Support](#support)
 
 
 ## Introduction
@@ -34,31 +35,30 @@ This is a Twitch bot developed for *Ocarina of Time* speedrunners, created by [x
 
 
 ## Installation
-You need at least Python 3.7 to run the bot. The bot was created for **Windows** and has not been tested on any other platform.
+You need at least Python 3.7 to run the bot. The bot was tested on **Windows 7** and **10** and has not been tested on any other platform.
 
-
-
-1. Get [Miniconda3](https://docs.conda.io/en/latest/miniconda.html) (with at least Python 3.7). If you use your own Python installation, you might have to install packages to make it work.
+1. Get [Miniconda3](https://docs.conda.io/en/latest/miniconda.html) (with at least Python 3.7). You might be able to use your own Python installation, but I highly recommend to get Miniconda since no additional installations were required to run the bot.
 2. You need a Twitch account for the bot to send messages. Make one if you don't have one. Don't forget to make the account a mod or vip in your chat so it can send messages fast.
 3. Generate an **OAuth** token for the bot account, which can be done [here](https://twitchapps.com/tmi/). Don't share this token!
 4. Download the latest [release](https://github.com/xwmtp/xwillmarktheBot/releases) and unzip the folder wherever you want on your computer.
-6. Go to ```xwillmarktheBot/Settings/Settings.py``` and add your Twitch account and that of your bot. Go to [Settings](#settings) for more information on the different settings. 
+6. Go to ```xwillmarktheBot/Settings/Settings.py``` and add your Twitch account and that of your bot. Read the [Settings](#settings) part of the manual for more information on all the settings. 
 
 ## Running
-You need to use your Python (3.7) installation to run the bot. You can use the included bat script to run the bot, or run it yourself from the command line.
+The bot uses Python to run. You can use the included bat script to run the bot (recommended), or run it yourself from the command line.
 
 ### With bat script
-1. Open ```run.bat``` in a text editor. Replace the default ```oauth:test123``` with your bot account's OAuth token (generated during the [installation](#installation)).
+1. Open ```run.bat``` in a text editor. Replace the default ```oauth:test123``` with your bot account's OAuth token (generated during the [installation](#installation)) and save the file.
 2. Double click ```run.bat``` to run the bot.
+3. For easy access to the bot, copy a shortcut to the bat file to your desktop or wherever is convenient.
 
 If you get an error, you may have multiple Python installations on your computer and the wrong one might be used. In that case, open the bat file in a text editor and replace ```python``` with the path to your Python 3.7 installation, for example: ```C:\Users\<user>\Anaconda3\python.exe```
 
 ### From command line
 1. Open a command prompt (cmd or the anaconda prompt)
 2. Go to the bot's folder. Example: ```cd C:\Users\<user>\Documents\xwillmarktheBot```
-3. Run the main file as follows, adding your bot's OAuth token as an argument: ```python -m xwillmarktheBot.Main oauth:123test``` 
+3. Run the main file as follows, adding your bot's OAuth token as an argument: ```python -m xwillmarktheBot.Main oauth:123test```
 
-If you have trouble running the bot, please contact me.
+If you run into any problems trying to run the bot, please contact me.
 
 ## Settings
 The bot has a few settings that can be adjusted. They can all be found in ```xwillmarktheBot/Settings/Settings.py```.
@@ -101,10 +101,12 @@ The *SRL races* module has commands to get information on a current race. The bo
 * Use ```!race```, ```!goal``` ```!entrants``` to get info on your current race. If you don't want ```!race``` to show all the entrants (for example if you often join very large races), you can change this [setting](#speedrunslive) in ```Settings.py```.
 * The ```!card``` command will only return the goal if the current race is classified as a bingo.
 
-
 ### Rando
 The *randomizer* module allows you to have an up-to-date command with the hints you already found in your (oot) randomizer.
 * To use the rando hints command, you need to have ```RandoHints/rando_hints.txt``` open in a text editor while playing. Everytime you find a hint, double click on 'location' or 'item' and type what you found. Don't worry about extra spaces. Make sure to hit ctrl + s afterwards to save the file. When a viewer uses the ```!hints``` command, only the hints that you filled in will show up.
 * After playing, use the ```!resethints``` command to restore the file to default. The contents of ```RandoHints/rando_hints_template.txt``` will be copied to the file, so it's recommended to not change the template.
 * It's possible to alter the template a bit to your own liking, by adding another group of hints with a different title. Stay close to the original template though (with ascending numbers and a semi-colon as a separator), or the code won't be able to parse it.
 * You can put the two rando text files in a different directory if you'd like, but you have to put the path in the advanced settings of ```Settings.py```. The file names have to stay the same though!
+
+## Support
+If you like the bot and would like to support me, you can make a [donation](https://streamlabs.com/xwillmarktheplace) or leave a sub to my Twitch [channel](https://www.twitch.tv/xwillmarktheplace). Thank you!
