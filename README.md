@@ -41,7 +41,7 @@ You need at least Python 3.7 to run the bot. The bot was created for **Windows**
 1. Get [Miniconda3](https://docs.conda.io/en/latest/miniconda.html) (with at least Python 3.7). If you use your own Python installation, you might have to install packages to make it work.
 2. You need a Twitch account for the bot to send messages. Make one if you don't have one. Don't forget to make the account a mod or vip in your chat so it can send messages fast.
 3. Generate an **OAuth** token for the bot account, which can be done [here](https://twitchapps.com/tmi/). Don't share this token!
-4. Download the program (in releases?) and unzip the folder wherever you want on your computer.
+4. Download the latest [release](https://github.com/xwmtp/xwillmarktheBot/releases) and unzip the folder wherever you want on your computer.
 6. Go to ```xwillmarktheBot/Settings/Settings.py``` and add your Twitch account and that of your bot. Go to [Settings](#settings) for more information on the different settings. 
 
 ## Running
