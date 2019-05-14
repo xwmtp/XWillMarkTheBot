@@ -19,30 +19,37 @@ class IRC_message_handler:
 
     def run_irc_chat(self):
         self.chatbot = Message_distributor(self.irc)
-
         data = ''
-
-        while (True):
-            try:
-                if not self.irc.is_connected():
+        try:
+            while (True):
+                data = self.receive_irc_data()
+                if data == '':
+                    continue
+                if data:
+                    self.parse_data(data)
+                else:
                     return
 
-                logging.info("\n\nNew irc message:\n-------------------")
+        except Exception as e:
+            logging.critical(f"Other exception in IRC: {repr(e)}")
+            logging.critical(f"In message: {data}")
+            logging.error(traceback.format_exc())
+            self.irc.send_message("Error occured, please try a different command.")
+            return True
 
-                data = self.irc.receive_data()
-                if not self.parse_data(data):
-                    return
+    def receive_irc_data(self):
+        try:
+            if self.irc.is_connected():
+                logging.info("\n-------------------")
 
-            except (socket.error, socket.timeout) as e:
-                logging.warning(f"IRC Socket error: {repr(e)}.")
-                if not self.reconnect_irc():
-                    return logging.critical("Unable to reconnect, shutting down chatbot.")
+                return self.irc.receive_data()
 
-            except Exception as e:
-                logging.critical(f"Other exception in IRC: {repr(e)}")
-                logging.critical(f"In message: {data}")
-                logging.error(traceback.format_exc())
-                self.irc.send_message("Error occured, please try a different command.")
+        except (socket.error, socket.timeout) as e:
+            logging.warning(f"IRC Socket error: {repr(e)}.")
+            if self.reconnect_irc():
+                return ''
+            else:
+                logging.critical("Unable to reconnect, shutting down chatbot.")
 
 
     def parse_data(self, data):
@@ -57,6 +64,7 @@ class IRC_message_handler:
                 msg = self.extract_message(words)
 
                 if words[0] == 'PING':
+                    logging.info('Received PING.')
                     self.irc.send_pong(line[1])
 
                 elif words[1] == 'PRIVMSG':
@@ -77,7 +85,7 @@ class IRC_message_handler:
 
         return True
 
-#[':xwillmarktheplace!xwillmarktheplace@xwillmarktheplace.tmi.twitch.tv', 'PRIVMSG', '#xwillmarktheplace', ':test']
+
 
     def extract_sender(self, msg):
         """Extract sender from message. Returns None if none is found."""
@@ -105,11 +113,16 @@ class IRC_message_handler:
             self.irc.send_message('Succesfully connected.')
             self.connected = True
 
+    def check_connection(self):
+        self.irc.send_pong('Check connection')
+        self.handle_irc_message('')
+
+
 
     def reconnect_irc(self):
         if self.timeouts < 5:
             self.timeouts = self.timeouts + 1
-            logging.critical(f"Attempting to reconnect (try {self.timeouts}).")
+            logging.critical(f"Attempting to reconnect (attempt {self.timeouts}).")
             self.irc = Twitch_IRC(Settings.STREAMER, Settings.BOT, self.OAUTH)
             return True
         else:

@@ -21,6 +21,8 @@ class Twitch_IRC:
             con.send(bytes('NICK %s\r\n' % nickname, 'UTF-8'))
             con.send(bytes('JOIN %s\r\n' % self.CHAN, 'UTF-8'))
 
+            logging.info('Finished setting up connection.')
+
             return con
 
         except Exception as e:
@@ -36,6 +38,11 @@ class Twitch_IRC:
 
     def send_pong(self, msg):
         self.connection.send(bytes('PONG %s\r\n' % msg, 'UTF-8'))
+        logging.info('Sent PONG.')
+
+    def send_ping(self, msg):
+        self.connection.send(bytes('PING %s\r\n' % msg, 'UTF-8'))
+        logging.info('Sent PING.')
 
     def send_message(self, msg):
         logging.info("Sent message: " + msg)

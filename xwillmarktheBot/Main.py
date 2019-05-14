@@ -26,6 +26,7 @@ if __name__ == '__main__':
            \nPlease read the manual at https://github.com/xwmtp/xwillmarktheBot/blob/master/README.md for information/help.\n")
 
     bot = IRC_message_handler(oauth)
+    print('YAY')
     if bot.irc.is_connected():
         bot.run_irc_chat()
 

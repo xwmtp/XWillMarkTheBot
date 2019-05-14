@@ -1,4 +1,5 @@
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
+import socket
 
 class General_commands(Message_handler):
 
@@ -7,7 +8,8 @@ class General_commands(Message_handler):
 
         self.commands = {
             'commands_list' : ['!command', '!commands'],
-            'repo_link' : ['!bot', '!xwillmarkthebot', '!repo']
+            'repo_link' : ['!bot', '!xwillmarkthebot', '!repo'],
+            'test' : ['!test']
         }
 
 
@@ -25,3 +27,6 @@ class General_commands(Message_handler):
 
     def repo_link(self, msg, sender):
         self.send('https://github.com/xwmtp/xwillmarktheBot')
+
+    def test(self, msg, sender):
+        raise socket.timeout
