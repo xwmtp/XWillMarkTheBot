@@ -44,12 +44,12 @@ You need at least Python 3.7 to run the bot. The bot was tested on **Windows 7**
 6. Go to ```xwillmarktheBot/Settings/Settings.py``` and add your Twitch account and that of your bot. Read the [Settings](#settings) part of the manual for more information on all the settings. 
 
 ## Running
-The bot uses Python to run. You can use the included bat script to run the bot (recommended), or run it yourself from the command line.
+The bot uses Python to run. You can use the included bat script to run the bot, or run it yourself from the command line.
 
-### With bat script
+### With bat script (recommended)
 1. Open ```run.bat``` in a text editor. Replace the default ```oauth:test123``` with your bot account's OAuth token (generated during the [installation](#installation)) and save the file.
 2. Double click ```run.bat``` to run the bot.
-3. For easy access to the bot, copy a shortcut to the bat file to your desktop or wherever is convenient.
+3. For quick access to the bot, copy a shortcut to the bat file to your desktop or wherever is convenient.
 
 If you get an error, you may have multiple Python installations on your computer and the wrong one might be used. In that case, open the bat file in a text editor and replace ```python``` with the path to your Python 3.7 installation, for example: ```C:\Users\<user>\Anaconda3\python.exe```
 
