@@ -29,4 +29,4 @@ class General_commands(Message_handler):
         self.send('https://github.com/xwmtp/xwillmarktheBot')
 
     def test(self, msg, sender):
-        raise socket.timeout
+        self.send('SOCKET')

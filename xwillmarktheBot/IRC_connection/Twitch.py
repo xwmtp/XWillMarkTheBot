@@ -12,6 +12,7 @@ class Twitch_IRC:
     def setup_connection(self, nickname, password):
         try:
             con = socket.socket()
+            con.settimeout(60)
             con.connect((self.HOST, self.PORT))
 
             # Send nickname, password (OAUTH) and join channel.
@@ -45,6 +46,8 @@ class Twitch_IRC:
         logging.info('Sent PING.')
 
     def send_message(self, msg):
+        if msg == 'SOCKET':
+            raise socket.error
         logging.info("Sent message: " + msg)
         self.connection.send(bytes('PRIVMSG %s :%s\r\n' % (self.CHAN, msg), 'UTF-8'))
 
