@@ -110,3 +110,5 @@ The *randomizer* module allows you to have an up-to-date command with the hints 
 
 ## Support
 If you like the bot and would like to support me, you can make a [donation](https://streamlabs.com/xwillmarktheplace) or leave a sub to my Twitch [channel](https://www.twitch.tv/xwillmarktheplace). Thank you!
+
+[![xwmtp](https://github.com/xwmtp/xwillmarktheBot/blob/master/images/xwmtp_banner.png)](https://www.twitch.tv/xwillmarktheplace/)
