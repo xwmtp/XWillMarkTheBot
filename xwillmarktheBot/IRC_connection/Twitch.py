@@ -55,5 +55,4 @@ class Twitch_IRC:
         self.connection.send(bytes('PART %s\r\n' % self.CHAN, 'UTF-8'))
 
     def receive_data(self, characters = 1024):
-        logging.info(f"Waiting for message...")
         return self.connection.recv(characters).decode('UTF-8')

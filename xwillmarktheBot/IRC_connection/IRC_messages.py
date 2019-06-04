@@ -24,13 +24,15 @@ class IRC_message_handler:
         data = ''
         while (True):
             try:
-                data = self.receive_irc_data()
-                if data == '':
-                    continue
+                if not self.irc.is_connected():
+                    return
+
+                logging.info("\n\nNew irc message:\n-------------------")
+                data = self.irc.receive_data()
+
                 if data:
                     self.parse_data(data)
-                else:
-                    return
+
 
             except socket.timeout as e:
                 if self.waiting_for_pong:
@@ -42,7 +44,7 @@ class IRC_message_handler:
                     self.send_ping()
 
             except socket.error as e:
-                logging.warning(f"IRC Socket error: {repr(e)}.")
+                logging.critical(f"IRC Socket error: {repr(e)}.")
                 if not self.reconnect_irc():
                     return logging.critical("Unable to reconnect, shutting down chatbot.")
 
@@ -51,12 +53,6 @@ class IRC_message_handler:
                 logging.critical(f"In message: {data}")
                 logging.error(traceback.format_exc())
                 self.irc.send_message("Error occured, please try a different command.")
-
-    def receive_irc_data(self):
-        if self.irc.is_connected():
-            logging.info("\n-------------------")
-
-            return self.irc.receive_data()
 
 
 
@@ -82,7 +78,6 @@ class IRC_message_handler:
 
             if len(words) > 0:
                 msg = extract_message(words)
-                logging.debug(words)
 
                 if words[0] == 'PING':
                     logging.info('Received PING.')
@@ -141,7 +136,9 @@ class IRC_message_handler:
     def reconnect_irc(self):
         if self.timeouts < 5:
             self.timeouts = self.timeouts + 1
+
+        for _ in range(5):
             logging.critical(f"Attempting to reconnect (attempt {self.timeouts}).")
             self.irc = Twitch_IRC(Settings.STREAMER, Settings.BOT, self.OAUTH)
-            self.send_ping()
-            return True
+            if self.irc.is_connected():
+                return True
