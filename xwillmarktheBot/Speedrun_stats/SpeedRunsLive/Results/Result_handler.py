@@ -35,20 +35,19 @@ class Result_handler(Message_handler):
 
         player = args.get_player(self)
 
-        if not player:
-            return self.send("SRL user not found!")
+        if player:
 
-        result_value = ''
+            result_value = ''
 
-        if command in self.commands['average']:
-            result_value, amount = player.get_average(n=args.n, method=command[1:], type=args.type)
-        if command in self.commands['results']:
-            result_value, amount = player.get_results(n=args.n, type=args.type)
+            if command in self.commands['average']:
+                result_value, amount = player.get_average(n=args.n, method=command[1:], type=args.type)
+            if command in self.commands['results']:
+                result_value, amount = player.get_results(n=args.n, type=args.type)
 
-        if (result_value is not None) & (result_value != ''):
-            self.send(f"{player.name}'s {command[1:]} for the last {amount} {args.type} races: {result_value}")
-        else:
-            self.send(f"No recorded {args.type} races found for user {player.name}")
+            if (result_value is not None) & (result_value != ''):
+                self.send(f"{player.name}'s {command[1:]} for the last {amount} {args.type} races: {result_value}")
+            else:
+                self.send(f"No recorded {args.type} races found for user {player.name}")
 
     def handle_pb(self, args):
         logging.debug("Looking up SRL result PB...")
@@ -118,7 +117,7 @@ class Result_info:
 
 
     def get_n(self, split_msg):
-        n = 15
+        n = 10
         for word in split_msg[1:]:
             if word.isdigit():
                 n = int(word)
