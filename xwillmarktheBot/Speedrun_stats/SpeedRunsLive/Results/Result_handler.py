@@ -40,12 +40,12 @@ class Result_handler(Message_handler):
             result_value = ''
 
             if command in self.commands['average']:
-                result_value, amount = player.get_average(n=args.n, method=command[1:], type=args.type)
-            if command in self.commands['results']:
-                result_value, amount = player.get_results(n=args.n, type=args.type)
+                result_value, amount, forfeits = player.get_average(n=args.n, method=command[1:], type=args.type)
+            else: #command in self.commands['results']:
+                result_value, amount, forfeits = player.get_results(n=args.n, type=args.type)
 
             if (result_value is not None) & (result_value != ''):
-                self.send(f"{player.name}'s {command[1:]} for the last {amount} {args.type} races: {result_value}")
+                self.send(f"{player.name}'s {command[1:]} for the last {amount} {args.type} races: {result_value} (forfeits: {forfeits})")
             else:
                 self.send(f"No recorded {args.type} races found for user {player.name}")
 
@@ -69,7 +69,7 @@ class Result_handler(Message_handler):
 
     def get_SRL_player(self, name):
         if name not in self.SRL_players:
-            self.send(f"Looking up user {name}...")
+            logging.info(f"Looking up user {name}...")
             self.SRL_players[name] = lookup_SRL_player(name)
 
         return self.SRL_players[name]
