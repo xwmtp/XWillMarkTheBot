@@ -13,7 +13,7 @@ class Result_handler(Message_handler):
         self.commands = {
             'average': ['!average', '!mean', '!median'],
             'results': ['!results'],
-            'pb': ['!pb'],
+            'pb': ['!pb', '!best'],
             'user_pb': ['!userpb']
         }
         self.race_type = Settings.DEFAULT_RACE_TYPE
@@ -102,7 +102,7 @@ class Result_info:
         self.type = self.get_type(split_msg, result_handler)
 
         logging.debug(
-            f"Found race arguments. n: {self.n}, player: {self.player_name if self.player_name is not None else None}, type: {self.type}.")
+            f"Found race arguments. n: {self.n}, player: {self.player_name}, type: {self.type}.")
 
     def get_player(self, result_handler):
 
