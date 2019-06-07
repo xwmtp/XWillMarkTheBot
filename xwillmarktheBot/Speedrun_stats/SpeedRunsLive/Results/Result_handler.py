@@ -117,7 +117,10 @@ class Result_info:
 
 
     def get_n(self, split_msg):
-        n = 10
+        if split_msg[0] == '!median':
+            n = 15
+        else:
+            n = 10
         for word in split_msg[1:]:
             if word.isdigit():
                 n = int(word)
