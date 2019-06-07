@@ -25,21 +25,35 @@ class SRL_player:
 
         if times == []:
             logging.debug(f'No {type} races found to take average.')
-            return None, None
+            return None, None, None
+
+        forfeits = self.get_forfeit_count(n, type, races)
+
 
         logging.debug(f'Using method {method}.')
         if method in ['average', 'mean']:
             res = int(mean(times))
         else:
             res = int(median(times))
-        return datetime.timedelta(seconds=res), len(races)#.replace(microseconds = 0)
+        return datetime.timedelta(seconds=res), len(races), forfeits
 
 
     def get_results(self, n=15, type='bingo', sort='latest'):
         """Return latest or best race results in a comma separated string."""
         result_races = self.select_races(n, type, sort)
         times = [str(race.get_entrant(self.name).get_time()) for race in result_races]
-        return ', '.join(times), len(result_races)
+        forfeits = self.get_forfeit_count(n, type, result_races)
+
+        return ', '.join(times), len(result_races), forfeits
+
+    def get_forfeit_count(self, n, type, races):
+        """Get the amount of forfeits in a list of races that happened in the last 5. Assumes races is sorted by latest date."""
+        oldest_race = races[-1]
+        logging.debug(f'Race nr {n}: {oldest_race.date}, {oldest_race.get_entrant(self.name).get_time()}')
+        all_races = self.select_races(-1, type, sort='latest', forfeits=True)
+        forfeit_races = [race for race in all_races if
+                         race.date > oldest_race.date and race.get_entrant(self.name).forfeit]
+        return len(forfeit_races)
 
 
     def get_pb(self, type='bingo'):
