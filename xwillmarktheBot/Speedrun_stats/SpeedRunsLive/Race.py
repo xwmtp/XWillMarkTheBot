@@ -4,6 +4,8 @@ from datetime import datetime
 import logging
 import re
 
+
+
 class Race:
 
     def __init__(self, json):

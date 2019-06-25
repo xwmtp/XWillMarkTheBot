@@ -11,7 +11,8 @@ class SRC_handler(Message_handler):
         self.category_matcher = Category_matcher()
         self.commands = {
             'user_lookup' : ['!userpb'],
-            'default'     : ['!pb', '!wr']
+            'default'     : ['!pb', '!wr'],
+            'leaderboard' : ['!leaderboard', '!leaderboards', '!src']
         }
 
     def handle_message(self, msg, sender):
@@ -42,10 +43,15 @@ class SRC_handler(Message_handler):
             str = ' Try adding a category as an argument (i.e. !pb no im/ww).' if from_title else ''
             return self.send('Category not found.' + str)
 
-        # if the selected subcategory remained None, the default will be taken.
-        leaderboard = category.get_leaderboard(category.selected_subcategory)
+        if command in self.commands['leaderboard']:
+            self.send(category.weblink)
+        else:
 
-        self.send_wr_pb(command[1:], leaderboard, category, user)
+            # if the selected subcategory remained None, the default will be taken.
+            leaderboard = category.get_leaderboard(category.selected_subcategory)
+
+
+            self.send_wr_pb(command[1:], leaderboard, category, user)
 
 
     def send_wr_pb(self, type, leaderboard, category, user):

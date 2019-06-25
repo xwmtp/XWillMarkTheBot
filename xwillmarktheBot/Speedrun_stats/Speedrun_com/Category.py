@@ -1,4 +1,5 @@
 import time
+import re
 from xwillmarktheBot.Settings import Settings
 from xwillmarktheBot.Utils import *
 
@@ -7,6 +8,7 @@ class Category:
     def __init__(self, cat):
         self.id = cat['id']
         self.name = cat['name']
+        self.weblink = cat['weblink']
         self.leaderboards = self.import_leaderboards(cat)
         self.selected_subcategory = None # so you can save a subcategory to use later
 
@@ -35,6 +37,13 @@ class Category:
         for name, leaderboard in self.leaderboards.items():
             if ((category is None) and leaderboard.is_default) or name.lower() == category.lower():
                 return leaderboard
+
+    def get_src_url(self):
+        name = self.name
+        name = re.sub(r'[^A-Za-z0-9]+', '', name)
+        name = name.replace(' ', '_')
+
+
 
 
 class Leaderboard:
