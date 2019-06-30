@@ -1,4 +1,4 @@
-from xwillmarktheBot.IRC_connection.Twitch import Twitch_IRC
+from xwillmarktheBot.Connections.IRC_connection.Twitch import Twitch_IRC
 from xwillmarktheBot.Message_distributor import Message_distributor
 from xwillmarktheBot.Settings import Settings
 import traceback

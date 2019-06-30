@@ -1,24 +1,19 @@
 from xwillmarktheBot.Utils import *
 
 class Message_handler():
-    """Abstract class defining a general message handler."""
+    """Abstract class defining a general message handler.
+       Takes a 'connection' object which should have a 'send' method to send messages."""
 
-    def __init__(self, irc_connection):
+    def __init__(self):
         # commands in the class
         self.commands = {}
         # triggers in the class (words anywhere in message that may trigger the bot, like blue tunic)
         self.triggers = {}
 
-        self.irc = irc_connection
-
     def handle_message(self, msg, sender):
         """Abstract method. Each message handler has to implement a way to handle incoming messages."""
         raise NotImplementedError('Subclasses must override handle_message()!')
 
-
-    def send(self, msg):
-        """Sending a message to irc."""
-        self.irc.send_message(msg)
 
     def get_commands(self):
         """

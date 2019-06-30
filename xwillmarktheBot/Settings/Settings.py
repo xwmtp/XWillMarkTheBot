@@ -25,10 +25,11 @@ EDITORS  = [STREAMER]
 # Select which command sets to use.
 # Set to False to disable a module for the bot
 
+GENERAL      = True
 SPEEDRUN_COM = True    # !pb, !wr, !userpb
-SRL_RACES    = True    # !race, !card, !entrants, !goal
+SRL_RACES    = False    # !race, !card, !entrants, !goal
 SRL_RESULTS  = True    # !average, !median, !results,
-RANDO        = True    # !hints, !resethints
+RANDO        = False    # !hints, !resethints
 
 
 

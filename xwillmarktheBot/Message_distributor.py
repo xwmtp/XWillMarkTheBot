@@ -9,23 +9,24 @@ import logging
 
 class Message_distributor:
 
-    def __init__(self, irc_connection):
-        self.handlers = self.get_handlers(irc_connection)
+    def __init__(self, connection):
+        self.handlers = self.get_handlers(connection)
 
 
-    def get_handlers(self, irc):
+    def get_handlers(self, conn):
         handlers = []
 
-        handlers.append(Speedrun_handler(irc))
+        handlers.append(Speedrun_handler())
         if Settings.SRL_RACES:
-            handlers.append(Race_handler(irc))
+            handlers.append(Race_handler(conn))
 
 
         if Settings.RANDO:
-            handlers.append(Rando_handler(irc))
+            handlers.append(Rando_handler(conn))
 
-        handlers.append(General_commands(irc))
-        handlers.append(SRL_setting_commands(irc))
+        if Settings.GENERAL:
+            handlers.append(General_commands())
+        handlers.append(SRL_setting_commands(conn))
 
         return handlers
 

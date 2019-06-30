@@ -1,6 +1,7 @@
-from xwillmarktheBot.IRC_connection.IRC_messages import IRC_message_handler
+from xwillmarktheBot.Connections.IRC_connection.IRC_messages import IRC_message_handler
 from xwillmarktheBot.Settings.Validate_settings import validate_settings
 from xwillmarktheBot.Logger import initalize_logger
+from xwillmarktheBot.Connections.Discord_connection import Discord_messages
 import logging
 import sys
 
@@ -8,9 +9,15 @@ import sys
 if __name__ == '__main__':
 
     if len(sys.argv) < 2:
-        raise ValueError('No OAUTH provided, please provide it as a sys arg.')
+        raise ValueError('No OAUTH or Discord token provided, please provide it as a sys arg.')
     else:
-        oauth = sys.argv[1]
+        token = sys.argv[1]
+
+    if token.startswith('oath:'):
+        connection_type = 'twitch'
+    else:
+        connection_type = 'discord'
+
 
     initalize_logger()
     validate_settings()
@@ -25,9 +32,15 @@ if __name__ == '__main__':
            \n\nWelcome to xwillmarktheBot by xwillmarktheplace. \
            \nPlease read the manual at https://github.com/xwmtp/xwillmarktheBot/blob/master/README.md for information/help.\n")
 
-    bot = IRC_message_handler(oauth)
-    if bot.irc.is_connected():
-        bot.run_irc_chat()
+
+    if connection_type == 'twitch':
+        bot = IRC_message_handler(token)
+        if bot.irc.is_connected():
+            bot.run_irc_chat()
+    if connection_type == 'discord':
+        logging.info('Starting Discord bot.')
+        bot = Discord_messages()
+        bot.run(token)
 
 
 # IDEAS

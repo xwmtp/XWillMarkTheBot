@@ -4,8 +4,8 @@ from xwillmarktheBot.Settings import Settings
 
 class Rando_handler(Message_handler):
 
-    def __init__(self, irc_connection):
-        super().__init__(irc_connection)
+    def __init__(self):
+        super().__init__()
 
         self.commands = {
             'hints' : ['!hints', '!randohints', '!randohint', '!hint'],
@@ -18,33 +18,31 @@ class Rando_handler(Message_handler):
         command = split_msg[0]
 
         if command in self.commands['hints']:
-            self.hints()
+            return self.hints()
 
         if command in self.commands['reset_hints']:
-            self.reset_hints(sender)
+            return self.reset_hints(sender)
 
 
 
     def hints(self):
         to_send = send_current_hints()
-        print(to_send)
         if to_send:
-            for hint in to_send:
-                self.send(hint)
+            return to_send
         elif to_send == []:
-            self.send("No hints found yet.")
+            return "No hints found yet."
         else:
-            self.send("Hints couldn't be read.")
+            return "Hints couldn't be read."
 
 
     def reset_hints(self, sender):
         if sender in Settings.EDITORS:
             if reset_hints():
-                self.send("Hints file reset to default.")
+                return "Hints file reset to default."
             else:
-                self.send("Hints couldn't be reset.")
+                return "Hints couldn't be reset."
         else:
-            self.send(sender + "does not have the rights to use this command.")
+            return sender + "does not have the rights to use this command."
 
 
 
