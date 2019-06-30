@@ -39,7 +39,13 @@ class Twitch_IRC:
 
     def send_message(self, msg):
         logging.info("Sent message: " + msg)
-        self.connection.send(bytes('PRIVMSG %s :%s\r\n' % (self.CHAN, msg), 'UTF-8'))
+        if isinstance(msg, list):
+            for m in msg:
+                self.connection.send(bytes('PRIVMSG %s :%s\r\n' % (self.CHAN, m), 'UTF-8'))
+        else:
+            self.connection.send(bytes('PRIVMSG %s :%s\r\n' % (self.CHAN, msg), 'UTF-8'))
+
+
 
     def part_channel(self):
         self.connection.send(bytes('PART %s\r\n' % self.CHAN, 'UTF-8'))

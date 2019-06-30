@@ -13,7 +13,7 @@ if __name__ == '__main__':
     else:
         token = sys.argv[1]
 
-    if token.startswith('oath:'):
+    if token.startswith('oauth:'):
         connection_type = 'twitch'
     else:
         connection_type = 'discord'

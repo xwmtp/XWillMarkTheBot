@@ -7,7 +7,7 @@ import logging
 class Discord_messages:
 
     def __init__(self):
-        bot = Message_distributor('')
+        bot = Message_distributor()
         self.client = MyClient(bot)
 
     def run(self, token):
@@ -32,7 +32,13 @@ class MyClient(discord.Client):
             return
 
         return_message = self.message_handler.find_command(message.content.lower(), message.author)
-        logging.debug('Message to send: ' + return_message)
+        logging.info('Message to send: ' + return_message)
+
+        # multiple messages
+        if isinstance(return_message, list):
+            for message in return_message:
+                await message.channel.send(message)
+
         if return_message:
             await message.channel.send(return_message)
 

@@ -18,7 +18,7 @@ class IRC_message_handler:
 
 
     def run_irc_chat(self):
-        self.chatbot = Message_distributor(self.irc)
+        self.chatbot = Message_distributor()
 
         data = ''
 
@@ -61,7 +61,9 @@ class IRC_message_handler:
 
                 elif words[1] == 'PRIVMSG':
                     sender = self.extract_sender(words[0])
-                    self.parse_message(msg, sender)
+                    return_message = self.parse_message(msg, sender)
+                    if return_message:
+                        self.irc.send_message(return_message)
 
                 elif words[1] == 'NOTICE':
                     logging.warning(f"Received NOTICE: {msg}")
@@ -98,7 +100,7 @@ class IRC_message_handler:
         elif msg == "!throw_socket":
             raise socket.error("test socket died")
 
-        self.chatbot.find_command(msg, sender)
+        return self.chatbot.find_command(msg, sender)
 
     def check_first_connection(self, words):
         if not self.connected and words[0].startswith(':' + Settings.BOT.lower()):
