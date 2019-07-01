@@ -45,15 +45,27 @@ class MyClient(discord.Client):
             await message.channel.send('pong')
 
 
-
+        # roles
         if message.content.startswith('!add') or message.content.startswith('!remove'):
             words = message.content.split(' ')
             command = words[0]
             if len(words) <= 1:
                 await message.channel.send('Please supply a notification role.')
             else:
+                roles = message.guild.roles
+                bot_role = message.guild.get_member(self.user.id).top_role
+                available_roles   = [str(role)         for role in roles if role <  bot_role and str(role) != '@everyone']
+                unavailable_roles = [str(role).lower() for role in roles if role >= bot_role]
+
                 for word in words[1:]:
+                    if word.lower() in unavailable_roles:
+                        kappa = discord.utils.get(message.guild.emojis, name='Kappa')
+                        await message.channel.send('Nice try ' + str(kappa))
+                        continue
+
+
                     role = discord.utils.get(message.guild.roles, name=word.lower())
+
                     if role:
                         try:
                             if command == '!add':
@@ -65,5 +77,6 @@ class MyClient(discord.Client):
                         except discord.errors.Forbidden:
                             kappa = discord.utils.get(message.guild.emojis, name='Kappa')
                             await message.channel.send('Nice try ' + str(kappa))
+
                     else:
-                        await message.channel.send('Incorrect role. Available notification roles are: stream, bingo')
+                        await message.channel.send('Incorrect role. Available notification roles are: ' + ', '.join(available_roles))
