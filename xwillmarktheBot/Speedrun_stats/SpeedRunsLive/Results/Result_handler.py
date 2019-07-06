@@ -73,9 +73,9 @@ class Result_handler(Message_handler):
             return matching_types[0]
 
     def get_SRL_player(self, name):
-        if name not in self.SRL_players:
-            logging.info(f"Looking up user {name}...")
-            self.SRL_players[name] = lookup_SRL_player(name)
+        #if name not in self.SRL_players:
+        logging.info(f"Looking up user {name}...")
+        self.SRL_players[name] = lookup_SRL_player(name)
 
         return self.SRL_players[name]
 
