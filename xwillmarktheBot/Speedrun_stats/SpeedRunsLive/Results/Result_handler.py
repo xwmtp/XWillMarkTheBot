@@ -110,7 +110,7 @@ class Result_info:
 
         name = self.player_name
         if not name:
-            return result_handler.SRL_players[Settings.STREAMER]
+            name = Settings.STREAMER
         player = result_handler.get_SRL_player(name)
         if player:
             return player
