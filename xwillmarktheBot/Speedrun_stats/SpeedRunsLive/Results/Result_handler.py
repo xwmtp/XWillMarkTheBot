@@ -24,7 +24,7 @@ class Result_handler(Message_handler):
 
         if self.check_valid_arguments(split_msg):
 
-            result_info = Result_info(split_msg, self)
+            result_info = Result_info(split_msg, self, sender)
             if command in self.commands['average'] + self.commands['results']:
                 self.handle_results(split_msg, result_info)
             else:
@@ -93,9 +93,10 @@ class Result_handler(Message_handler):
 
 class Result_info:
 
-    def __init__(self, split_msg, result_handler):
+    def __init__(self, split_msg, result_handler, sender):
         self.n = self.get_n(split_msg)
         self.player_name = None
+        self.sender = sender
         for word in split_msg[1:]:
             if (not word.isdigit()) & (not word in Definitions.RACE_TYPES):
                 self.player_name = word
@@ -106,9 +107,13 @@ class Result_info:
 
     def get_player(self, result_handler):
 
+        logging.debug('Message sent by: ' + self.sender)
         name = self.player_name
         if not name:
-            return result_handler.SRL_players[Settings.STREAMER]
+            if Settings.RESPOND_TO_USER:
+                name = self.sender
+            else:
+                return result_handler.SRL_players[Settings.STREAMER]
         player = result_handler.get_SRL_player(name)
         if not player:
             return result_handler.send("SRL user not found!")
