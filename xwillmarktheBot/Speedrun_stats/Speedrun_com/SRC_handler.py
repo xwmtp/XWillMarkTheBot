@@ -27,7 +27,10 @@ class SRC_handler(Message_handler):
             args = ' '.join(split_msg[2:])
         else:
         # pb of streamer
-            user = Settings.STREAMER
+            if Settings.RESPOND_TO_USER:
+                user = sender
+            else:
+                user = Settings.STREAMER
             args = msg.replace(f'{command}', '').strip(' ')
 
         # extract pb from title

@@ -51,6 +51,12 @@ LATEST_BINGO_VERSION_DATE = '09-06-2018'
 PRINT_RACE_ENTRANTS = True
 
 
+# If True, the commands likes !pb, !wr, !average, !results will respond by looking at the data of the person
+# that posted the command. If set to False, the streamer defined above will be used by default.
+RESPOND_TO_USER = True
+
+
+
 
 
 
