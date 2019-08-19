@@ -1,5 +1,7 @@
 from xwillmarktheBot.Utils import *
 from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Results.Player import SRL_player
+from xwillmarktheBot.Settings import Settings
+
 
 
 def lookup_SRL_player(user):
@@ -21,20 +23,31 @@ def _get_srl_json(user_name):
 
 
 def _try_alt_names(user):
-    json = readjson(f"https://www.speedrun.com/api/v1/users?lookup={user}")
 
-    if json["data"] != []:
+    alt_names = [user]
+    # alternative names found on srl
+    alt_names = _add_src_alt_names(alt_names, user)
 
-        alt_names = _extract_alt_names(json['data'][0], [user])
+    # defined alternative names
+    alt_names = _add_defined_alt_names(alt_names)
 
-        for alt in alt_names:
-            srl_json = _get_srl_json(alt)
-            if srl_json:
-                return SRL_player(alt, srl_json)
+    for alt in alt_names:
+        srl_json = _get_srl_json(alt)
+        if srl_json:
+            return SRL_player(alt, srl_json)
 
 
+def _add_defined_alt_names(names):
+    for name, alts in Settings.ALT_NAMES.items():
+        if any([is_lowercase_elem(n, alts) for n in names]):
+            if not is_lowercase_elem(name, names):
+                logging.debug(f'Added defined alt name {name}.')
+                names.append(name)
+    logging.info(f'Alternative names (defined): {names}.')
+    return names
 
-def _extract_alt_names(json, known_names=None):
+
+def _add_src_alt_names(names, user):
 
     uri_dict = {
         'twitch': 'https://www.twitch.tv/',
@@ -42,29 +55,29 @@ def _extract_alt_names(json, known_names=None):
         'speedrunslive': 'http://www.speedrunslive.com/profiles/#!/'
     }
 
-    if known_names is None:
-        names = []
-    else:
-        names = known_names.copy()
+    logging.debug(f'Known names: {names}')
 
-    logging.debug(f'Known names: {known_names}')
+    json = readjson(f"https://www.speedrun.com/api/v1/users?lookup={user}")
+    if json["data"] != []:
+        json = json['data'][0]
 
-    # alternative name (possibly different fromt user)
-    alt_name = json['names']['international']
-    if not is_lowercase_elem(alt_name, names):
-        logging.debug(f'Added alt name (international) {alt_name}.')
-        names.append(alt_name)
+        # alternative name (possibly different from user)
+        logging.debug('looking up name ' + user)
+        alt_name = json['names']['international']
+        if not is_lowercase_elem(alt_name, names):
+            logging.debug(f'Added alt name (international) {alt_name}.')
+            names.append(alt_name)
 
-    # social media names
-    for platform, uri_start in uri_dict.items():
-        if json[platform]:
-            user = json[platform]['uri'].replace(uri_start, '')
-            if not is_lowercase_elem(user, names):
-                logging.debug(f'Added {platform} name {user}.')
-                names.append(user)
+        # social media names
+        for platform, uri_start in uri_dict.items():
+            if json[platform]:
+                user = json[platform]['uri'].replace(uri_start, '')
+                if not is_lowercase_elem(user, names):
+                    logging.debug(f'Added {platform} name {user}.')
+                    names.append(user)
 
-    names = complement(names, known_names) # delete already known names
-    logging.info(f'Alternative names found: {names}.')
+
+    logging.info(f'Alternative names (src): {names}.')
     return names
 
 
