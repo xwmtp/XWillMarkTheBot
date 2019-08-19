@@ -80,7 +80,7 @@ RESPOND_TO_USER = True
 # logging.INFO     recommended level. information about sent and received messages, and warning/errors
 # logging.WARNING  only warnings and errors
 # logging.ERROR    only errors
-CONSOLE_LOGGING_LEVEL = logging.DEBUG
+CONSOLE_LOGGING_LEVEL = logging.INFO
 
 
 # RANDO HINTS
