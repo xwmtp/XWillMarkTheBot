@@ -91,9 +91,15 @@ CONSOLE_LOGGING_LEVEL = logging.INFO
 RANDO_HINTS_DIR = Definitions.ROOT_DIR / 'randohints'
 
 
+# ALTERNATIVE USER LOOKUP NAMES
+# =================
 
-
-
+# In case you want to be able to find users based on any alt names they may use, you can add entries to
+# this dictionary. The 'key' for each entry has to be their SRL user name, and the 'value' a list of one
+# or more alt names.
+ALT_NAMES = {
+    'Kintefleush' : ['Fleush', 'Kinte', 'Happyfleush']
+}
 
 
 
