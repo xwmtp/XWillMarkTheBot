@@ -11,6 +11,8 @@ class Twitch_IRC:
 
     def setup_connection(self, nickname, password):
         try:
+            self.connection = None # start with empty connection
+
             con = socket.socket()
             con.settimeout(60)
             con.connect((self.HOST, self.PORT))

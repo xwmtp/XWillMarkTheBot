@@ -5,7 +5,9 @@ import traceback
 import re
 import socket
 import logging
+import time
 
+PING_TIMEOUT = 15
 
 class IRC_message_handler:
 
@@ -15,6 +17,7 @@ class IRC_message_handler:
 
         self.connected = False
         self.timeouts = 0
+        self.last_ping_sent = time.time()
         self.waiting_for_pong = False
 
 
@@ -24,8 +27,8 @@ class IRC_message_handler:
         data = ''
         while (True):
             try:
-                if not self.irc.is_connected():
-                    return
+
+                self.check_connection()
 
                 logging.info("\n\nNew irc message:\n-------------------")
                 data = self.irc.receive_data()
@@ -35,18 +38,17 @@ class IRC_message_handler:
 
 
             except socket.timeout as e:
+                logging.info(f'Did not receive data after {self.irc.connection.gettimeout()} seconds.')
                 if self.waiting_for_pong:
-                    logging.critical(f"Did not receive PONG, trying to reconnect..")
+                    logging.critical(f"Did not receive PONG since last timeout, trying to reconnect..")
                     self.waiting_for_pong = False
-                    if not self.reconnect_irc():
-                        return logging.critical("Unable to reconnect, shutting down chatbot.")
+                    self.reconnect_irc()
                 else:
                     self.send_ping()
 
             except socket.error as e:
                 logging.critical(f"IRC Socket error: {repr(e)}.")
-                if not self.reconnect_irc():
-                    return logging.critical("Unable to reconnect, shutting down chatbot.")
+                self.reconnect_irc()
 
             except Exception as e:
                 logging.critical(f"Other exception in IRC: {repr(e)}")
@@ -104,9 +106,20 @@ class IRC_message_handler:
 
         return True
 
+    def check_connection(self):
+        if not self.irc.is_connected():
+            return self.reconnect_irc()
 
+        time_since_ping = time.time() - self.last_ping_sent
 
-
+        if time_since_ping > PING_TIMEOUT:
+            if self.waiting_for_pong:
+                logging.critical(f"Received no PONG after {PING_TIMEOUT} seconds, trying to reconnect.")
+                self.reconnect_irc()
+                return True
+            else:
+                self.send_ping()
+                return True
 
 
 
@@ -128,17 +141,25 @@ class IRC_message_handler:
             self.connected = True
 
     def send_ping(self):
-        self.irc.send_ping('Check connection')
+        self.last_ping_sent = time.time()
+        self.irc.send_ping('checking_connection')
         self.waiting_for_pong = True
 
 
 
     def reconnect_irc(self):
-        if self.timeouts < 5:
-            self.timeouts = self.timeouts + 1
+        attempts = 0
+        interval = 2 # seconds before next attempt
 
-        for _ in range(5):
-            logging.critical(f"Attempting to reconnect (attempt {self.timeouts}).")
+        while True:
+            attempts += 1
+
+            if attempts > 5:
+                logging.info(f"Waiting {interval} seconds before reconnect...")
+                time.sleep(interval)
+                interval = interval * 2
+
+            logging.critical(f"Attempting to reconnect (attempt {attempts}).")
             self.irc = Twitch_IRC(Settings.STREAMER, Settings.BOT, self.OAUTH)
             if self.irc.is_connected():
                 return True
