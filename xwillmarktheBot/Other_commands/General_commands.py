@@ -1,6 +1,5 @@
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
 
-
 class General_commands(Message_handler):
 
     def __init__(self, irc_connection):
