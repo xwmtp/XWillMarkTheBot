@@ -1,6 +1,5 @@
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
-import socket
-
+import socke
 class General_commands(Message_handler):
 
     def __init__(self, irc_connection):
@@ -8,8 +7,7 @@ class General_commands(Message_handler):
 
         self.commands = {
             'commands_list' : ['!command', '!commands'],
-            'repo_link' : ['!bot', '!xwillmarkthebot', '!repo'],
-            'test' : ['!test']
+            'repo_link' : ['!bot', '!xwillmarkthebot', '!repo']
         }
 
 
@@ -27,6 +25,3 @@ class General_commands(Message_handler):
 
     def repo_link(self, msg, sender):
         self.send('https://github.com/xwmtp/xwillmarktheBot')
-
-    def test(self, msg, sender):
-        self.send('SOCKET')
