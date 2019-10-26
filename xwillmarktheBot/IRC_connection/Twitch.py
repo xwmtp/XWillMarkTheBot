@@ -11,7 +11,10 @@ class Twitch_IRC:
 
     def setup_connection(self, nickname, password):
         try:
+            self.connection = None # start with empty connection
+
             con = socket.socket()
+            con.settimeout(60)
             con.connect((self.HOST, self.PORT))
 
             # Send nickname, password (OAUTH) and join channel.
@@ -20,6 +23,8 @@ class Twitch_IRC:
             con.send(bytes('PASS %s\r\n' % password, 'UTF-8'))
             con.send(bytes('NICK %s\r\n' % nickname, 'UTF-8'))
             con.send(bytes('JOIN %s\r\n' % self.CHAN, 'UTF-8'))
+
+            logging.info('Finished setting up connection.')
 
             return con
 
@@ -36,8 +41,15 @@ class Twitch_IRC:
 
     def send_pong(self, msg):
         self.connection.send(bytes('PONG %s\r\n' % msg, 'UTF-8'))
+        logging.info('Sent PONG.')
+
+    def send_ping(self, msg):
+        self.connection.send(bytes('PING %s\r\n' % msg, 'UTF-8'))
+        logging.info('Sent PING.')
 
     def send_message(self, msg):
+        if msg == 'SOCKET':
+            raise socket.error
         logging.info("Sent message: " + msg)
         self.connection.send(bytes('PRIVMSG %s :%s\r\n' % (self.CHAN, msg), 'UTF-8'))
 
@@ -45,5 +57,4 @@ class Twitch_IRC:
         self.connection.send(bytes('PART %s\r\n' % self.CHAN, 'UTF-8'))
 
     def receive_data(self, characters = 1024):
-        logging.info(f"Waiting for message...")
         return self.connection.recv(characters).decode('UTF-8')
