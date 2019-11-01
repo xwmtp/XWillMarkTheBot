@@ -31,11 +31,16 @@ class Race:
             return 'rando'
 
         # bingo types
-        if 'bingo' in goal and self.game == 'oot':
+        if ('speedrunslive.com/tools/oot-bingo' in goal or 'ootbingo.github.io/bingo/' in goal) and self.game == 'oot':
             if 'blackout' in goal:
                 return 'blackout'
             if 'short' in goal:
                 return 'short-bingo'
+            for term in ['long', '3x3', 'anti', 'double', 'bufferless', 'child', 'jp', 'japanese', 'bingo-j']:
+                if term in goal:
+                    return 'other-bingo'
+
+
             return 'bingo'
 
         return 'other'
