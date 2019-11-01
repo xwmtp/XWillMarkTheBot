@@ -19,7 +19,7 @@ class SRL_player:
 
 
     def get_average(self, n=15, type='bingo', method='average'):
-        races = self.select_races(n, type, sort="latest")[:n]
+        races = self.select_races(n, type, sort="latest", latest_version=False)[:n]
 
         times = [race.get_entrant(self.name).get_time(seconds=True) for race in races]
 
@@ -40,7 +40,7 @@ class SRL_player:
 
     def get_results(self, n=15, type='bingo', sort='latest'):
         """Return latest or best race results in a comma separated string."""
-        result_races = self.select_races(n, type, sort)
+        result_races = self.select_races(n, type, sort, latest_version=False)
         times = [str(race.get_entrant(self.name).get_time()) for race in result_races]
         forfeits = self.get_forfeit_count(n, type, result_races)
 
@@ -50,19 +50,19 @@ class SRL_player:
         """Get the amount of forfeits in a list of races that happened in the last 5. Assumes races is sorted by latest date."""
         oldest_race = races[-1]
         logging.debug(f'Race nr {n}: {oldest_race.date}, {oldest_race.get_entrant(self.name).get_time()}')
-        all_races = self.select_races(-1, type, sort='latest', forfeits=True)
+        all_races = self.select_races(-1, type, sort='latest', forfeits=True, latest_version=False)
         forfeit_races = [race for race in all_races if
                          race.date > oldest_race.date and race.get_entrant(self.name).forfeit]
         return len(forfeit_races)
 
 
     def get_pb(self, type='bingo'):
-        races = self.select_races(type=type, sort='best')
+        races = self.select_races(type=type, sort='best', latest_version=True)
         if races != []:
             return races[0].get_entrant(self.name).get_time()
 
 
-    def select_races(self, n=-1, type='bingo', sort='best', forfeits=False, remove_blacklisted=True):
+    def select_races(self, n=-1, type='bingo', sort='best', forfeits=False, latest_version=True, remove_blacklisted=True):
         if type not in Definitions.RACE_TYPES:
             return []
         race_type = str.replace(type, 'all-', '')
@@ -77,7 +77,9 @@ class SRL_player:
         else:
             selected_races = [race for race in all_races if race.type == race_type]
 
-        selected_races = self.select_dates(selected_races, type)
+        # only look at the latest bingo version
+        if latest_version:
+            selected_races = self.select_dates(selected_races, type)
 
 
         if sort == 'best':

@@ -10,7 +10,7 @@ def readjson(url, text_only=False, tries=5):
 
     for i in range(tries):
         if i > 0:
-            logging.info(f"Connecting failed (status {status}), trying again... try ({i})")
+            logging.info(f"Connecting to api failed (status {status}), trying again... try ({i})")
         response = requests.get(url)
 
         status = response.status_code
