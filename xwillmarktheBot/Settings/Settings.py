@@ -98,7 +98,8 @@ RANDO_HINTS_DIR = Definitions.ROOT_DIR / 'randohints'
 # this dictionary. The 'key' for each entry has to be their SRL user name, and the 'value' a list of one
 # or more alt names.
 ALT_NAMES = {
-    'Kintefleush' : ['Fleush', 'Kinte', 'Happyfleush']
+    'Kintefleush' : ['Fleush', 'Kinte', 'Happyfleush', 'Bleush', 'LeBleush'],
+    'MooseOoT' : ['Moose', 'Moose_OoT']
 }
 
 
