@@ -85,7 +85,7 @@ class IRC_message_handler:
                     logging.info('Received PING.')
                     self.irc.send_pong(line[1])
 
-                elif words[1] == 'PONG':
+                if words[1] == 'PONG':
                     logging.info('Received PONG.')
                     self.waiting_for_pong = False
 
@@ -102,7 +102,6 @@ class IRC_message_handler:
 
                 else:
                     logging.info(f"Received other message: {msg}")
-                    logging.debug(f"Words list: {words}")
                     self.check_first_connection(words)
 
         return True
