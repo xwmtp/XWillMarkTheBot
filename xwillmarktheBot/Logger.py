@@ -3,11 +3,8 @@ import logging
 import os
 
 def initalize_logger():
-
     logger = logging.getLogger()
-    logger.handlers.clear()
     logger.setLevel(logging.DEBUG)
-
     formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s: %(message)s')
 
     if not os.path.exists('logs'):
