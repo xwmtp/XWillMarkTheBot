@@ -55,11 +55,18 @@ class Result_handler(Message_handler):
         player = args.get_player(self)
         if player:
 
+            if 'bingo' in args.type and 'all' not in args.type and Settings.LATEST_BINGO_VERSION_DATE != '':
+                disclaimer = ' (for the latest bingo version)'
+            else:
+                disclaimer = ''
+
+
+            # for bingo races, only looks at latest version
             pb = player.get_pb(type=args.type)
             if pb:
-                self.send(f"{player.name}'s {args.type} race pb is {pb}.")
+                self.send(f"{player.name}'s {args.type} race pb{disclaimer} is {pb}.")
             else:
-                self.send(f"No recorded {args.type} races found for user {player.name}")
+                self.send(f"No recorded {args.type} races{disclaimer} found for user {player.name}.")
 
     def get_stream_title_type(self):
         title = get_stream_category()
