@@ -1,15 +1,16 @@
 from xwillmarktheBot.Speedrun_stats.Stream_title import get_stream_category
-from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Results.Player_lookup import lookup_SRL_player
+from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Results.Player_lookup import Player_lookup
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
 from xwillmarktheBot.Settings import Settings, Definitions
 import logging
 
 
+player_lookup = Player_lookup()
+
 class Result_handler(Message_handler):
 
     def __init__(self):
         super().__init__()
-        self.SRL_players = {Settings.STREAMER: lookup_SRL_player(Settings.STREAMER)}
         self.commands = {
             'average': ['!average', '!mean', '!median'],
             'results': ['!results'],
@@ -81,13 +82,6 @@ class Result_handler(Message_handler):
         if matching_types != []:
             return matching_types[0]
 
-    def get_SRL_player(self, name):
-        #if name not in self.SRL_players:
-        logging.info(f"Looking up user {name}...")
-        self.SRL_players[name] = lookup_SRL_player(name)
-
-        return self.SRL_players[name]
-
     def check_valid_arguments(self, split_msg):
         command = split_msg[0]
 
@@ -124,10 +118,11 @@ class Result_info:
             if Settings.RESPOND_TO_USER:
                 name = self.sender
             else:
-                return result_handler.SRL_players[Settings.STREAMER]
-        player = result_handler.get_SRL_player(name)
+                return player_lookup.get_SRL_player(Settings.STREAMER)
+        player = player_lookup.get_SRL_player(name)
         if player:
             return player
+
 
     def get_n(self, split_msg):
         if split_msg[0] == '!median':

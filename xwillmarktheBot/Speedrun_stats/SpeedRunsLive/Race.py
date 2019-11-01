@@ -14,7 +14,7 @@ class Race:
         self.goal = json['goal']
         self.type = self.determine_type(self.goal)
         if self.type not in Definitions.RACE_TYPES:
-            logging.CRITICAL(f'Race got assigned an undefined type ({self.type})!')
+            logging.ERROR(f'Race got assigned an undefined type ({self.type})!')
         self.entrants = [] # to be defined in child classes
 
     def get_entrant(self, name):
