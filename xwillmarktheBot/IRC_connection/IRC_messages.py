@@ -102,6 +102,7 @@ class IRC_message_handler:
 
                 else:
                     logging.info(f"Received other message: {msg}")
+                    logging.info(f"Words: {words}")
                     self.check_first_connection(words)
 
         return True
