@@ -5,6 +5,8 @@ import os
 def initalize_logger():
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
+    logger.handlers.clear()
+
     formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s: %(message)s')
 
     if not os.path.exists('logs'):

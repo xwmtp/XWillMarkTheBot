@@ -85,7 +85,7 @@ class IRC_message_handler:
                     logging.info('Received PING.')
                     self.irc.send_pong(line[1])
 
-                if words[1] == 'PONG':
+                elif words[1] == 'PONG':
                     logging.info('Received PONG.')
                     self.waiting_for_pong = False
 

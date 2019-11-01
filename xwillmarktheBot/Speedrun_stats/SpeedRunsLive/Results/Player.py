@@ -7,15 +7,23 @@ import datetime
 class SRL_player:
 
     def __init__(self, name, json):
+        logging.info(f'Creating player {name}')
         self.name = name
         self.races = [PastRace(race) for race in json['pastraces']]
         self.typeof = type
-
-
         #todo: blacklisting races
-        #if self.name.lower() in blacklist_dict.keys():
-        #    self.blacklist = blacklist_dict[self.name]
 
+
+    def reload_data(self):
+        logging.info(f'Reloading data of player {self.name}')
+
+        updated_json = readjson(f"http://api.speedrunslive.com/pastraces?player={self.name}&pageSize=1000")
+        if updated_json:
+            self.races = [PastRace(race) for race in updated_json['pastraces']]
+            return True
+        else:
+            logging.info(f'Reloading data of player {self.name} failed')
+            return False
 
 
     def get_average(self, n=15, type='bingo', method='average'):
@@ -88,10 +96,6 @@ class SRL_player:
             selected_races = sorted(selected_races, key=lambda r: r.date, reverse=True)
 
         #todo: blacklist
-        #if remove_blacklisted and self.name in blacklist_dict.keys():
-        #    races = [race for race in races if str(race.time) not in self.blacklist]
-
-        # Can't select more races than have been found
 
         if (n > len(selected_races)) or (n == -1):
             n = len(selected_races)
