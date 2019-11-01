@@ -38,8 +38,7 @@ class Race:
                 return 'short-bingo'
             for term in ['long', '3x3', 'anti', 'double', 'bufferless', 'child', 'jp', 'japanese', 'bingo-j']:
                 if term in goal:
-                    return 'other-bingo'
-
+                    return 'other'
 
             return 'bingo'
 
