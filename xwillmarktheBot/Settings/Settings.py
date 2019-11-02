@@ -17,7 +17,7 @@ BOT      = 'xwillmarktheBot'
 
 # Editors are Twitch users with rights to use all commands (like resetting rando hints)
 # You could add your moderators. The STREAMER has to be in the list. Example: [STREAMER, 'user1', 'user2']
-EDITORS  = [STREAMER]
+EDITORS  =  [STREAMER, 'scaramangado', 'jelster64', 'juwk']
 
 
 # COMMAND SETTINGS
@@ -52,7 +52,7 @@ PRINT_RACE_ENTRANTS = True
 
 # If True, the commands likes !pb, !wr, !average, !results will respond by looking at the data of the person
 # that posted the command. If set to False, the streamer defined above will be used by default.
-RESPOND_TO_USER = True
+RESPOND_TO_USER = False
 
 
 
