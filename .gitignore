@@ -1,3 +1,6 @@
+# settings file in root folder
+Settings.py
+
 # text files
 *.txt
 *.log
