@@ -22,16 +22,16 @@
 This is a Twitch bot developed for *Ocarina of Time* speedrunners, created by [xwillmarktheplace](https://twitch.tv/xwillmarktheplace). It includes various modules to provide viewers with information about your speedruns and races. Currently it can:
 
 * Fetch up-to-date records from [Speedrun.com](https://www.speedrun.com/)
-![src](https://github.com/xwmtp/xwillmarktheBot/blob/master/images/Speedrun_com.PNG)
+![src](https://github.com/xwmtp/xwillmarktheBot/blob/assets/images/Speedrun_com.PNG)
 
 * Post the goal and entrants of your current [SRL](http://www.speedrunslive.com/) race
-![race](https://github.com/xwmtp/xwillmarktheBot/blob/master/images/Race.PNG)
+![race](https://github.com/xwmtp/xwillmarktheBot/blob/assets/images/Race.PNG)
 
 * Return stats from past SRL races
-![results](https://github.com/xwmtp/xwillmarktheBot/blob/master/images/Results.PNG)
+![results](https://github.com/xwmtp/xwillmarktheBot/blob/assets/images/Results.PNG)
 
 * Keep track of hints found in oot rando
-![Rando](https://github.com/xwmtp/xwillmarktheBot/blob/master/images/Rando.PNG)
+![Rando](https://github.com/xwmtp/xwillmarktheBot/blob/assets/images/Rando.PNG)
 
 
 ## Installation
@@ -111,4 +111,4 @@ The *randomizer* module allows you to have an up-to-date command with the hints 
 ## Support
 If you like the bot and would like to support me, you can make a [donation](https://streamlabs.com/xwillmarktheplace) or leave a sub to my Twitch [channel](https://www.twitch.tv/xwillmarktheplace). Thank you!
 
-[![xwmtp](https://github.com/xwmtp/xwillmarktheBot/blob/master/images/xwmtp_banner.png)](https://www.twitch.tv/xwillmarktheplace/)
+[![xwmtp](https://github.com/xwmtp/xwillmarktheBot/blob/assets/images/xwmtp_banner.png)](https://www.twitch.tv/xwillmarktheplace/)
