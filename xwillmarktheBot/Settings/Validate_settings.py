@@ -6,6 +6,9 @@ from datetime import datetime
 
 
 def validate_settings():
+    # all the required fields have been changed from the default value
+    validate_settings_file_edited()
+
     # message handler settings are all bool
     validate_boolean_settings()
 
@@ -24,6 +27,15 @@ def validate_settings():
     # check if all dates are correct
     validate_dates()
 
+def validate_settings_file_edited():
+    default_stream_settings = {
+        Settings.STREAMER  : '123_user_name',
+        Settings.BOT       : '123_bot__name',
+        Settings.BOT_OAUTH : 'oauth:test123'
+    }
+    for setting, default_value in default_stream_settings.items():
+        assert (setting != default_value), "One of the Stream settings in Settings.py has not been filled in! Please fill in your streamer name, bot name, and the bots oauth.\
+                                            \nOpen Settings.py (in the root folder xwillmarktheBot/Settings.py) in a text editor and rerun the program afterwards."
 
 def validate_boolean_settings():
     for setting in [Settings.SPEEDRUN_COM, Settings.SRL_RESULTS, Settings.SRL_RACES, Settings.PRINT_RACE_ENTRANTS]:

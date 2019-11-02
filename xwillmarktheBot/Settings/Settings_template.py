@@ -14,9 +14,9 @@ import logging
 
 # Warning: don't share the oauth anywhere, since it provides access to your bots account!
 
-STREAMER  = 'xwillmarktheplace'
-BOT       = 'xwillmarktheBot'
-BOT_OAUTH = 'oauth:symuu2puipw9ed4or4t8326d7mnzyf'
+STREAMER  = '123_user_name'
+BOT       = '123_bot_name'
+BOT_OAUTH = 'oath:test123'
 
 # Editors are Twitch users with rights to use all commands (like resetting rando hints)
 # You could add your moderators. The STREAMER has to be in the list. Example: [STREAMER, 'user1', 'user2']
