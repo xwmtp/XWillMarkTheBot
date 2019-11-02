@@ -4,7 +4,6 @@ from xwillmarktheBot.Settings.Validate_settings import validate_settings
 from xwillmarktheBot.Settings.Manage_settings import *
 from xwillmarktheBot.Logger import initalize_logger
 import os
-import sys
 
 
 if __name__ == '__main__':
@@ -36,13 +35,3 @@ if __name__ == '__main__':
         bot = IRC_message_handler(Settings.BOT_OAUTH)
         if bot.irc.is_connected():
             bot.run_irc_chat()
-
-
-# IDEAS
-# - most common word in comments?
-# - derive most common row from comments
-
-
-
-
-
