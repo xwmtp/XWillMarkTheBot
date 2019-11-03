@@ -5,7 +5,7 @@ import re
 TITLE_BLACKLIST = ['runs', 'run', 'speed', 'short', 'stream', 'playthrough', 'blind']
 
 def get_stream_category():
-    title = readjson(f"https://decapi.me/twitch/title/{Settings.STREAMER}", text_only=True).lower()
+    title = readjson(f"https://decapi.me/twitch/title/{Settings.get('streamer')}", text_only=True).lower()
     return clean_stream_title(title)
 
 

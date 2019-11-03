@@ -38,7 +38,7 @@ class Rando_handler(Message_handler):
 
 
     def reset_hints(self, sender):
-        if sender in Settings.EDITORS:
+        if sender in Settings.get('editors'):
             if reset_hints():
                 self.send("Hints file reset to default.")
             else:

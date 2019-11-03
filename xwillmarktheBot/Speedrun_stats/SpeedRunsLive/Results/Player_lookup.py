@@ -6,7 +6,8 @@ from xwillmarktheBot.Settings import Settings
 class Player_lookup:
 
     def __init__(self):
-        self.SRL_players = {Settings.STREAMER: self.find_new_SRL_player(Settings.STREAMER)}
+        streamer = Settings.get('streamer')
+        self.SRL_players = {streamer: self.find_new_SRL_player(streamer)}
 
     def get_SRL_player(self, name):
         if name in self.SRL_players:

@@ -24,7 +24,7 @@ class Race_handler(Message_handler):
         split_msg = msg.lower().split(' ')
         command = split_msg[0]
 
-        self.update_live_race(Settings.STREAMER)
+        self.update_live_race(Settings.get('streamer'))
 
         if self.live_race is None:
             return self.send("No SRL race found.")
@@ -67,7 +67,7 @@ class Race_handler(Message_handler):
         elif command in self.commands['race']:
             answer = self.live_race.get_race_link()
 
-        if (command in self.commands['entrants']) | (Settings.PRINT_RACE_ENTRANTS & (command in self.commands['race'])):
+        if (command in self.commands['entrants']) | (Settings.get('print all race entrants') & (command in self.commands['race'])):
             answer = f"{answer} Entrants: {self.live_race.get_entrants_string()}"
 
         return answer.strip()

@@ -33,9 +33,9 @@ class Speedrun_handler(Message_handler):
         if command in self.commands['handle_pb']:
             self.handle_pb(msg, sender)
 
-        elif Settings.SPEEDRUN_COM and command in self.SRC_handler.get_commands():
+        elif Settings.get('speedrun.com') and command in self.SRC_handler.get_commands():
             self.SRC_handler.handle_message(msg, sender)
-        elif Settings.SRL_RESULTS and command in self.result_handler.get_commands():
+        elif Settings.get('srl results') and command in self.result_handler.get_commands():
             self.result_handler.handle_message(msg, sender)
 
 
@@ -60,10 +60,10 @@ class Speedrun_handler(Message_handler):
 
         logging.debug(f"Comparing argument '{arg}' to race types: {Definitions.RACE_TYPES}")
         if any(type in arg for type in Definitions.RACE_TYPES):
-            if Settings.SRL_RESULTS:
+            if Settings.get('srl results'):
                 return self.result_handler.handle_message(msg, sender)
 
-        if Settings.SPEEDRUN_COM:
+        if Settings.get('speedrun.com'):
             return self.SRC_handler.handle_message(msg, sender)
 
 

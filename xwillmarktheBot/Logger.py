@@ -18,7 +18,7 @@ def initalize_logger():
         logger.addHandler(handler)
 
     # console handler
-    add_logging_handler(logging.StreamHandler(), Settings.CONSOLE_LOGGING_LEVEL)
+    add_logging_handler(logging.StreamHandler(), Settings.get('CONSOLE_LOGGING_LEVEL'))
 
     # file handler (errors)
     add_logging_handler(logging.FileHandler("logs/ERROR.log", "a"), logging.WARNING)

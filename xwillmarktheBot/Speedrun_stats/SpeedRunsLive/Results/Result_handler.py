@@ -5,8 +5,6 @@ from xwillmarktheBot.Settings import Settings, Definitions
 import logging
 
 
-player_lookup = Player_lookup()
-
 class Result_handler(Message_handler):
 
     def __init__(self, irc_connection):
@@ -17,7 +15,8 @@ class Result_handler(Message_handler):
             'pb': ['!pb', '!best'],
             'user_pb': ['!userpb']
         }
-        self.race_type = Settings.DEFAULT_RACE_TYPE
+        self.player_lookup = Player_lookup()
+        self.race_type = Settings.get('default race type')
 
     def handle_message(self, msg, sender):
         split_msg = msg.lower().split(' ')
@@ -56,7 +55,7 @@ class Result_handler(Message_handler):
         player = args.get_player(self)
         if player:
 
-            if 'bingo' in args.type and 'all' not in args.type and Settings.LATEST_BINGO_VERSION_DATE != '':
+            if 'bingo' in args.type and 'all' not in args.type and Settings.get('latest bingo version date') != '':
                 disclaimer = ' (for the latest bingo version)'
             else:
                 disclaimer = ''
@@ -111,11 +110,11 @@ class Result_info:
         logging.debug('Message sent by: ' + self.sender)
         name = self.player_name
         if not name:
-            if Settings.RESPOND_TO_USER:
+            if Settings.get('respond to user'):
                 name = self.sender
             else:
-                return player_lookup.get_SRL_player(Settings.STREAMER)
-        player = player_lookup.get_SRL_player(name)
+                return result_handler.player_lookup.get_SRL_player(Settings.get('streamer'))
+        player = result_handler.player_lookup.get_SRL_player(name)
         if not player:
             return result_handler.send("SRL user not found!")
         else:
@@ -142,7 +141,7 @@ class Result_info:
 
         # pick default
         if not type:
-            return Settings.DEFAULT_RACE_TYPE
+            return Settings.get('default race type')
         return type
 
 

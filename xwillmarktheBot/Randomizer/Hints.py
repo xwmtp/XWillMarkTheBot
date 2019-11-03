@@ -17,7 +17,7 @@ def send_current_hints():
 
 
 def _read_hint_file():
-    hints_path = Settings.RANDO_HINTS_DIR / 'rando_hints.txt'
+    hints_path = Settings.get('RANDO_HINTS_DIR') / 'rando_hints.txt'
 
     with open(hints_path) as h:
         hint_lines = h.readlines()
@@ -68,7 +68,7 @@ def _get_hints(hint_dict):
 
 def reset_hints():
     try:
-        path = Settings.RANDO_HINTS_DIR
+        path = Settings.get('RANDO_HINTS_DIR')
         return copy_file(path, 'rando_hints_template.txt', 'rando_hints.txt')
     except Exception as e:
         logging.critical(f"Error {repr(e)} while trying to read hint file, parse hints or get hints.")

@@ -17,11 +17,11 @@ class Message_distributor:
         handlers = []
 
         handlers.append(Speedrun_handler(irc))
-        if Settings.SRL_RACES:
+        if Settings.get('srl races'):
             handlers.append(Race_handler(irc))
 
 
-        if Settings.RANDO:
+        if Settings.get('rando'):
             handlers.append(Rando_handler(irc))
 
         handlers.append(General_commands(irc))

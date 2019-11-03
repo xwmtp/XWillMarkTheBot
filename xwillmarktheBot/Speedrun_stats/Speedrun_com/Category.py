@@ -62,7 +62,8 @@ class Leaderboard:
         assert run.rank == rank
         return run
 
-    def get_user_run(self, user=Settings.STREAMER):
+    def get_user_run(self, user):
+
         user_id = username_to_id(user)
         if user_id is not None:
 

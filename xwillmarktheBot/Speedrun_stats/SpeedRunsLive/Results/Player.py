@@ -104,8 +104,8 @@ class SRL_player:
 
     def select_dates(self, races, type):
         if ('bingo' in type) & ('all' not in type):
-            if Settings.LATEST_BINGO_VERSION_DATE != '':
-                version_date = datetime.datetime.strptime(Settings.LATEST_BINGO_VERSION_DATE, '%d-%m-%Y')
+            if Settings.get('latest bingo version date') != '':
+                version_date = datetime.datetime.strptime(Settings.get('latest bingo version date'), '%d-%m-%Y')
 
                 races = [race for race in races if race.get_date() >= version_date]
 

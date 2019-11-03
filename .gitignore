@@ -1,5 +1,6 @@
 # settings file in root folder
-Settings.py
+Settings.ini
+xwillmarktheBot/Settings/Advanced_settings.ini
 
 # text files
 *.txt
