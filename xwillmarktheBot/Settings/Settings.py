@@ -2,8 +2,11 @@ from shutil import copyfile
 import configparser
 import logging
 
-SETTINGS          = configparser.ConfigParser()
-SETTINGS_ADVANCED = configparser.ConfigParser()
+
+configs = {
+    'settings'          : configparser.ConfigParser(),
+    'settings_advanced' : configparser.ConfigParser()
+}
 
 def create_settings():
     copyfile(r'xwillmarktheBot/Settings/Templates/Settings.ini', r'Settings.ini')
@@ -11,9 +14,9 @@ def create_settings():
 
 
 def import_settings():
-    global SETTINGS
-    SETTINGS.read_file(open('C:/Users/sdste/Dropbox/Programming/xwillmarktheBot/Settings.ini'))
-    SETTINGS_ADVANCED.read_file(open('C:/Users/sdste/Dropbox/Programming/xwillmarktheBot/xwillmarktheBot/Settings/Advanced_settings.ini'))
+    global configs
+    configs['settings'].read_file(open('C:/Users/sdste/Dropbox/Programming/xwillmarktheBot/Settings.ini'))
+    configs['settings_advanced'].read_file(open('C:/Users/sdste/Dropbox/Programming/xwillmarktheBot/xwillmarktheBot/Settings/Advanced_settings.ini'))
 
 def parse_setting_string(str):
     # parse to list
@@ -35,11 +38,12 @@ def transform_setting(setting, option):
     return setting
 
 def get(option):
-    if SETTINGS.sections() == []:
-        raise LookupError(f'Attempted to look up setting ({option}) before instantiation.')
+    for config in configs.values():
+        if config.sections() == []:
+            raise LookupError(f'Attempted to look up setting ({option}) in an empty config.')
 
     setting = None
-    for config in [SETTINGS, SETTINGS_ADVANCED]:
+    for config in configs.values():
         for section in config.sections():
             if config.has_option(section, option):
                 raw_setting = config.get(section, option).lower()
@@ -51,5 +55,19 @@ def get(option):
 
     return setting
 
+def get_section(section):
+    for config in configs.values():
+        if config.sections() == []:
+            raise LookupError(f'Attempted to look up section ({section}) in an empty config.')
+    for config in configs.values():
+        if section in config.sections():
+            return config[section]
+
+
 def set(option, value):
-    print('todo')
+    for config in configs.values():
+        for section in config.sections():
+            if config.has_option(section, option):
+                config.set(section, option, value)
+                return True
+    return False
