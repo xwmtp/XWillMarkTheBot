@@ -1,6 +1,5 @@
-# settings file in root folder
-Settings.ini
-xwillmarktheBot/Settings/Advanced_settings.ini
+# settings files
+*.ini
 
 # text files
 *.txt
@@ -9,6 +8,7 @@ xwillmarktheBot/Settings/Advanced_settings.ini
 # except
 !randohints/rando_hints.txt
 !randohints/rando_hints_template.txt
+!xwillmarktheBot/Settings/Templates/*.ini
 
 
 # Byte-compiled / optimized / DLL files

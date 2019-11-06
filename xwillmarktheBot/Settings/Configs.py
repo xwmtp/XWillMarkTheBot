@@ -4,55 +4,6 @@ import configparser
 import logging
 
 
-configs = {}
-
-
-def create_settings():
-    for config in configs:
-        config.copy_from_template()
-
-
-def import_settings():
-    global configs
-    configs = [
-        Config('Settings', Definitions.ROOT_DIR),
-        Config('Settings_advanced', Definitions.ROOT_DIR / 'xwillmarktheBot/Settings')
-    ]
-
-    for config in configs:
-        config.load_settings()
-
-
-
-def get(option):
-    option = option.lower()
-    for config in configs:
-        for section in config.dict.keys():
-            if option in config.dict[section].keys():
-                return config.dict[section][option]
-
-    logging.warning(f"Setting '{option}' does not exist!")
-
-
-def get_section(section):
-    section = section.lower()
-    for config in configs:
-        if section in config.dict.keys():
-            return config.dict[section]
-
-
-def set(option, value):
-    option = option.lower()
-    for config in configs:
-        for section in config.dict.keys():
-            if option in config.dict[section].keys():
-                config.dict[section][option] = value
-                return True
-    logging.warning(f"Option '{option}' does not exist and cannot be updated.")
-    return False
-
-
-
 class Config:
 
     def __init__(self, name, file_location):
@@ -70,7 +21,7 @@ class Config:
             raise ValueError(f'Empty config dictionary, no setting were found.')
 
     def copy_from_template(self):
-        copyfile(rf'xwillmarktheBot/Settings/Templates/{self.name}.ini', f'{self.file_location}/Settings.ini')
+        copyfile(rf'xwillmarktheBot/Settings/Templates/{self.name}.ini', f'{self.file_location}/{self.name}.ini')
 
 
     def parse_dict_values(self, dct):
@@ -101,3 +52,47 @@ class Config:
                 transformed_setting = transform_setting(parsed_setting, option)
                 dct[section][option] = transformed_setting
         return dct
+
+
+
+
+configs = [
+    Config('Settings', Definitions.ROOT_DIR),
+    Config('Settings_advanced', Definitions.ROOT_DIR / 'xwillmarktheBot/Settings')
+]
+
+
+def create_settings():
+    for config in configs:
+        config.copy_from_template()
+
+def import_settings():
+    for config in configs:
+        config.load_settings()
+
+
+
+def get(option):
+    option = option.lower()
+    for config in configs:
+        for section in config.dict.keys():
+            if option in config.dict[section].keys():
+                return config.dict[section][option]
+
+    logging.warning(f"Setting '{option}' does not exist!")
+
+def get_section(section):
+    section = section.lower()
+    for config in configs:
+        if section in config.dict.keys():
+            return config.dict[section]
+
+def set(option, value):
+    option = option.lower()
+    for config in configs:
+        for section in config.dict.keys():
+            if option in config.dict[section].keys():
+                config.dict[section][option] = value
+                return True
+    logging.warning(f"Option '{option}' does not exist and cannot be updated.")
+    return False

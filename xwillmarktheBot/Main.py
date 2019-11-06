@@ -22,7 +22,7 @@ if __name__ == '__main__':
         create_settings()
         print_introduction()
         print("BEFORE USE:\
-              \nA file Configs.py has been created in the root folder (xwillmarktheBot/Configs.py).\
+              \nA file Settings.ini has been created in the root folder (xwillmarktheBot/Settings.ini).\
               \nPlease open the file in a text editor fill in your personal settings (including channel name, bot name, which modules you would like to use, etc).\
               \nThen restart this program to activate the bot.")
     else:
