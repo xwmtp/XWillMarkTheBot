@@ -1,4 +1,4 @@
-from xwillmarktheBot.Settings import Settings, Definitions
+from xwillmarktheBot.Settings import Configs, Definitions
 from xwillmarktheBot.Utils import *
 import logging
 import re
@@ -16,7 +16,7 @@ def send_current_hints():
         logging.critical(f"Error {e} while trying to read hint file, parse hints or get hints.")
 
 def _get_hints_path():
-    location = Settings.get('RANDO_HINTS_DIR')
+    location = Configs.get('rando_hints_dir')
     if location == 'default':
         return Definitions.ROOT_DIR / 'RandoHints'
     else:

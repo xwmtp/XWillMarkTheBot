@@ -1,16 +1,16 @@
 from xwillmarktheBot.Utils import *
 from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Results.Player import SRL_player
-from xwillmarktheBot.Settings import Settings
+from xwillmarktheBot.Settings import Configs
 
 
 class Player_lookup:
 
     def __init__(self):
-        streamer = Settings.get('streamer')
+        streamer = Configs.get('streamer')
         self.SRL_players = {streamer: self.find_new_SRL_player(streamer)}
 
     def get_SRL_player(self, name):
-        if name in self.SRL_players:
+        if name in self.SRL_players.keys():
             reloaded = self.SRL_players[name].reload_data()
             if reloaded:
                 return self.SRL_players[name]
@@ -54,7 +54,10 @@ class Player_lookup:
 
 
     def _add_defined_alt_names(self, names):
-        for name, alts in Settings.get_section('alt_names').items():
+        alt_name_dict = Configs.get_section('alt_names')
+        for name, alts in alt_name_dict.items():
+            logging.debug(f'name : {name}, names: {names}, alts: {alts}')
+            logging.debug(type(alts))
             if any([is_lowercase_elem(n, alts) for n in names]):
                 if not is_lowercase_elem(name, names):
                     logging.debug(f'Added defined alt name {name}.')

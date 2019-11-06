@@ -1,7 +1,7 @@
 from xwillmarktheBot.IRC_connection.IRC_messages import IRC_message_handler
-from xwillmarktheBot.Settings import Settings
+from xwillmarktheBot.Settings import Configs
 from xwillmarktheBot.Settings.Validate_settings import validate_settings
-from xwillmarktheBot.Settings.Settings import *
+from xwillmarktheBot.Settings.Configs import *
 from xwillmarktheBot.Logger import initalize_logger
 import os
 
@@ -22,7 +22,7 @@ if __name__ == '__main__':
         create_settings()
         print_introduction()
         print("BEFORE USE:\
-              \nA file Settings.py has been created in the root folder (xwillmarktheBot/Settings.py).\
+              \nA file Configs.py has been created in the root folder (xwillmarktheBot/Configs.py).\
               \nPlease open the file in a text editor fill in your personal settings (including channel name, bot name, which modules you would like to use, etc).\
               \nThen restart this program to activate the bot.")
     else:
@@ -32,6 +32,6 @@ if __name__ == '__main__':
 
         print_introduction()
 
-        bot = IRC_message_handler(Settings.get('bot oauth'))
+        bot = IRC_message_handler(Configs.get('bot oauth'))
         if bot.irc.is_connected():
             bot.run_irc_chat()

@@ -1,6 +1,6 @@
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
 from xwillmarktheBot.Randomizer.Hints import send_current_hints, reset_hints
-from xwillmarktheBot.Settings import Settings
+from xwillmarktheBot.Settings import Configs
 
 class Rando_handler(Message_handler):
 
@@ -38,7 +38,7 @@ class Rando_handler(Message_handler):
 
 
     def reset_hints(self, sender):
-        if sender in Settings.get('editors'):
+        if sender in Configs.get('editors'):
             if reset_hints():
                 self.send("Hints file reset to default.")
             else:
