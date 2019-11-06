@@ -1,5 +1,5 @@
-# settings file in root folder
-Settings.py
+# settings files
+*.ini
 
 # text files
 *.txt
@@ -8,6 +8,7 @@ Settings.py
 # except
 !randohints/rando_hints.txt
 !randohints/rando_hints_template.txt
+!xwillmarktheBot/Settings/Templates/*.ini
 
 
 # Byte-compiled / optimized / DLL files
