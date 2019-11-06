@@ -56,8 +56,6 @@ class Player_lookup:
     def _add_defined_alt_names(self, names):
         alt_name_dict = Configs.get_section('alt_names')
         for name, alts in alt_name_dict.items():
-            logging.debug(f'name : {name}, names: {names}, alts: {alts}')
-            logging.debug(type(alts))
             if any([is_lowercase_elem(n, alts) for n in names]):
                 if not is_lowercase_elem(name, names):
                     logging.debug(f'Added defined alt name {name}.')
