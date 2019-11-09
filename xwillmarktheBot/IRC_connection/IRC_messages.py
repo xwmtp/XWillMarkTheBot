@@ -1,6 +1,6 @@
 from xwillmarktheBot.IRC_connection.Twitch import Twitch_IRC
 from xwillmarktheBot.Message_distributor import Message_distributor
-from xwillmarktheBot.Settings import Settings
+from xwillmarktheBot.Settings import Configs
 import traceback
 import re
 import socket
@@ -13,7 +13,7 @@ class IRC_message_handler:
 
     def __init__(self, OAUTH):
         self.OAUTH = OAUTH
-        self.irc = Twitch_IRC(Settings.STREAMER, Settings.BOT, OAUTH)
+        self.irc = Twitch_IRC(Configs.get('streamer'), Configs.get('bot'), OAUTH)
 
         self.connected = False
         self.timeouts = 0
@@ -135,7 +135,7 @@ class IRC_message_handler:
         self.chatbot.find_command(msg, sender)
 
     def check_first_connection(self, words):
-        if not self.connected and words[0].startswith(':' + Settings.BOT.lower()):
+        if not self.connected and words[0].startswith(':' + Configs.get('bot').lower()):
             logging.info('Sucesfully connected to irc.')
             self.irc.send_message('Succesfully connected.')
             self.connected = True
@@ -160,6 +160,6 @@ class IRC_message_handler:
                 interval = interval * 2
 
             logging.critical(f"Attempting to reconnect (attempt {attempts}).")
-            self.irc = Twitch_IRC(Settings.STREAMER, Settings.BOT, self.OAUTH)
+            self.irc = Twitch_IRC(Configs.get('streamer'), Configs.get('bot'), self.OAUTH)
             if self.irc.is_connected():
                 return True

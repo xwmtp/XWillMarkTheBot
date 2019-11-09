@@ -1,5 +1,5 @@
 from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Race import PastRace
-from xwillmarktheBot.Settings import Definitions, Settings
+from xwillmarktheBot.Settings import Definitions, Configs
 from xwillmarktheBot.Utils import *
 import datetime
 
@@ -55,7 +55,9 @@ class SRL_player:
         return ', '.join(times), len(result_races), forfeits
 
     def get_forfeit_count(self, n, type, races):
-        """Get the amount of forfeits in a list of races that happened in the last 5. Assumes races is sorted by latest date."""
+        """Get the amount of forfeits in a list of races that happened in the last n. Assumes races is sorted by latest date."""
+        if races == []:
+            return 0
         oldest_race = races[-1]
         logging.debug(f'Race nr {n}: {oldest_race.date}, {oldest_race.get_entrant(self.name).get_time()}')
         all_races = self.select_races(-1, type, sort='latest', forfeits=True, latest_version=False)
@@ -104,8 +106,8 @@ class SRL_player:
 
     def select_dates(self, races, type):
         if ('bingo' in type) & ('all' not in type):
-            if Settings.LATEST_BINGO_VERSION_DATE != '':
-                version_date = datetime.datetime.strptime(Settings.LATEST_BINGO_VERSION_DATE, '%d-%m-%Y')
+            if Configs.get('latest bingo version date') != '':
+                version_date = datetime.datetime.strptime(Configs.get('latest bingo version date'), '%d-%m-%Y')
 
                 races = [race for race in races if race.get_date() >= version_date]
 
