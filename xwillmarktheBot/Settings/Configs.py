@@ -14,9 +14,7 @@ class Config:
     def load_settings(self):
         self.config_parser.read_file(open(f'{self.file_location}//{self.name}.ini'))
         self.dict = {s:dict(self.config_parser.items(s)) for s in self.config_parser.sections()}
-        print(self.dict)
         self.dict = self.parse_dict_values(self.dict)
-        print(self.dict)
         if self.dict == {}:
             raise ValueError(f'Empty config dictionary, no setting were found.')
 

@@ -27,7 +27,7 @@ class SRL_setting_commands(Message_handler):
             split_msg = msg.lower().split(' ')
             arg = split_msg[1]
             if arg in Definitions.RACE_TYPES:
-                Configs.set('default race type', arg) = arg
+                Configs.set('default race type', arg)
                 return f'Updated default SRL race type to {arg}.'
             else:
                 return f"Argument not a valid SRL race type! Choose from: {', '.join(Definitions.RACE_TYPES)}"
@@ -36,7 +36,7 @@ class SRL_setting_commands(Message_handler):
 
     def get_srl(self, msg, sender):
         if sender in Configs.get('editors'):
-            return f'SRL race type is currently set to {Configs.get('default race type')}.'
+            return f"SRL race type is currently set to {Configs.get('default race type')}."
         else:
             return f"{sender} does not have the permissions to use this command."
 

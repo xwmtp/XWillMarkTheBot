@@ -1,7 +1,7 @@
-from xwillmarktheBot.IRC_connection.IRC_messages import IRC_message_handler
 from xwillmarktheBot.Connections.IRC_connection.IRC_messages import IRC_message_handler
 from xwillmarktheBot.Settings.Validate_settings import validate_settings
 from xwillmarktheBot.Settings.Configs import *
+from xwillmarktheBot.Settings import Configs
 from xwillmarktheBot.Logger import initalize_logger
 from xwillmarktheBot.Connections.Discord_connection import Discord_messages
 import os
@@ -21,9 +21,6 @@ if __name__ == '__main__':
     else:
         connection_type = 'discord'
 
-
-    initalize_logger()
-    validate_settings()
 
     def print_introduction():
         print("\n                _ _ _                      _    _   _          ____        _    \
@@ -49,11 +46,9 @@ if __name__ == '__main__':
 
         print_introduction()
 
-        bot = IRC_message_handler(Configs.get('bot oauth'))
-        if bot.irc.is_connected():
-            bot.run_irc_chat()
 
     if connection_type == 'twitch':
+        print('b')
         bot = IRC_message_handler(token)
         if bot.irc.is_connected():
             bot.run_irc_chat()

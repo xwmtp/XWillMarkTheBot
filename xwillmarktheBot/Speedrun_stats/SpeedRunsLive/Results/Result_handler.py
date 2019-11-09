@@ -117,8 +117,8 @@ class Result_info:
             if Configs.get('respond to user'):
                 name = self.sender
             else:
-                return player_lookup.get_SRL_player(Configs.get('streamer'))
-        player = player_lookup.get_SRL_player(name)
+                return result_handler.player_lookup.get_SRL_player(Configs.get('streamer'))
+        player = result_handler.player_lookup.get_SRL_player(name)
         if player:
             return player
 

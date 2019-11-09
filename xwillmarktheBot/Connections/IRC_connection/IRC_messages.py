@@ -23,7 +23,7 @@ class IRC_message_handler:
 
 
     def run_irc_chat(self):
-        self.chatbot = Message_distributor(self.irc)
+        self.chatbot = Message_distributor()
         data = ''
         while (True):
             try:
