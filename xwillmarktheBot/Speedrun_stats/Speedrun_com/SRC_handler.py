@@ -1,7 +1,7 @@
 from xwillmarktheBot.Speedrun_stats.Speedrun_com.Category_matcher import Category_matcher
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
 from xwillmarktheBot.Speedrun_stats import Stream_title
-from xwillmarktheBot.Settings import Settings
+from xwillmarktheBot.Settings import Configs
 
 
 class SRC_handler(Message_handler):
@@ -27,10 +27,10 @@ class SRC_handler(Message_handler):
             args = ' '.join(split_msg[2:])
         else:
         # pb of streamer
-            if Settings.RESPOND_TO_USER:
+            if Configs.get('respond to user'):
                 user = sender
             else:
-                user = Settings.STREAMER
+                user = Configs.get('streamer')
             args = msg.replace(f'{command}', '').strip(' ')
 
         # extract pb from title

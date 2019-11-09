@@ -1,4 +1,4 @@
-from xwillmarktheBot.Settings import Settings, Definitions
+from xwillmarktheBot.Settings import Configs, Definitions
 from xwillmarktheBot.Utils import *
 import logging
 import re
@@ -15,15 +15,22 @@ def send_current_hints():
     except Exception as e:
         logging.critical(f"Error {e} while trying to read hint file, parse hints or get hints.")
 
+def _get_hints_path():
+    location = Configs.get('rando_hints_dir')
+    if location == 'default':
+        return Definitions.ROOT_DIR / 'RandoHints'
+    else:
+        return os.path.normpath(location)
+
 
 def _read_hint_file():
-    hints_path = Settings.RANDO_HINTS_DIR / 'rando_hints.txt'
+    path = _get_hints_path() / 'rando_hints.txt'
 
-    with open(hints_path) as h:
+    with open(path) as h:
         hint_lines = h.readlines()
 
     hints = [l.strip() for l in hint_lines]
-    logging.debug('Succesfully read hints file from ' + str(hints_path))
+    logging.debug('Succesfully read hints file from ' + str(path))
     return hints
 
 def _parse_hints(hints):
@@ -68,8 +75,7 @@ def _get_hints(hint_dict):
 
 def reset_hints():
     try:
-        path = Settings.RANDO_HINTS_DIR
-        return copy_file(path, 'rando_hints_template.txt', 'rando_hints.txt')
+        return copy_file(_get_hints_path(), 'rando_hints_template.txt', 'rando_hints.txt')
     except Exception as e:
-        logging.critical(f"Error {repr(e)} while trying to read hint file, parse hints or get hints.")
+        logging.critical(f"Error {repr(e)} while trying to copy hints file.")
         return False

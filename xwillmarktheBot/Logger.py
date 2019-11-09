@@ -1,4 +1,4 @@
-from xwillmarktheBot.Settings import Settings
+from xwillmarktheBot.Settings import Configs
 import logging
 import os
 
@@ -18,7 +18,7 @@ def initalize_logger():
         logger.addHandler(handler)
 
     # console handler
-    add_logging_handler(logging.StreamHandler(), Settings.CONSOLE_LOGGING_LEVEL)
+    add_logging_handler(logging.StreamHandler(), Configs.get('console_logging_level'))
 
     # file handler (errors)
     add_logging_handler(logging.FileHandler("logs/ERROR.log", "a"), logging.WARNING)
