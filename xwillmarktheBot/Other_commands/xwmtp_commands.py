@@ -1,6 +1,6 @@
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
 from xwillmarktheBot.Utils import *
-from xwillmarktheBot.Settings import Settings
+from xwillmarktheBot.Settings import Configs
 
 import random
 
@@ -34,7 +34,7 @@ class xwmtp_commands(Message_handler):
 
     def monka(self, command):
         if self.monka_emotes == []:
-            url = "https://api.frankerfacez.com/v1/room/" + Settings.STREAMER
+            url = "https://api.frankerfacez.com/v1/room/" + Configs.get('streamer')
             json = readjson(url)
             emotes = json['sets']['164185']['emoticons']
 
