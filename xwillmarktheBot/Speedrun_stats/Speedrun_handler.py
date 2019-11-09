@@ -2,11 +2,8 @@ from xwillmarktheBot.Abstract_Message_Handler import Message_handler
 from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Results.Result_handler import Result_handler
 from xwillmarktheBot.Speedrun_stats.Speedrun_com.SRC_handler import SRC_handler
 from xwillmarktheBot.Speedrun_stats.Stream_title import get_stream_category
-from xwillmarktheBot.Settings import Settings, Definitions
+from xwillmarktheBot.Settings import Configs, Definitions
 from xwillmarktheBot.Utils import *
-
-from xwillmarktheBot.Settings import Settings
-
 
 class Speedrun_handler(Message_handler):
     """Middle Layer to send commands to SRL results or SRC. Handles !pb commands differently."""
@@ -33,9 +30,9 @@ class Speedrun_handler(Message_handler):
         if command in self.commands['handle_pb']:
             return self.handle_pb(msg, sender)
 
-        elif Settings.SPEEDRUN_COM and command in self.SRC_handler.get_commands():
+        elif Configs.get('speedrun.com') and command in self.SRC_handler.get_commands():
             return self.SRC_handler.handle_message(msg, sender)
-        elif Settings.SRL_RESULTS and command in self.result_handler.get_commands():
+        elif Configs.get('srl results') and command in self.result_handler.get_commands():
             return self.result_handler.handle_message(msg, sender)
 
 
@@ -60,10 +57,10 @@ class Speedrun_handler(Message_handler):
 
         logging.debug(f"Comparing argument '{arg}' to race types: {Definitions.RACE_TYPES}")
         if any(type in arg for type in Definitions.RACE_TYPES):
-            if Settings.SRL_RESULTS:
+            if Configs.get('srl results'):
                 return self.result_handler.handle_message(msg, sender)
 
-        if Settings.SPEEDRUN_COM:
+        if Configs.get('speedrun.com'):
             return self.SRC_handler.handle_message(msg, sender)
 
 

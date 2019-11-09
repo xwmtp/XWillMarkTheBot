@@ -3,7 +3,7 @@ from xwillmarktheBot.Speedrun_stats.Speedrun_handler import Speedrun_handler
 from xwillmarktheBot.Randomizer.Rando_handler import Rando_handler
 from xwillmarktheBot.Other_commands.SRL_setting_commands import SRL_setting_commands
 from xwillmarktheBot.Other_commands.General_commands import General_commands
-from xwillmarktheBot.Settings import Settings
+from xwillmarktheBot.Settings import Configs
 import logging
 
 
@@ -17,14 +17,14 @@ class Message_distributor:
         handlers = []
 
         handlers.append(Speedrun_handler())
-        if Settings.SRL_RACES:
+        if Configs.get('srl races'):
             handlers.append(Race_handler())
 
 
-        if Settings.RANDO:
+        if Configs.get('rando'):
             handlers.append(Rando_handler())
 
-        if Settings.GENERAL:
+        if Configs.get('general'):
             handlers.append(General_commands())
         handlers.append(SRL_setting_commands())
 

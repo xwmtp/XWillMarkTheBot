@@ -1,11 +1,9 @@
 from xwillmarktheBot.Speedrun_stats.Stream_title import get_stream_category
 from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Results.Player_lookup import Player_lookup
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
-from xwillmarktheBot.Settings import Settings, Definitions
+from xwillmarktheBot.Settings import Configs, Definitions
 import logging
 
-
-player_lookup = Player_lookup()
 
 class Result_handler(Message_handler):
 
@@ -17,7 +15,8 @@ class Result_handler(Message_handler):
             'pb': ['!pb', '!best'],
             'user_pb': ['!userpb']
         }
-        self.race_type = Settings.DEFAULT_RACE_TYPE
+        self.player_lookup = Player_lookup()
+        self.race_type = Configs.get('default race type')
 
     def handle_message(self, msg, sender):
         split_msg = msg.lower().split(' ')
@@ -61,7 +60,7 @@ class Result_handler(Message_handler):
         player = args.get_player(self)
         if player:
 
-            if 'bingo' in args.type and 'all' not in args.type and Settings.LATEST_BINGO_VERSION_DATE != '':
+            if 'bingo' in args.type and 'all' not in args.type and Configs.get('latest bingo version date') != '':
                 disclaimer = ' (for the latest bingo version)'
             else:
                 disclaimer = ''
@@ -115,10 +114,10 @@ class Result_info:
         logging.debug('Message sent by: ' + self.sender)
         name = self.player_name
         if not name:
-            if Settings.RESPOND_TO_USER:
+            if Configs.get('respond to user'):
                 name = self.sender
             else:
-                return player_lookup.get_SRL_player(Settings.STREAMER)
+                return player_lookup.get_SRL_player(Configs.get('streamer'))
         player = player_lookup.get_SRL_player(name)
         if player:
             return player
@@ -144,7 +143,7 @@ class Result_info:
 
         # pick default
         if not type:
-            return Settings.DEFAULT_RACE_TYPE
+            return Configs.get('default race type')
         return type
 
 

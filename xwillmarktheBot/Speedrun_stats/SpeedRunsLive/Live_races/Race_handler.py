@@ -1,6 +1,6 @@
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
 from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Race import LiveRace
-from xwillmarktheBot.Settings import Settings
+from xwillmarktheBot.Settings import Configs
 from xwillmarktheBot.Utils import *
 
 class Race_handler(Message_handler):
@@ -24,7 +24,7 @@ class Race_handler(Message_handler):
         split_msg = msg.lower().split(' ')
         command = split_msg[0]
 
-        self.update_live_race(Settings.STREAMER)
+        self.update_live_race(Configs.get('streamer'))
 
         if self.live_race is None:
             return "No SRL race found."
@@ -67,7 +67,7 @@ class Race_handler(Message_handler):
         elif command in self.commands['race']:
             answer = self.live_race.get_race_link()
 
-        if (command in self.commands['entrants']) | (Settings.PRINT_RACE_ENTRANTS & (command in self.commands['race'])):
+        if (command in self.commands['entrants']) | (Configs.get('print all race entrants') & (command in self.commands['race'])):
             answer = f"{answer} Entrants: {self.live_race.get_entrants_string()}"
 
         return answer.strip()

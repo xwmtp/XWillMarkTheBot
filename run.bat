@@ -1,3 +1,3 @@
-call python -m xwillmarktheBot.Main oauth:test123
+call python -m xwillmarktheBot.Main
 
 pause

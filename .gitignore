@@ -1,3 +1,6 @@
+# settings files
+*.ini
+
 # text files
 *.txt
 *.log
@@ -5,6 +8,7 @@
 # except
 !randohints/rando_hints.txt
 !randohints/rando_hints_template.txt
+!xwillmarktheBot/Settings/Templates/*.ini
 
 
 # Byte-compiled / optimized / DLL files
