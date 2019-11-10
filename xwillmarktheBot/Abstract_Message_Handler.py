@@ -1,8 +1,7 @@
 from xwillmarktheBot.Utils import *
 
 class Message_handler():
-    """Abstract class defining a general message handler.
-       Takes a 'connection' object which should have a 'send' method to send messages."""
+    """Abstract class defining a general message handler."""
 
     def __init__(self):
         # commands in the class
