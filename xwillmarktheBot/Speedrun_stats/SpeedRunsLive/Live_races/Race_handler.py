@@ -6,9 +6,9 @@ from xwillmarktheBot.Utils import *
 class Race_handler(Message_handler):
     """Handles messages concerning ongoing races (live races), with commands like !race, !entrants, etc."""
 
-    def __init__(self, irc_connection):
+    def __init__(self):
 
-        super().__init__(irc_connection)
+        super().__init__()
 
         self.commands = {
             'race' : ['!race'],
@@ -27,7 +27,7 @@ class Race_handler(Message_handler):
         self.update_live_race(Configs.get('streamer'))
 
         if self.live_race is None:
-            return self.send("No SRL race found.")
+            return "No SRL race found."
 
         def live_race_commands():
             live_race_groups = ['race', 'goal', 'card', 'entrants']
@@ -35,7 +35,7 @@ class Race_handler(Message_handler):
 
         # current race
         if command in live_race_commands():
-            self.send(self.get_live_race_info(command))
+            return self.get_live_race_info(command)
 
 
 

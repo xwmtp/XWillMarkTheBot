@@ -9,29 +9,30 @@ import logging
 
 class Message_distributor:
 
-    def __init__(self, irc_connection):
-        self.handlers = self.get_handlers(irc_connection)
+    def __init__(self):
+        self.handlers = self.get_handlers()
 
 
-    def get_handlers(self, irc):
+    def get_handlers(self):
         handlers = []
 
-        handlers.append(Speedrun_handler(irc))
+        handlers.append(Speedrun_handler())
         if Configs.get('srl races'):
-            handlers.append(Race_handler(irc))
+            handlers.append(Race_handler())
 
 
         if Configs.get('rando'):
-            handlers.append(Rando_handler(irc))
+            handlers.append(Rando_handler())
 
-        handlers.append(General_commands(irc))
-        handlers.append(SRL_setting_commands(irc))
+        if Configs.get('general'):
+            handlers.append(General_commands())
+        handlers.append(SRL_setting_commands())
 
         return handlers
 
 
-    def find_command(self, message, sender):
-        """Looks for commands in message to send the command to the right message handler."""
+    def get_response(self, message, sender):
+        """Looks for commands in message and returns a response if a command is triggered"""
         command = message.split(' ')[0]
         msg = message
 

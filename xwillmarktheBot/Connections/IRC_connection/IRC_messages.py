@@ -1,4 +1,4 @@
-from xwillmarktheBot.IRC_connection.Twitch import Twitch_IRC
+from xwillmarktheBot.Connections.IRC_connection.Twitch import Twitch_IRC
 from xwillmarktheBot.Message_distributor import Message_distributor
 from xwillmarktheBot.Settings import Configs
 import traceback
@@ -23,7 +23,7 @@ class IRC_message_handler:
 
 
     def run_irc_chat(self):
-        self.chatbot = Message_distributor(self.irc)
+        self.chatbot = Message_distributor()
         data = ''
         while (True):
             try:
@@ -132,7 +132,8 @@ class IRC_message_handler:
         elif msg == "!throw_socket":
             raise socket.error("test socket died")
 
-        self.chatbot.find_command(msg, sender)
+        response = self.chatbot.get_response(msg, sender)
+        self.irc.send_message(response)
 
     def check_first_connection(self, words):
         if not self.connected and words[0].startswith(':' + Configs.get('bot').lower()):
@@ -157,7 +158,7 @@ class IRC_message_handler:
             if attempts > 5:
                 logging.info(f"Waiting {interval} seconds before reconnect...")
                 time.sleep(interval)
-                interval = interval * 2
+                interval = max(interval * 2, 120)
 
             logging.critical(f"Attempting to reconnect (attempt {attempts}).")
             self.irc = Twitch_IRC(Configs.get('streamer'), Configs.get('bot'), self.OAUTH)

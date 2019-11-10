@@ -7,8 +7,8 @@ import logging
 
 class Result_handler(Message_handler):
 
-    def __init__(self, irc_connection):
-        super().__init__(irc_connection)
+    def __init__(self):
+        super().__init__()
         self.commands = {
             'average': ['!average', '!mean', '!median'],
             'results': ['!results'],
@@ -22,13 +22,15 @@ class Result_handler(Message_handler):
         split_msg = msg.lower().split(' ')
         command = split_msg[0]
 
-        if self.check_valid_arguments(split_msg):
+        argument_error = self.check_valid_arguments(split_msg)
+        if argument_error:
+            return argument_error
 
-            result_info = Result_info(split_msg, self, sender)
-            if command in self.commands['average'] + self.commands['results']:
-                self.handle_results(split_msg, result_info)
-            else:
-                self.handle_pb(result_info)
+        result_info = Result_info(split_msg, self, sender)
+        if command in self.commands['average'] + self.commands['results']:
+            return self.handle_results(split_msg, result_info)
+        else:
+            return self.handle_pb(result_info)
 
     def handle_results(self, split_msg, args):
         command = split_msg[0]
@@ -45,9 +47,12 @@ class Result_handler(Message_handler):
                 result_value, amount, forfeits = player.get_results(n=args.n, type=args.type)
 
             if (result_value is not None) & (result_value != ''):
-                self.send(f"{player.name}'s {command[1:]} for the last {amount} {args.type} races: {result_value} (forfeits: {forfeits})")
+                return f"{player.name}'s {command[1:]} for the last {amount} {args.type} races: {result_value} (forfeits: {forfeits})"
             else:
-                self.send(f"No recorded {args.type} races found for user {player.name}")
+                return f"No recorded {args.type} races found for user {player.name}"
+
+        else:
+            return "SRL user not found!"
 
     def handle_pb(self, args):
         logging.debug("Looking up SRL result PB...")
@@ -64,9 +69,11 @@ class Result_handler(Message_handler):
             # for bingo races, only looks at latest version
             pb = player.get_pb(type=args.type)
             if pb:
-                self.send(f"{player.name}'s {args.type} race pb{disclaimer} is {pb}.")
+                return f"{player.name}'s {args.type} race pb{disclaimer} is {pb}."
             else:
-                self.send(f"No recorded {args.type} races{disclaimer} found for user {player.name}.")
+                return f"No recorded {args.type} races{disclaimer} found for user {player.name}"
+        else:
+            "SRL user not found!"
 
     def get_stream_title_type(self):
         title = get_stream_category()
@@ -79,16 +86,13 @@ class Result_handler(Message_handler):
 
         if command in self.commands['average'] + self.commands['results']:
             if len(split_msg) > 4:
-                return self.send(
-                    f'Too many arguments! Please only add a username, integer and/or race type (pick from {Definitions.RACE_TYPES}).')
+                return f'Too many arguments! Please only add a username, integer and/or race type (pick from {Definitions.RACE_TYPES}).'
         else:
             if len(split_msg) > 3:
-                return self.send(
-                    f'Too many arguments! Please only add a username and/or race type (pick from {Definitions.RACE_TYPES}).')
+                return f'Too many arguments! Please only add a username and/or race type (pick from {Definitions.RACE_TYPES}).'
             if command in self.commands['user_pb']:
                 if len(split_msg) < 2:
-                    return self.send("Please supply a user!")
-        return True
+                    return "Please supply a user!"
 
 
 class Result_info:
@@ -115,9 +119,7 @@ class Result_info:
             else:
                 return result_handler.player_lookup.get_SRL_player(Configs.get('streamer'))
         player = result_handler.player_lookup.get_SRL_player(name)
-        if not player:
-            return result_handler.send("SRL user not found!")
-        else:
+        if player:
             return player
 
 

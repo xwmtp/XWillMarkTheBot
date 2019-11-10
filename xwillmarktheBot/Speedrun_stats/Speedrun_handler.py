@@ -5,17 +5,14 @@ from xwillmarktheBot.Speedrun_stats.Stream_title import get_stream_category
 from xwillmarktheBot.Settings import Configs, Definitions
 from xwillmarktheBot.Utils import *
 
-from xwillmarktheBot.Settings import Configs
-
-
 class Speedrun_handler(Message_handler):
     """Middle Layer to send commands to SRL results or SRC. Handles !pb commands differently."""
 
-    def __init__(self, irc_connection):
-        super().__init__(irc_connection)
+    def __init__(self):
+        super().__init__()
 
-        self.SRC_handler = SRC_handler(irc_connection)
-        self.result_handler = Result_handler(irc_connection)
+        self.SRC_handler = SRC_handler()
+        self.result_handler = Result_handler()
 
         self.commands = {
             'handle_pb' : ['!pb', '!userpb']
@@ -31,12 +28,12 @@ class Speedrun_handler(Message_handler):
 
         # handle pb separately (can be either results (bingo) or src)
         if command in self.commands['handle_pb']:
-            self.handle_pb(msg, sender)
+            return self.handle_pb(msg, sender)
 
         elif Configs.get('speedrun.com') and command in self.SRC_handler.get_commands():
-            self.SRC_handler.handle_message(msg, sender)
+            return self.SRC_handler.handle_message(msg, sender)
         elif Configs.get('srl results') and command in self.result_handler.get_commands():
-            self.result_handler.handle_message(msg, sender)
+            return self.result_handler.handle_message(msg, sender)
 
 
 

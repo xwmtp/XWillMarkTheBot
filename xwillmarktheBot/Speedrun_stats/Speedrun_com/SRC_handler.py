@@ -6,8 +6,8 @@ from xwillmarktheBot.Settings import Configs
 
 class SRC_handler(Message_handler):
 
-    def __init__(self, irc_connection):
-        super().__init__(irc_connection)
+    def __init__(self):
+        super().__init__()
         self.category_matcher = Category_matcher()
         self.commands = {
             'user_lookup' : ['!userpb'],
@@ -22,7 +22,7 @@ class SRC_handler(Message_handler):
         # pb of specific user
         if command in self.commands['user_lookup']:
             if len(split_msg) < 2:
-                return self.send("Please supply a user!")
+                return "Please supply a user!"
             user = split_msg[1]
             args = ' '.join(split_msg[2:])
         else:
@@ -44,32 +44,29 @@ class SRC_handler(Message_handler):
 
         if category is None:
             str = ' Try adding a category as an argument (i.e. !pb no im/ww).' if from_title else ''
-            return self.send('Category not found.' + str)
+            return 'Category not found.' + str
 
         if command in self.commands['leaderboard']:
-            self.send(category.weblink)
+            return category.weblink
         else:
-
             # if the selected subcategory remained None, the default will be taken.
             leaderboard = category.get_leaderboard(category.selected_subcategory)
 
 
-            self.send_wr_pb(command[1:], leaderboard, category, user)
+            return self.wr_pb(command[1:], leaderboard, category, user)
 
 
-    def send_wr_pb(self, type, leaderboard, category, user):
+    def wr_pb(self, type, leaderboard, category, user):
         space = '' if leaderboard.name == '' else ' - '
         full_category_name = category.name + space + leaderboard.name
 
         if type == "wr":
             run = leaderboard.get_rank_run()
             if run is None:
-                self.send("No world record found for OoT" + full_category_name)
-                return
-            self.send("The current WR for OoT " + full_category_name + " is " + run.time + " by " + run.player + ".")
+                return "No world record found for OoT" + full_category_name
+            return "The current WR for OoT " + full_category_name + " is " + run.time + " by " + run.player + "."
         else:
             run = leaderboard.get_user_run(user)
             if run is None:
-                self.send("No PB found for OoT " + full_category_name + " by " + user + ".")
-                return
-            self.send(run.player + "'s PB for OoT " + full_category_name + " is " + run.time + ".")
+                return "No PB found for OoT " + full_category_name + " by " + user + "."
+            return run.player + "'s PB for OoT " + full_category_name + " is " + run.time + "."
