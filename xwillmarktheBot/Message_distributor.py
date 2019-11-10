@@ -31,8 +31,8 @@ class Message_distributor:
         return handlers
 
 
-    def find_command(self, message, sender):
-        """Looks for commands in message to send the command to the right message handler."""
+    def get_response(self, message, sender):
+        """Looks for commands in message and returns a response if a command is triggered"""
         command = message.split(' ')[0]
         msg = message
 

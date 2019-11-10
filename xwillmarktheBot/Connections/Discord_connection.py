@@ -38,7 +38,7 @@ class MyClient(discord.Client):
 
         logging.info('Received message: ' + message.content)
 
-        return_message = self.message_handler.find_command(message.content.lower(), message.author.name)
+        return_message = self.message_handler.get_response(message.content.lower(), message.author.name)
 
         # multiple messages
         if isinstance(return_message, list):

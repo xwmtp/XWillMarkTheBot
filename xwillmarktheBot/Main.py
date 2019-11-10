@@ -11,17 +11,6 @@ import sys
 
 if __name__ == '__main__':
 
-    if len(sys.argv) < 2:
-        raise ValueError('No OAUTH or Discord token provided, please provide it as a sys arg.')
-    else:
-        token = sys.argv[1]
-
-    if token.startswith('oauth:'):
-        connection_type = 'twitch'
-    else:
-        connection_type = 'discord'
-
-
     def print_introduction():
         print("\n                _ _ _                      _    _   _          ____        _    \
                \n               (_) | |                    | |  | | | |        |  _ \      | |   \
@@ -47,8 +36,18 @@ if __name__ == '__main__':
         print_introduction()
 
 
+    if len(sys.argv) < 2:
+        raise ValueError('No OAUTH or Discord token provided, please provide it as a sys arg.')
+    else:
+        token = sys.argv[1]
+
+    if token.startswith('oauth:'):
+        connection_type = 'twitch'
+    else:
+        connection_type = 'discord'
+
+
     if connection_type == 'twitch':
-        print('b')
         bot = IRC_message_handler(token)
         if bot.irc.is_connected():
             bot.run_irc_chat()
@@ -56,13 +55,3 @@ if __name__ == '__main__':
         logging.info('Starting Discord bot.')
         bot = Discord_messages()
         bot.run(token)
-
-
-# IDEAS
-# - most common word in comments?
-# - derive most common row from comments
-
-
-
-
-
