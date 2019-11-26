@@ -6,10 +6,13 @@ from xwillmarktheBot.Logger import initalize_logger
 from xwillmarktheBot.Connections.Discord_connection import Discord_messages
 import os
 import logging
-import sys
 
 
 if __name__ == '__main__':
+
+
+    connection_type = Configs.connection_type
+    token = Configs.token
 
     def print_introduction():
         print("\n                _ _ _                      _    _   _          ____        _    \
@@ -21,11 +24,11 @@ if __name__ == '__main__':
                \n\nWelcome to xwillmarktheBot by xwillmarktheplace. \
                \nPlease read the manual at https://github.com/xwmtp/xwillmarktheBot/blob/master/README.md for information/help.\n")
 
-    if not os.path.exists('Settings.ini'):
+    if not os.path.exists(f'Settings-{connection_type}.ini'):
         create_settings()
         print_introduction()
-        print("BEFORE USE:\
-              \nA file Settings.ini has been created in the root folder (xwillmarktheBot/Settings.ini).\
+        print(f"BEFORE USE:\
+              \nA file Settings-{connection_type}.ini has been created in the root folder (xwillmarktheBot/Settings.ini).\
               \nPlease open the file in a text editor fill in your personal settings (including channel name, bot name, which modules you would like to use, etc).\
               \nThen restart this program to activate the bot.")
     else:
@@ -36,22 +39,11 @@ if __name__ == '__main__':
         print_introduction()
 
 
-    if len(sys.argv) < 2:
-        raise ValueError('No OAUTH or Discord token provided, please provide it as a sys arg.')
-    else:
-        token = sys.argv[1]
-
-    if token.startswith('oauth:'):
-        connection_type = 'twitch'
-    else:
-        connection_type = 'discord'
-
-
-    if connection_type == 'twitch':
-        bot = IRC_message_handler(token)
-        if bot.irc.is_connected():
-            bot.run_irc_chat()
-    if connection_type == 'discord':
-        logging.info('Starting Discord bot.')
-        bot = Discord_messages()
-        bot.run(token)
+        if connection_type == 'twitch':
+            bot = IRC_message_handler(token)
+            if bot.irc.is_connected():
+                bot.run_irc_chat()
+        if connection_type == 'discord':
+            logging.info('Starting Discord bot.')
+            bot = Discord_messages()
+            bot.run(token)
