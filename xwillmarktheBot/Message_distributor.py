@@ -24,8 +24,7 @@ class Message_distributor:
         if Configs.get('rando'):
             handlers.append(Rando_handler())
 
-        if Configs.get('general'):
-            handlers.append(General_commands())
+        handlers.append(General_commands())
         handlers.append(SRL_setting_commands())
 
         return handlers
