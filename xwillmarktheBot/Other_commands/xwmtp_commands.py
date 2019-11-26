@@ -6,8 +6,8 @@ import random
 
 class xwmtp_commands(Message_handler):
 
-    def __init__(self, irc_connection):
-        super().__init__(irc_connection)
+    def __init__(self):
+        super().__init__()
         self.monka_emotes = []
 
         self.commands = {
@@ -46,13 +46,13 @@ class xwmtp_commands(Message_handler):
             self.monka_emotes = monka_emotes
         else:
             monka_emotes = self.monka_emotes
-        self.send(random.choice(monka_emotes))
+        return random.choice(monka_emotes)
 
 
 
     # Post badTunic
     def tunic(self, msg):
-        self.send("BadTunic")
+        return 'BadTunic'
 
 
 
@@ -65,7 +65,7 @@ class xwmtp_commands(Message_handler):
         # send just one social link (if found in message command)
         for social, link in socials.items():
             if social in command:
-                return self.send(link)
+                return link
 
         # send all social links
-        self.send(' '.join(socials.values()))
+        return ' '.join(socials.values())

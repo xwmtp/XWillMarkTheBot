@@ -2,6 +2,7 @@ from xwillmarktheBot.Settings import Definitions
 from shutil import copyfile
 import configparser
 import logging
+import sys
 
 
 class Config:
@@ -14,14 +15,13 @@ class Config:
     def load_settings(self):
         self.config_parser.read_file(open(f'{self.file_location}//{self.name}.ini'))
         self.dict = {s:dict(self.config_parser.items(s)) for s in self.config_parser.sections()}
-        print(self.dict)
         self.dict = self.parse_dict_values(self.dict)
-        print(self.dict)
         if self.dict == {}:
             raise ValueError(f'Empty config dictionary, no setting were found.')
 
     def copy_from_template(self):
-        copyfile(rf'xwillmarktheBot/Settings/Templates/{self.name}.ini', f'{self.file_location}/{self.name}.ini')
+        base_name = self.name.split('-')[0]
+        copyfile(rf'xwillmarktheBot/Settings/Templates/{base_name}.ini', f'{self.file_location}/{self.name}.ini')
 
 
     def parse_dict_values(self, dct):
@@ -43,6 +43,8 @@ class Config:
 
         def transform_setting(setting, option):
             if option == 'editors':
+                if not isinstance(setting, list):
+                    setting = [setting]
                 setting = [get('streamer')] + setting
             return setting
 
@@ -56,9 +58,22 @@ class Config:
 
 
 
+
+
+if len(sys.argv) < 2:
+    raise ValueError('No OAUTH or Discord token provided, please provide it as a sys arg.\
+                      \nPlease read the manual at https://github.com/xwmtp/xwillmarktheBot/blob/master/README.md for more information.' )
+else:
+    token = sys.argv[1]
+
+if token.startswith('oauth:'):
+    connection_type = 'twitch'
+else:
+    connection_type = 'discord'
+
 configs = [
-    Config('Settings', Definitions.ROOT_DIR),
-    Config('Settings_advanced', Definitions.ROOT_DIR / 'xwillmarktheBot/Settings')
+    Config(f'Settings-{connection_type}', Definitions.ROOT_DIR),
+    Config(f'Settings_advanced-{connection_type}', Definitions.ROOT_DIR / 'xwillmarktheBot/Settings')
 ]
 
 

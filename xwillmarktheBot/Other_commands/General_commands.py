@@ -2,8 +2,8 @@ from xwillmarktheBot.Abstract_Message_Handler import Message_handler
 
 class General_commands(Message_handler):
 
-    def __init__(self, irc_connection):
-        super().__init__(irc_connection)
+    def __init__(self):
+        super().__init__()
 
         self.commands = {
             'commands_list' : ['!command', '!commands'],
@@ -21,7 +21,7 @@ class General_commands(Message_handler):
                 return eval(f'self.{func}("{msg}","{sender}")')
 
     def commands_list(self, msg, sender):
-        self.send("https://xwmtp.github.io/xwmtp_bot/")
+        return 'https://xwmtp.github.io/xwmtp_bot/'
 
     def repo_link(self, msg, sender):
-        self.send('https://github.com/xwmtp/xwillmarktheBot')
+        return 'https://github.com/xwmtp/xwillmarktheBot'
