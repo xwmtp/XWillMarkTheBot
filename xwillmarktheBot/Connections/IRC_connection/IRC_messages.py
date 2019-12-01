@@ -54,7 +54,7 @@ class IRC_message_handler:
                 logging.critical(f"Other exception in IRC: {repr(e)}")
                 logging.critical(f"In message: {data}")
                 logging.error(traceback.format_exc())
-                self.irc.send_message("Error occured, please try a different command.")
+                self.irc.send_message("Error occurred, please try a different command.")
 
 
 
@@ -133,7 +133,8 @@ class IRC_message_handler:
             raise socket.error("test socket died")
 
         response = self.chatbot.get_response(msg, sender)
-        self.irc.send_message(response)
+        if response:
+            self.irc.send_message(response)
 
     def check_first_connection(self, words):
         if not self.connected and words[0].startswith(':' + Configs.get('bot').lower()):
