@@ -35,6 +35,12 @@ class Message_distributor:
         command = message.split(' ')[0]
         msg = message
 
+        # reload all cached data
+        if command == '!reload':
+            for handler in self.handlers:
+                handler.reload()
+
+
         # exact match
         for handler in self.handlers:
             trigger_matches = [tr for tr in handler.get_triggers() if tr in msg]

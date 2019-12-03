@@ -15,7 +15,7 @@ class SRL_player:
 
 
     def reload_data(self):
-        logging.info(f'Reloading data of player {self.name}')
+        logging.info(f'Reloading data of player {self.name}...')
 
         updated_json = readjson(f"http://api.speedrunslive.com/pastraces?player={self.name}&pageSize=1000")
         if updated_json:

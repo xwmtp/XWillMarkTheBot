@@ -26,3 +26,8 @@ class Message_handler():
     def get_triggers(self):
         """Get all the trigger of this class, including aliases. Won't throw error if no triggers present."""
         return flatten(self.triggers.values())
+
+    def reload(self):
+        """Reload all cached data in the message handler. If the handler doesn't have any data cached to reload,
+        this function shouldn't be implemented."""
+        pass

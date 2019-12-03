@@ -10,13 +10,9 @@ class Player_lookup:
         self.SRL_players = {streamer: self.find_new_SRL_player(streamer)}
 
     def get_SRL_player(self, name):
-        if name in self.SRL_players.keys():
-            reloaded = self.SRL_players[name].reload_data()
-            if reloaded:
-                return self.SRL_players[name]
+        if not name in self.SRL_players.keys():
+            self.SRL_players[name] = self.find_new_SRL_player(name)
 
-
-        self.SRL_players[name] = self.find_new_SRL_player(name)
         return self.SRL_players[name]
 
 
@@ -36,6 +32,14 @@ class Player_lookup:
     def get_srl_json(self, user_name):
         srl_url = f"http://api.speedrunslive.com/pastraces?player={user_name}&pageSize=1000"
         return readjson(srl_url)
+
+    def reload_players(self):
+        for player in self.SRL_players.values():
+            try:
+                player.reload_data()
+                logging.debug(f'Reloaded player {player.name}.')
+            except Exception as e:
+                logging.warning(f'Error {e} while reloading player {player.name}.')
 
 
     def _try_alt_names(self, user):

@@ -75,6 +75,9 @@ class Result_handler(Message_handler):
         else:
             "SRL user not found!"
 
+    def reload(self):
+        self.player_lookup.reload_players()
+
     def get_stream_title_type(self):
         title = get_stream_category()
         matching_types = [type for type in Definitions.RACE_TYPES if type in title]

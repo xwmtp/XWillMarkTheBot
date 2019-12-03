@@ -64,6 +64,10 @@ class Speedrun_handler(Message_handler):
             return self.SRC_handler.handle_message(msg, sender)
 
 
+    def reload(self):
+        self.SRC_handler.reload()
+        self.result_handler.reload()
+
 
 
 

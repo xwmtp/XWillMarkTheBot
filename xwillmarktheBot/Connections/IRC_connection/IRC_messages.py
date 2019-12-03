@@ -18,6 +18,7 @@ class IRC_message_handler:
         self.connected = False
         self.timeouts = 0
         self.last_ping_sent = time.time()
+        self.last_cache_reload = time.time()
         self.waiting_for_pong = False
 
 
@@ -35,6 +36,8 @@ class IRC_message_handler:
 
                 if data:
                     self.parse_data(data)
+
+                self.check_reload()
 
 
             except socket.timeout as e:
@@ -122,6 +125,15 @@ class IRC_message_handler:
                 return True
 
 
+    def check_reload(self):
+        now = time.time()
+        time_since_reload = now - self.last_cache_reload
+        self.last_cache_reload = now
+
+        if time_since_reload > 45:
+            logging.info(f'Last cache reload was {int(time_since_reload)} seconds ago. Reloading all cached data...')
+            self.chatbot.get_response('!reload', 'bot')
+            logging.info(f'Reload complete.')
 
     def parse_message(self, msg, sender):
         logging.info(f"Received message from {sender}: {msg}")
