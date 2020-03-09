@@ -18,14 +18,14 @@ class Category:
         vars_json = readjson(var_link)
         main_leaderboard_url = self.get_link(cat['links'], 'leaderboard')
         if vars_json['data'] == []:
-            leaderboards[''] = Leaderboard(main_leaderboard_url)
+            leaderboards[''] = Leaderboard(main_leaderboard_url, name= self.name)
         else:
             variables = vars_json['data'][0]
             var_id = variables['id']
             for subcat_id, subcat in variables['values']['values'].items():
                 subcat_leaderboard_url = main_leaderboard_url + "?var-" + var_id + "=" + subcat_id
                 is_default = subcat_id == variables['values']['default']
-                leaderboards[subcat['label']] = Leaderboard(subcat_leaderboard_url, is_default, subcat['label'])
+                leaderboards[subcat['label']] = Leaderboard(subcat_leaderboard_url, is_default, self.name + ' ' + subcat['label'])
         return leaderboards
 
     def get_link(self, links, name):
@@ -59,7 +59,6 @@ class Leaderboard:
             rank = len(self.runs)
             logging.warning("WARNING: rank higher than amount of submissions. Last place is returned.")
         run = Run(self.runs[rank - 1])
-        assert run.rank == rank
         return run
 
     def get_user_run(self, user):
