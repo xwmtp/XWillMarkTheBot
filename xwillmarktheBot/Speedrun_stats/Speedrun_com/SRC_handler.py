@@ -2,6 +2,7 @@ from xwillmarktheBot.Speedrun_stats.Speedrun_com.Category_matcher import Categor
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
 from xwillmarktheBot.Speedrun_stats import Stream_title
 from xwillmarktheBot.Settings import Configs
+from xwillmarktheBot.Utils import make_ordinal
 
 
 class SRC_handler(Message_handler):
@@ -102,7 +103,7 @@ class SRC_handler(Message_handler):
         run = leaderboard.get_user_run(user)
         if run is None:
             return f"No PB found for OoT {leaderboard.name} by {user}."
-        return f"{run.player}'s PB for OoT {leaderboard.name} is {run.time}."
+        return f"{run.player}'s PB for OoT {leaderboard.name} is {run.time} ({make_ordinal(run.rank)} place)."
 
     def get_wr_text(self, leaderboard):
         run = leaderboard.get_rank_run()
