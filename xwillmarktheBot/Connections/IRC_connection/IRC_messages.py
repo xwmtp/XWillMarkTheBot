@@ -138,8 +138,8 @@ class IRC_message_handler:
 
     def check_first_connection(self, words):
         if not self.connected and words[0].startswith(':' + Configs.get('bot').lower()):
-            logging.info('Sucesfully connected to irc.')
-            self.irc.send_message('Succesfully connected.')
+            logging.info('Successfully connected to irc.')
+            self.irc.send_message('Successfully connected.')
             self.connected = True
 
     def send_ping(self):
