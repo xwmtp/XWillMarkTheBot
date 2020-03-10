@@ -19,6 +19,8 @@ class IRC_message_handler:
         self.timeouts = 0
         self.last_ping_sent = time.time()
         self.waiting_for_pong = False
+        self.checking_reconnect = False
+        self.reconnect_attempts = 0
 
 
 
@@ -88,6 +90,7 @@ class IRC_message_handler:
                 elif words[1] == 'PONG':
                     logging.info('Received PONG.')
                     self.waiting_for_pong = False
+                    self.checking_reconnect = False
 
                 elif words[1] == 'PRIVMSG':
                     sender = extract_sender(words[0])
@@ -150,18 +153,22 @@ class IRC_message_handler:
 
 
     def reconnect_irc(self):
-        attempts = 0
+        if not self.checking_reconnect:
+            self.reconnect_attempts = 0
         interval = 2 # seconds before next attempt
 
         while True:
-            attempts += 1
+            self.reconnect_attemptss += 1
 
-            if attempts > 5:
+            if self.reconnect_attempts > 5:
                 logging.info(f"Waiting {interval} seconds before reconnect...")
                 time.sleep(interval)
                 interval = max(interval * 2, 120)
 
-            logging.critical(f"Attempting to reconnect (attempt {attempts}).")
+            logging.critical(f"Attempting to reconnect (attempt {self.reconnect_attempts}).")
             self.irc = Twitch_IRC(Configs.get('streamer'), Configs.get('bot'), self.OAUTH)
+            self.checking_reconnect = True
             if self.irc.is_connected():
+                self.irc.send_ping('Checking if reconnect successfull')
+                self.checking_reconnect = True
                 return True
