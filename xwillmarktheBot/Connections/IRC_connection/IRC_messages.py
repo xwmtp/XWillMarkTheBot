@@ -7,7 +7,7 @@ import socket
 import logging
 import time
 
-PING_TIMEOUT = 15
+PING_TIMEOUT = 120
 
 class IRC_message_handler:
 
@@ -19,6 +19,8 @@ class IRC_message_handler:
         self.timeouts = 0
         self.last_ping_sent = time.time()
         self.waiting_for_pong = False
+        self.checking_reconnect = False
+        self.reconnect_attempts = 0
 
 
 
@@ -88,6 +90,9 @@ class IRC_message_handler:
                 elif words[1] == 'PONG':
                     logging.info('Received PONG.')
                     self.waiting_for_pong = False
+                    if self.checking_reconnect:
+                        logging.info('Reconnect successful, received PONG.')
+                        self.checking_reconnect = False
 
                 elif words[1] == 'PRIVMSG':
                     sender = extract_sender(words[0])
@@ -138,8 +143,8 @@ class IRC_message_handler:
 
     def check_first_connection(self, words):
         if not self.connected and words[0].startswith(':' + Configs.get('bot').lower()):
-            logging.info('Sucesfully connected to irc.')
-            self.irc.send_message('Succesfully connected.')
+            logging.info('Successfully connected to irc.')
+            self.irc.send_message('Successfully connected.')
             self.connected = True
 
     def send_ping(self):
@@ -150,18 +155,22 @@ class IRC_message_handler:
 
 
     def reconnect_irc(self):
-        attempts = 0
+        if not self.checking_reconnect:
+            self.reconnect_attempts = 0
         interval = 2 # seconds before next attempt
 
         while True:
-            attempts += 1
+            self.reconnect_attempts += 1
 
-            if attempts > 5:
+            if self.reconnect_attempts > 5:
                 logging.info(f"Waiting {interval} seconds before reconnect...")
                 time.sleep(interval)
-                interval = max(interval * 2, 120)
+                interval = min(interval * 2, 120)
 
-            logging.critical(f"Attempting to reconnect (attempt {attempts}).")
+            logging.critical(f"Attempting to reconnect (attempt {self.reconnect_attempts}).")
             self.irc = Twitch_IRC(Configs.get('streamer'), Configs.get('bot'), self.OAUTH)
+            self.checking_reconnect = True
             if self.irc.is_connected():
+                self.irc.send_ping('Checking if reconnect successfull')
+                self.checking_reconnect = True
                 return True
