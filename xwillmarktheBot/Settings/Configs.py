@@ -46,6 +46,9 @@ class Config:
                 if not isinstance(setting, list):
                     setting = [setting]
                 setting = [get('streamer')] + setting
+            if option == 'racetime games' and not isinstance(setting, list):
+                return [setting]
+
             return setting
 
         for section, settings in dct.items():

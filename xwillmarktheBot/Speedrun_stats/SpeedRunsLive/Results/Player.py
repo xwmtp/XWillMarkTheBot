@@ -29,7 +29,7 @@ class SRL_player:
     def get_average(self, n=15, type='bingo', method='average'):
         races = self.select_races(n, type, sort="latest", latest_version=False)[:n]
 
-        times = [race.get_entrant(self.name).get_time(seconds=True) for race in races]
+        times = [race.get_entrant(self.name).time for race in races]
 
         if times == []:
             logging.debug(f'No {type} races found to take average.')
