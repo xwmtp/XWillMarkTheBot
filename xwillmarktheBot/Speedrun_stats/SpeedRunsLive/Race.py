@@ -1,5 +1,5 @@
 from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Entrant import LiveSRLEntrant, LiveRacetimeEntrant, PastEntrant
-from xwillmarktheBot.Settings import Definitions
+from xwillmarktheBot.Config import Definitions
 from datetime import datetime
 from abc import ABC, abstractmethod
 import logging

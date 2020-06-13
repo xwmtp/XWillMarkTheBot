@@ -1,6 +1,6 @@
 from xwillmarktheBot.Connections.IRC_connection.Twitch import Twitch_IRC
 from xwillmarktheBot.Message_distributor import Message_distributor
-from xwillmarktheBot.Settings import Configs
+from xwillmarktheBot.Config import Configs
 import traceback
 import re
 import socket
@@ -11,9 +11,9 @@ PING_TIMEOUT = 120
 
 class IRC_message_handler:
 
-    def __init__(self, OAUTH):
-        self.OAUTH = OAUTH
-        self.irc = Twitch_IRC(Configs.get('streamer'), Configs.get('bot'), OAUTH)
+    def __init__(self):
+        self.OAUTH = Configs.get('bot_oauth')
+        self.irc = Twitch_IRC(Configs.get('streamer'), Configs.get('bot'), self.OAUTH)
 
         self.connected = False
         self.timeouts = 0

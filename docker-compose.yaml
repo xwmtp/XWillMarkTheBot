@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+  xwillmarktheBot:
+    build:
+      context: .
+    image: xwillmarktheBot
+    volumes:
+      - /c/Users/sdste/Documents/Programming/xwillmarktheBot/logs:/etc/xwillmarktheBot/logs
+      - /c/Users/sdste/Documents/Programming/xwillmarktheBot/Settings:/etc/xwillmarktheBot/Settings
+    environment:
+      - platform=twitch
+    restart: unless-stopped

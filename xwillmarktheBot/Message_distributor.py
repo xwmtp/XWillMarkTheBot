@@ -3,7 +3,7 @@ from xwillmarktheBot.Speedrun_stats.Speedrun_handler import Speedrun_handler
 from xwillmarktheBot.Randomizer.Rando_handler import Rando_handler
 from xwillmarktheBot.Other_commands.SRL_setting_commands import SRL_setting_commands
 from xwillmarktheBot.Other_commands.General_commands import General_commands
-from xwillmarktheBot.Settings import Configs
+from xwillmarktheBot.Config import Configs
 import logging
 
 

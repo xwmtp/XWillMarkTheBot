@@ -1,4 +1,5 @@
 from xwillmarktheBot.Message_distributor import Message_distributor
+from xwillmarktheBot.Config import Configs
 import discord
 import logging
 
@@ -10,8 +11,8 @@ class Discord_messages:
         bot = Message_distributor()
         self.client = MyClient(bot)
 
-    def run(self, token):
-        self.client.run(token)
+    def run(self):
+        self.client.run(Configs.get('bot_oath'))
 
 
 

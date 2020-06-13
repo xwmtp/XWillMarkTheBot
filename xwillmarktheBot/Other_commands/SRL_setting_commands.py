@@ -1,5 +1,5 @@
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
-from xwillmarktheBot.Settings import Configs, Definitions
+from xwillmarktheBot.Config import Configs, Definitions
 
 class SRL_setting_commands(Message_handler):
 

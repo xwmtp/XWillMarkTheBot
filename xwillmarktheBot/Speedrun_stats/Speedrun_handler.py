@@ -2,7 +2,7 @@ from xwillmarktheBot.Abstract_Message_Handler import Message_handler
 from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Results.Result_handler import Result_handler
 from xwillmarktheBot.Speedrun_stats.Speedrun_com.SRC_handler import SRC_handler
 from xwillmarktheBot.Speedrun_stats.Stream_title import get_stream_category
-from xwillmarktheBot.Settings import Configs, Definitions
+from xwillmarktheBot.Config import Configs, Definitions
 from xwillmarktheBot.Utils import *
 
 class Speedrun_handler(Message_handler):

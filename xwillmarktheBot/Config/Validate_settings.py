@@ -1,5 +1,5 @@
-from xwillmarktheBot.Settings import Configs
-from xwillmarktheBot.Settings import Definitions
+from xwillmarktheBot.Config import Configs
+from xwillmarktheBot.Config import Definitions
 from datetime import datetime
 
 

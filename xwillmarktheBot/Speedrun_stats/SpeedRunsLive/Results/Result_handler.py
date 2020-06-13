@@ -1,7 +1,7 @@
 from xwillmarktheBot.Speedrun_stats.Stream_title import get_stream_category
 from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Results.Player_lookup import Player_lookup
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
-from xwillmarktheBot.Settings import Configs, Definitions
+from xwillmarktheBot.Config import Configs, Definitions
 import logging
 
 

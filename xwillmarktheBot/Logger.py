@@ -1,4 +1,4 @@
-from xwillmarktheBot.Settings import Configs
+from xwillmarktheBot.Config import Configs
 import logging
 import os
 

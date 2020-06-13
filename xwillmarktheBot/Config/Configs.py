@@ -1,4 +1,4 @@
-from xwillmarktheBot.Settings import Definitions
+from xwillmarktheBot.Config import Definitions
 from shutil import copyfile
 import configparser
 import logging
@@ -21,7 +21,7 @@ class Config:
 
     def copy_from_template(self):
         base_name = self.name.split('-')[0]
-        copyfile(rf'xwillmarktheBot/Settings/Templates/{base_name}.ini', f'{self.file_location}/{self.name}.ini')
+        copyfile(rf'xwillmarktheBot/Config/Templates/{base_name}.ini', f'{self.file_location}/{self.name}.ini')
 
 
     def parse_dict_values(self, dct):
@@ -59,24 +59,17 @@ class Config:
         return dct
 
 
+connection_type = 'twitch'
 
-
-
-
-if len(sys.argv) < 2:
-    raise ValueError('No OAUTH or Discord token provided, please provide it as a sys arg.\
-                      \nPlease read the manual at https://github.com/xwmtp/xwillmarktheBot/blob/master/README.md for more information.' )
-else:
-    token = sys.argv[1]
-
-if token.startswith('oauth:'):
-    connection_type = 'twitch'
-else:
-    connection_type = 'discord'
+if len(sys.argv) > 2:
+    connection_type = sys.argv[1].lower()
+    if connection_type not in ['twitch', 'discord']:
+        raise ValueError("Invalid sys arg provided. Must be either 'twitch' or 'discord' depending on which platform the bot will be in action.\
+                          \nPlease read the manual at https://github.com/xwmtp/xwillmarktheBot/blob/master/README.md for more information.")
 
 configs = [
-    Config(f'Settings-{connection_type}', Definitions.ROOT_DIR),
-    Config(f'Settings_advanced-{connection_type}', Definitions.ROOT_DIR / 'xwillmarktheBot/Settings')
+    Config(f'Settings-{connection_type}', Definitions.ROOT_DIR / 'Settings'),
+    Config(f'Settings_advanced-{connection_type}', Definitions.ROOT_DIR / 'Settings')
 ]
 
 

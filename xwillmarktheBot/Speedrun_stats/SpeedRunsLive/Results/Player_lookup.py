@@ -1,6 +1,6 @@
 from xwillmarktheBot.Utils import *
 from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Results.Player import SRL_player
-from xwillmarktheBot.Settings import Configs
+from xwillmarktheBot.Config import Configs
 
 
 class Player_lookup:

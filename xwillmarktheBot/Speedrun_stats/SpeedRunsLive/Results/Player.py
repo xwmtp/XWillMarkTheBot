@@ -1,5 +1,5 @@
 from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Race import PastRace
-from xwillmarktheBot.Settings import Definitions, Configs
+from xwillmarktheBot.Config import Definitions, Configs
 from xwillmarktheBot.Utils import *
 import datetime
 

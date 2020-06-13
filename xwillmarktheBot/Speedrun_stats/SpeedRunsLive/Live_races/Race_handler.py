@@ -1,6 +1,6 @@
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
 from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Race import LiveSRLRace, LiveRacetimeRace
-from xwillmarktheBot.Settings import Configs
+from xwillmarktheBot.Config import Configs
 from xwillmarktheBot.Utils import *
 import isodate
 import datetime

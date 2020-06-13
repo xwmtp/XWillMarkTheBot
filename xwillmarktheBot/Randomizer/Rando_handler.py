@@ -1,6 +1,6 @@
 from xwillmarktheBot.Abstract_Message_Handler import Message_handler
 from xwillmarktheBot.Randomizer.Hints import send_current_hints, reset_hints
-from xwillmarktheBot.Settings import Configs
+from xwillmarktheBot.Config import Configs
 
 class Rando_handler(Message_handler):
 
