@@ -12,7 +12,7 @@ class Discord_messages:
         self.client = MyClient(bot)
 
     def run(self):
-        self.client.run(Configs.get('bot_oath'))
+        self.client.run(Configs.get('bot_oauth'))
 
 
 
@@ -25,7 +25,7 @@ class MyClient(discord.Client):
 
 
     async def on_ready(self):
-        print('Logged on as', self.user)
+        logging.debug(f'Logged on as Discord user {self.user}')
 
     async def send_message(self, incoming_message, outgoing_message):
         await incoming_message.channel.send(outgoing_message)

@@ -26,28 +26,35 @@ class Config:
 
     def parse_dict_values(self, dct):
 
-        def parse_setting_string(str):
-            str = str.lower()
+        def parse_setting_string(string):
             # parse to list
-            if ',' in str:
-                logging.debug([s.strip() for s in str.split(',')])
-                return [s.strip() for s in str.split(',')]
+            if ',' in string:
+                settings = [s.strip().lower() for s in string.split(',')]
+                logging.debug(settings)
+                return settings
             # parse to boolean
-            if str in ['yes', 'no']:
-                return str == 'yes'
+            if string.lower() in ['yes', 'no']:
+                return string.lower() == 'yes'
             # parse to logging level
-            if str in ['debug', 'info', 'warning', 'error']:
-                return getattr(logging, str.upper())
+            if string.lower() in ['debug', 'info', 'warning', 'error']:
+                return getattr(logging, string.upper())
 
-            return str
+            return string
 
         def transform_setting(setting, option):
+            if option != 'bot_oauth':
+                if isinstance(setting, list):
+                    setting = [s.lower() for s in setting]
+                elif isinstance(setting, str):
+                    setting = setting.lower()
+
             if option == 'editors':
                 if not isinstance(setting, list):
                     setting = [setting]
                 setting = [get('streamer')] + setting
             if option == 'racetime games' and not isinstance(setting, list):
                 return [setting]
+
 
             return setting
 
@@ -61,11 +68,14 @@ class Config:
 
 connection_type = 'twitch'
 
-if len(sys.argv) > 2:
+if len(sys.argv) > 1:
     connection_type = sys.argv[1].lower()
+    logging.debug(f'Sys arg provided: {sys.argv[1]}')
     if connection_type not in ['twitch', 'discord']:
         raise ValueError("Invalid sys arg provided. Must be either 'twitch' or 'discord' depending on which platform the bot will be in action.\
                           \nPlease read the manual at https://github.com/xwmtp/xwillmarktheBot/blob/master/README.md for more information.")
+
+logging.debug(f'Platform used: {connection_type}')
 
 configs = [
     Config(f'Settings-{connection_type}', Definitions.ROOT_DIR / 'Settings'),

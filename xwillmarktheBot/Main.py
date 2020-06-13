@@ -11,6 +11,8 @@ import logging
 if __name__ == '__main__':
 
 
+
+
     connection_type = Configs.connection_type
 
     def print_introduction():
@@ -37,7 +39,6 @@ if __name__ == '__main__':
 
         print_introduction()
 
-
         if connection_type == 'twitch':
             bot = IRC_message_handler()
             if bot.irc.is_connected():
@@ -45,4 +46,4 @@ if __name__ == '__main__':
         if connection_type == 'discord':
             logging.info('Starting Discord bot.')
             bot = Discord_messages()
-            bot.run(token)
+            bot.run()
