@@ -50,7 +50,7 @@ class Twitch_IRC:
     def send_message(self, msg):
         if msg == 'SOCKET':
             raise socket.error
-        logging.info("Sent message: " + msg)
+        logging.info(f"Sent message: {msg}")
         if isinstance(msg, list):
             for m in msg:
                 self.connection.send(bytes('PRIVMSG %s :%s\r\n' % (self.CHAN, m), 'UTF-8'))
