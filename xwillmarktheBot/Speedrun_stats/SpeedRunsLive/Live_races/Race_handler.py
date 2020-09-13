@@ -58,7 +58,7 @@ class Race_handler(Message_handler):
         for game in Configs.get('racetime games'):
             json = readjson(f'https://racetime.gg/{game}/data')
             for race in json['current_races']:
-                game_json = readjson(f"https://racetime.gg/{race['data_url']}")
+                game_json = readjson(f"https://racetime.gg{race['data_url']}")
                 entrants = [e['user']['name'].lower() for e in game_json['entrants']]
                 if player.lower() in entrants:
                     self.live_race = LiveRacetimeRace(game_json)
