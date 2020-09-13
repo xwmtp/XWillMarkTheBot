@@ -1,5 +1,6 @@
 from xwillmarktheBot.Config import Definitions
 from shutil import copyfile
+import os
 import configparser
 import logging
 import sys
@@ -21,7 +22,10 @@ class Config:
 
     def copy_from_template(self):
         base_name = self.name.split('-')[0]
-        copyfile(rf'xwillmarktheBot/Config/Templates/{base_name}.ini', f'{self.file_location}/{self.name}.ini')
+        print(rf'{self.file_location}\{self.name}.ini')
+        if not os.path.exists(self.file_location):
+            os.makedirs(self.file_location)
+        copyfile(rf'xwillmarktheBot/Config/Templates/{base_name}.ini', fr'{self.file_location}\{self.name}.ini')
 
 
     def parse_dict_values(self, dct):
