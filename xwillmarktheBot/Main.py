@@ -1,17 +1,16 @@
-from xwillmarktheBot.Connections.IRC_connection.IRC_messages import IRC_message_handler
+from xwillmarktheBot.Connections.IRC_connection.IRC import IRC_connection
+from xwillmarktheBot.Connections.IRC_connection.Connection import Connection_manager
+from xwillmarktheBot.Connections.Discord_connection import Discord_connection
+from xwillmarktheBot.Bot import Bot
 from xwillmarktheBot.Config.Validate_settings import validate_settings
-from xwillmarktheBot.Config.Configs import *
 from xwillmarktheBot.Config import Configs
 from xwillmarktheBot.Logger import initalize_logger
-from xwillmarktheBot.Connections.Discord_connection import Discord_messages
+
 import os
 import logging
 
 
 if __name__ == '__main__':
-
-
-
 
     connection_type = Configs.connection_type
 
@@ -40,10 +39,12 @@ if __name__ == '__main__':
         print_introduction()
 
         if connection_type == 'twitch':
-            bot = IRC_message_handler()
-            if bot.irc.is_connected():
-                bot.run_irc_chat()
+            connection = IRC_connection(Configs.get('streamer'), Configs.get('bpt'), Configs.get('bot_oauth'))
+            if connection.is_connected():
+                connection_manager = Connection_manager(connection)
+                bot = Bot(connection_manager)
+                bot.run()
         if connection_type == 'discord':
             logging.info('Starting Discord bot.')
-            bot = Discord_messages()
+            bot = Discord_connection()
             bot.run()

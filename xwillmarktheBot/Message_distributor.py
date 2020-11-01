@@ -49,7 +49,3 @@ class Message_distributor:
                 if msg.startswith(command):
                     return handler.handle_message(message, sender)
 
-
-
-
-
