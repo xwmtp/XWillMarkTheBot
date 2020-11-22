@@ -42,7 +42,7 @@ class Race(ABC):
     def get_entrants_string(self):
         entrants = sorted(self.entrants, key=lambda x: x.rank)
         entrants_string = ' | '.join([e.get_string() for e in entrants])
-        return entrants_string
+        return f"{len(entrants)} entrants: {entrants_string}"
 
 
 class SRLRace(Race):
