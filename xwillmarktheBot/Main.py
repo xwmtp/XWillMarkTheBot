@@ -1,4 +1,3 @@
-from xwillmarktheBot.Connections.IRC_connection.IRC import IRC_connection
 from xwillmarktheBot.Connections.IRC_connection.Connection import setup_and_run_irc
 from xwillmarktheBot.Connections.Discord_connection import setup_and_run_discord
 from xwillmarktheBot.Config.Validate_settings import validate_settings
