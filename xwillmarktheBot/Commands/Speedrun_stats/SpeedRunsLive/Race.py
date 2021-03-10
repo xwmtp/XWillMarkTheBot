@@ -1,11 +1,9 @@
-from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Entrant import LiveSRLEntrant, LiveRacetimeEntrant, PastEntrant
+from xwillmarktheBot.Commands.Speedrun_stats.SpeedRunsLive.Entrant import LiveSRLEntrant, LiveRacetimeEntrant, PastEntrant
 from xwillmarktheBot.Config import Definitions
 from datetime import datetime
 from abc import ABC, abstractmethod
 import logging
 import re
-
-
 
 class Race(ABC):
 
@@ -17,14 +15,11 @@ class Race(ABC):
             if entrant.name.lower() == name.lower():
                 return entrant
 
-
     def determine_type(self, goal, game):
         goal = goal.lower()
-
         # rando type
         if 'rando' in goal or re.search(r'ootr([^A-Za-z]|$)', goal) or game == 'ootr':
             return 'rando'
-
         # bingo types
         if ('speedrunslive.com/tools/oot-bingo' in goal or 'ootbingo.github.io/bingo/' in goal) and game == 'oot':
             if 'blackout' in goal:
@@ -34,9 +29,7 @@ class Race(ABC):
             for term in ['long', '3x3', 'anti', 'double', 'bufferless', 'child', 'jp', 'japanese', 'bingo-j']:
                 if term in goal:
                     return 'other'
-
             return 'bingo'
-
         return 'other'
 
     def get_entrants_string(self):
@@ -56,7 +49,6 @@ class SRLRace(Race):
         self.type = self.determine_type(self.goal, self.game)
         if self.type not in Definitions.RACE_TYPES:
             logging.error(f'Race got assigned an undefined type ({self.type})!')
-
 
     def get_race_link(self):
         return 'http://www.speedrunslive.com/race/?id=' + self.id
@@ -91,7 +83,6 @@ class LiveRacetimeRace(RacetimeRace):
         super().__init__(json)
         self.state = json['status']['value']
         self.entrants = [LiveRacetimeEntrant(e) for e in json['entrants']]
-        print(self.entrants)
 
 
 class PastRace(SRLRace):

@@ -8,7 +8,6 @@ def get_stream_category():
     title = readjson(f"https://decapi.me/twitch/title/{Configs.get('streamer')}", text_only=True).lower()
     return clean_stream_title(title)
 
-
 def clean_stream_title(title):
     # remove everything after |
     title = title.split('|', 1)[0]

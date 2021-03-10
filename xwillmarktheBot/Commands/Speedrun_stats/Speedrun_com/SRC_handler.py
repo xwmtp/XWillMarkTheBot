@@ -1,9 +1,8 @@
-from xwillmarktheBot.Speedrun_stats.Speedrun_com.Category_matcher import Category_matcher
-from xwillmarktheBot.Abstract_Message_Handler import Message_handler
-from xwillmarktheBot.Speedrun_stats import Stream_title
+from xwillmarktheBot.Commands.Speedrun_stats.Speedrun_com.Category_matcher import Category_matcher
+from xwillmarktheBot.Commands.Abstract_Message_Handler import Message_handler
+from xwillmarktheBot.Commands.Speedrun_stats import Stream_title
 from xwillmarktheBot.Config import Configs
 from xwillmarktheBot.Utils import make_ordinal
-
 
 class SRC_handler(Message_handler):
 
@@ -40,7 +39,6 @@ class SRC_handler(Message_handler):
         else:
             return 'Category not found.'
 
-
     def user_pb(self, split_msg):
         if len(split_msg) < 2:
             return "Please supply a user!"
@@ -62,7 +60,6 @@ class SRC_handler(Message_handler):
 
     def wr(self, split_msg):
         category = self.get_category(' '.join(split_msg[1:]))
-        print(category)
         if category:
             board = category.get_leaderboard(category.selected_subcategory)
             return self.get_wr_text(board)
@@ -81,7 +78,6 @@ class SRC_handler(Message_handler):
             board = category.get_leaderboard(category.selected_subcategory)
             return self.get_top_times_text(board, num)
 
-
     def get_top_times_text(self, leaderboard, num):
         texts = []
         for i in range(num):
@@ -95,10 +91,6 @@ class SRC_handler(Message_handler):
         else:
             return f"Top {num} for OoT {leaderboard.name}: {' | '.join(texts)}"
 
-
-
-
-
     def get_pb_text(self, leaderboard, user):
         run = leaderboard.get_user_run(user)
         if run is None:
@@ -111,11 +103,8 @@ class SRC_handler(Message_handler):
             return f"No world record found for OoT {leaderboard.name}"
         return f"The current WR for OoT {leaderboard.name} is {run.time} by {run.player}."
 
-
-
     def get_category(self, arguments):
         if arguments == '':
             arguments = Stream_title.get_stream_category()
         category = self.category_matcher.match_category(arguments)
         return category
-

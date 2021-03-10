@@ -1,4 +1,4 @@
-from xwillmarktheBot.Abstract_Message_Handler import Message_handler
+from xwillmarktheBot.Commands.Abstract_Message_Handler import Message_handler
 from xwillmarktheBot.Config import Configs, Definitions
 
 class SRL_setting_commands(Message_handler):
@@ -11,8 +11,6 @@ class SRL_setting_commands(Message_handler):
             'get_srl' : ['!getsrl', '!get_srl']
         }
 
-
-
     def handle_message(self, msg, sender):
         split_msg = msg.lower().split(' ')
         command = split_msg[0]
@@ -20,7 +18,6 @@ class SRL_setting_commands(Message_handler):
         for func, command_group in self.commands.items():
             if command in command_group:
                 return eval(f'self.{func}("{msg}","{sender}")')
-
 
     def set_srl(self, msg, sender):
         if sender in Configs.get('editors'):
@@ -39,4 +36,3 @@ class SRL_setting_commands(Message_handler):
             return f"SRL race type is currently set to {Configs.get('default race type')}."
         else:
             return f"{sender} does not have the permissions to use this command."
-

@@ -1,5 +1,5 @@
 from xwillmarktheBot.Utils import *
-from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Results.Player import SRL_player
+from xwillmarktheBot.Commands.Speedrun_stats.SpeedRunsLive.Results.Player import SRL_player
 from xwillmarktheBot.Config import Configs
 
 

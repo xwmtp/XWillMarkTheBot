@@ -1,7 +1,7 @@
-from xwillmarktheBot.Abstract_Message_Handler import Message_handler
-from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Results.Result_handler import Result_handler
-from xwillmarktheBot.Speedrun_stats.Speedrun_com.SRC_handler import SRC_handler
-from xwillmarktheBot.Speedrun_stats.Stream_title import get_stream_category
+from xwillmarktheBot.Commands.Abstract_Message_Handler import Message_handler
+from xwillmarktheBot.Commands.Speedrun_stats.SpeedRunsLive.Results.Result_handler import Result_handler
+from xwillmarktheBot.Commands.Speedrun_stats.Speedrun_com.SRC_handler import SRC_handler
+from xwillmarktheBot.Commands.Speedrun_stats.Stream_title import get_stream_category
 from xwillmarktheBot.Config import Configs, Definitions
 from xwillmarktheBot.Utils import *
 
@@ -35,15 +35,11 @@ class Speedrun_handler(Message_handler):
         elif Configs.get('srl results') and command in self.result_handler.get_commands():
             return self.result_handler.handle_message(msg, sender)
 
-
-
-
     def handle_pb(self, msg, sender):
         """In case of !pb command: decide whether to send to SRL result handler or SRC.
         If there's a race type involved, it goes to SRL."""
         split_msg = msg.split(' ')
         command = split_msg[0]
-
         num_args = 1
         if command == '!userpb':
             num_args = 2
@@ -59,13 +55,5 @@ class Speedrun_handler(Message_handler):
         if any(type in arg for type in Definitions.RACE_TYPES):
             if Configs.get('srl results'):
                 return self.result_handler.handle_message(msg, sender)
-
         if Configs.get('speedrun.com'):
             return self.SRC_handler.handle_message(msg, sender)
-
-
-
-
-
-
-

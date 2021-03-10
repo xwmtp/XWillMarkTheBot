@@ -2,9 +2,6 @@ from xwillmarktheBot.Config import Configs
 from xwillmarktheBot.Config import Definitions
 from datetime import datetime
 
-
-
-
 def validate_settings():
     # all the required fields have been changed from the default value
     validate_settings_file_edited()

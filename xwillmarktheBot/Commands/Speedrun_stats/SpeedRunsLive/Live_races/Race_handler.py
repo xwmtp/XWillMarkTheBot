@@ -1,5 +1,5 @@
-from xwillmarktheBot.Abstract_Message_Handler import Message_handler
-from xwillmarktheBot.Speedrun_stats.SpeedRunsLive.Race import LiveSRLRace, LiveRacetimeRace
+from xwillmarktheBot.Commands.Abstract_Message_Handler import Message_handler
+from xwillmarktheBot.Commands.Speedrun_stats.SpeedRunsLive.Race import LiveSRLRace, LiveRacetimeRace
 from xwillmarktheBot.Config import Configs
 from xwillmarktheBot.Utils import *
 import isodate
@@ -10,26 +10,20 @@ class Race_handler(Message_handler):
     """Handles messages concerning ongoing races (live races), with commands like !race, !entrants, etc."""
 
     def __init__(self):
-
         super().__init__()
-
         self.commands = {
             'race' : ['!race'],
             'card' : ['!card', '!board', '!chart'],
             'goal' : ['!goal'],
             'entrants' : ['!entrants']
         }
-
         self.live_race = None
         self.latest_racetime_url = None
-
 
     def handle_message(self, msg, sender):
         split_msg = msg.lower().split(' ')
         command = split_msg[0]
-
         self.update_live_race(Configs.get('streamer'))
-
         if self.live_race is None:
             return "No active SRL or Racetime race found."
 
@@ -41,10 +35,7 @@ class Race_handler(Message_handler):
         if command in live_race_commands():
             return self.get_live_race_info(command)
 
-
-
     def update_live_race(self, player):
-
         # search SRL
         json = readjson('http://api.speedrunslive.com/races')
         for race in json['races']:
@@ -81,26 +72,14 @@ class Race_handler(Message_handler):
 
         self.live_race = None
 
-
-
-
     def get_live_race_info(self, command):
         if (command in self.commands['card']) & (self.live_race.type != 'bingo'):
             return "Current race is not a bingo. Use !race or !goal."
-
         response = ''
-
         if command in self.commands['goal'] + self.commands['card']:
             response = self.live_race.goal.replace('&amp;','&')
-
         elif command in self.commands['race']:
             response = self.live_race.get_race_link()
-
         if (command in self.commands['entrants']) | (Configs.get('print all race entrants') & (command in self.commands['race'])):
             response = f"{response} {self.live_race.get_entrants_string()}"
-
         return response.strip()
-
-
-
-

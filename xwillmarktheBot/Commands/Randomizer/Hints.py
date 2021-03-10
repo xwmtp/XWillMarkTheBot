@@ -6,7 +6,6 @@ import re
 empty_hint_terms = ['location', 'item', 'found_item']
 specific_hint_terms = ['30 skulls', '40 skulls', '50 skulls', 'biggoron', 'frogs', 'oot']
 
-
 def send_current_hints():
     try:
         hints = _read_hint_file()
@@ -21,7 +20,6 @@ def _get_hints_path():
         return Definitions.ROOT_DIR / 'RandoHints'
     else:
         return os.path.normpath(location)
-
 
 def _read_hint_file():
     path = _get_hints_path() / 'rando_hints.txt'
@@ -60,7 +58,6 @@ def _parse_hints(hints):
     logging.debug('Created hints dictionary: ' + str(hint_dict))
     return hint_dict
 
-
 def _get_hints(hint_dict):
     to_send = []
     # hints may contain empty strings for default ones that haven't been filled by user
@@ -70,8 +67,6 @@ def _get_hints(hint_dict):
             clean_hints = [f"{i}. {h}" for i, h in enumerate(clean_hints, start=1)]
             to_send.append(f"{title} ({len(clean_hints)}/{len(hints)}): {', '.join(clean_hints)}")
     return to_send
-
-
 
 def reset_hints():
     try:
