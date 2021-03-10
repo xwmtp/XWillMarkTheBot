@@ -25,21 +25,21 @@ if __name__ == '__main__':
                \nPlease read the manual at https://github.com/xwmtp/xwillmarktheBot/blob/master/README.md for information/help.\n")
 
     if not os.path.exists(f'Settings/Settings-{connection_type}.ini'):
-        create_settings()
+        Configs.create_settings()
         print_introduction()
         print(f"BEFORE USE:\
               \nA file Settings-{connection_type}.ini has been created in the Settings folder (xwillmarktheBot/Settings/Settings.ini).\
               \nPlease open the file in a text editor and fill in your personal settings (channel name, bot name, which modules you would like to use, etc).\
               \nThen restart this program to activate the bot.")
     else:
-        import_settings()
+        Configs.import_settings()
         validate_settings()
         initalize_logger()
 
         print_introduction()
 
         if connection_type == 'twitch':
-            connection = IRC_connection(Configs.get('streamer'), Configs.get('bpt'), Configs.get('bot_oauth'))
+            connection = IRC_connection(Configs.get('streamer'), Configs.get('bot'), Configs.get('bot_oauth'))
             if connection.is_connected():
                 connection_manager = Connection_manager(connection)
                 bot = Bot(connection_manager)

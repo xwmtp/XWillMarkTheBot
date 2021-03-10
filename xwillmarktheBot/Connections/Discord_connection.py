@@ -1,4 +1,4 @@
-from xwillmarktheBot.Bot import Message_distributor
+#from xwillmarktheBot.Bot import Message_distributor
 from xwillmarktheBot.Config import Configs
 import discord
 import logging

@@ -27,12 +27,14 @@ class Bot:
         while(True):
 
             irc_message = self.connection.get_next_message()
-            if irc_message:
-                for command in self.commands:
-                    if command.trigger(irc_message.content):
-                        message = Message(irc_message)
-                        if message.has_permission(command.permission):
-                            command.get_response(message)
+            if not irc_message:
+                continue
+
+            for handler in self.handlers:
+                if handler.triggered(irc_message.command.split(" ")[0]):
+                    message = Message(irc_message)
+                    response = handler.handle_message(message.content, message.sender)
+                    self.connection.send_message(response)
 
 
 class Message:
@@ -52,23 +54,3 @@ class Message:
                     if permission in badges:
                         return permission
         return permission
-
-
-def get_response(self, message, sender):
-    """Looks for commands in message and returns a response if a command is triggered"""
-    command = message.split(' ')[0]
-    msg = message
-
-    # exact match
-    for handler in self.handlers:
-        trigger_matches = [tr for tr in handler.get_triggers() if tr in msg]
-
-        if (command in handler.get_commands()) | any(trigger_matches):
-            return handler.handle_message(message, sender)
-
-
-    # starts with
-    for handler in self.handlers:
-        for command in handler.get_commands():
-            if msg.startswith(command):
-                return handler.handle_message(message, sender)

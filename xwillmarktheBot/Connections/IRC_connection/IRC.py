@@ -1,13 +1,14 @@
 import socket
 import logging
 import re
+from xwillmarktheBot.Config import Configs
 
 class IRC_connection:
 
     def __init__(self, channel_name, bot_name, bot_oauth):
         self.HOST = "irc.twitch.tv"
         self.PORT = 6667
-        self.TIMEOUT = 10
+        self.TIMEOUT = 60
         self.CHAN = "#" + channel_name
         self.NICK = bot_name
         self.PASS = bot_oauth
@@ -19,7 +20,6 @@ class IRC_connection:
             con.settimeout(self.TIMEOUT)
             con.connect((self.HOST, self.PORT))
 
-            # Send nickname, password (OAUTH) and join channel.
             logging.info(f"Connecting to bot account {self.NICK}.")
             con.send(bytes('PASS %s\r\n' % self.PASS, 'UTF-8'))
             con.send(bytes('NICK %s\r\n' % self.PASS, 'UTF-8'))
@@ -50,6 +50,8 @@ class IRC_connection:
     def send_message(self, msg):
         if msg == 'SOCKET':
             raise socket.error
+        if msg == '' or msg == []:
+            return
         if isinstance(msg, list):
             for m in msg:
                 self.socket.send(bytes('PRIVMSG %s :%s\r\n' % (self.CHAN, m), 'UTF-8'))
@@ -80,11 +82,12 @@ class IRC_message:
         self.irc_message = ' '.join(message_parts)
         self.client_identifier = message_parts[0]
         self.command = message_parts[1]
-        self.recipient = message_parts[2]
+        self.recipient = message_parts[2] if len(message_parts) > 2 else ''
         self.content = ' '.join(message_parts[3:])[1:]
         self.KNOWN_COMMANDS = ['PRIVMSG', 'JOIN', 'PING', 'PONG', 'CAP']
         logging.debug(
             f'Parsed tag {self.tag}, client {self.client_identifier}, command {self.command}, rec {self.recipient}, content {self.content}')
+        self.sender()
 
     def sender(self):
         if self.command == 'PRIVMSG':
@@ -94,6 +97,12 @@ class IRC_message:
 
     def is_private_message(self):
         return self.command == 'PRIVMSG'
+
+    def is_bot_message(self):
+        sender = self.sender()
+        if not sender:
+            return False
+        return sender.lower() == Configs.get('bot').lower()
 
     def is_ping(self):
         return self.command == 'PING'

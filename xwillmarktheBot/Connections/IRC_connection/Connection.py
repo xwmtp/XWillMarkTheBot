@@ -18,7 +18,7 @@ class Connection_manager:
             if line:
                 message = self.connection.to_message(line)
                 message.log(level='info')
-                if message.is_private_message():
+                if message.is_private_message() and not message.is_bot_message():
                     return message
                 if message.is_ping():
                     self.connection.send_pong()
@@ -38,6 +38,9 @@ class Connection_manager:
         except Exception as e:
             logging.critical(f"Unknown exception while receiving data: {repr(e)}")
             logging.error(traceback.format_exc())
+
+    def send_message(self, content):
+        self.connection.send_message(content)
 
 
 class Data_reader:
@@ -59,7 +62,7 @@ class Data_reader:
 
     def receive_next_data(self):
         data = self.connection.receive_data()
-        logging.debug(f"data: ${data}$ end data")
+        logging.debug(f"receveod data: ${data}$ end data")
         if data:
             self.buffer += data
             data_lines = re.split(r"[\r\n]+", self.buffer)
