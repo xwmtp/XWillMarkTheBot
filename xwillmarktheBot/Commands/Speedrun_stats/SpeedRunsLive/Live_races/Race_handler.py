@@ -75,12 +75,11 @@ class Race_handler(Message_handler):
     def get_live_race_info(self, command):
         if (command in self.commands['card']) & (self.live_race.type != 'bingo'):
             return "Current race is not a bingo. Use !race or !goal."
-
-        answer = ''
+        response = ''
         if command in self.commands['goal'] + self.commands['card']:
-            answer = self.live_race.goal.replace('&amp;','&')
+            response = self.live_race.goal.replace('&amp;','&')
         elif command in self.commands['race']:
-            answer = self.live_race.get_race_link()
+            response = self.live_race.get_race_link()
         if (command in self.commands['entrants']) | (Configs.get('print all race entrants') & (command in self.commands['race'])):
-            answer = f"{answer} Entrants: {self.live_race.get_entrants_string()}"
-        return answer.strip()
+            response = f"{response} {self.live_race.get_entrants_string()}"
+        return response.strip()
