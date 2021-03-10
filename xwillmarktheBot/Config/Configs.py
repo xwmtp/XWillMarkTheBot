@@ -5,7 +5,6 @@ import configparser
 import logging
 import sys
 
-
 class Config:
 
     def __init__(self, name, file_location):
@@ -26,7 +25,6 @@ class Config:
             os.makedirs(self.file_location)
         copyfile(rf'xwillmarktheBot/Config/Templates/{base_name}.ini', fr'{self.file_location}\{self.name}.ini')
 
-
     def parse_dict_values(self, dct):
 
         def parse_setting_string(string):
@@ -41,7 +39,6 @@ class Config:
             # parse to logging level
             if string.lower() in ['debug', 'info', 'warning', 'error']:
                 return getattr(logging, string.upper())
-
             return string
 
         def transform_setting(setting, option):
@@ -50,15 +47,12 @@ class Config:
                     setting = [s.lower() for s in setting]
                 elif isinstance(setting, str):
                     setting = setting.lower()
-
             if option == 'editors':
                 if not isinstance(setting, list):
                     setting = [setting]
                 setting = [get('streamer')] + setting
             if option == 'racetime games' and not isinstance(setting, list):
                 return [setting]
-
-
             return setting
 
         for section, settings in dct.items():
@@ -67,7 +61,6 @@ class Config:
                 transformed_setting = transform_setting(parsed_setting, option)
                 dct[section][option] = transformed_setting
         return dct
-
 
 connection_type = 'twitch'
 
@@ -85,7 +78,6 @@ configs = [
     Config(f'Settings_advanced-{connection_type}', Definitions.ROOT_DIR / 'Settings')
 ]
 
-
 def create_settings():
     for config in configs:
         config.copy_from_template()
@@ -93,8 +85,6 @@ def create_settings():
 def import_settings():
     for config in configs:
         config.load_settings()
-
-
 
 def get(option):
     option = option.lower()

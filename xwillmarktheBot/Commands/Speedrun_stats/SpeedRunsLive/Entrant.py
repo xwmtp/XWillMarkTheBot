@@ -1,7 +1,5 @@
 import datetime
 import isodate
-from abc import ABC, abstractmethod
-
 
 class SRLEntrant:
 
@@ -19,7 +17,6 @@ class LiveSRLEntrant(SRLEntrant):
 
     def __init__(self, json):
         super().__init__(json)
-
         self.name = json['displayname']
         self.trueskill = json['trueskill']
         self.status = json['statetext']
@@ -32,14 +29,11 @@ class LiveSRLEntrant(SRLEntrant):
         strings = [self.name]
         if self.trueskill:
             strings += f'({self.trueskill})'
-
         if self.status == 'Finished':
             strings = [f'{str(self.rank)}.'] + strings
             strings.append(f'{self.get_time()}')
-
         elif self.status == 'Forfeit':
             strings.append('forfeit')
-
         return ' '.join(strings)
 
 
@@ -65,7 +59,6 @@ class LiveRacetimeEntrant:
 
     def get_string(self):
         strings = [self.name]
-
         if self.status == 'Finished':
             strings = [f'{str(self.rank)}.'] + strings
             strings.append(f'({self.get_time()})')
@@ -79,6 +72,5 @@ class PastEntrant(SRLEntrant):
 
     def __init__(self, json):
         super().__init__(json)
-
         self.name = json['player']
         self.forfeit = self.time == -1

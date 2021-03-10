@@ -14,8 +14,8 @@ class Discord_connection:
         self.client = MyClient(Responder())
 
     def run(self):
-        print(Configs.get('bot_oauth'))
         self.client.run(Configs.get('bot_oauth'))
+
 
 class MyClient(discord.Client):
 
@@ -39,11 +39,12 @@ class MyClient(discord.Client):
 
         response = self.responder.get_response(convert_discord_message(discord_message))
 
-        # multiple discord_messages
+        # multiple responses
         if isinstance(response, list):
             for discord_message in response:
                 return await self.send_message(discord_message, response)
 
+        # 1 response
         if response:
             await self.send_message(discord_message, response)
 

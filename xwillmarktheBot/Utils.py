@@ -3,7 +3,6 @@ import logging
 import shutil
 import os
 
-
 ### File Handling ###
 
 def readjson(url, text_only=False, tries=5):
@@ -27,7 +26,6 @@ def readjson(url, text_only=False, tries=5):
     print(error_message)
     logging.critical(error_message)
 
-
 def copy_file(path, old_file_name, new_file_name):
     try:
         old = os.path.join(path, old_file_name)
@@ -38,10 +36,7 @@ def copy_file(path, old_file_name, new_file_name):
         logging.critical(f"Error while copying {old_file_name} to {new_file_name} in {path}")
         return False
 
-
-
 ### Arithmetic ###
-
 
 def mean(lst):
     lst = sorted(lst)
@@ -50,9 +45,7 @@ def mean(lst):
 
 def median(lst):
     times = sorted(lst)
-
     mid = int(len(lst) / 2)
-
     if len(lst) % 2 == 0:
         median = (lst[mid - 1] + lst[mid]) / 2
     else:
@@ -61,14 +54,6 @@ def median(lst):
     return median
 
 def make_ordinal(n):
-    '''
-    Convert an integer into its ordinal representation::
-
-        make_ordinal(0)   => '0th'
-        make_ordinal(3)   => '3rd'
-        make_ordinal(122) => '122nd'
-        make_ordinal(213) => '213th'
-    '''
     n = int(n)
     suffix = ['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]
     if 11 <= (n % 100) <= 13:
@@ -79,12 +64,9 @@ def make_ordinal(n):
 ### List functionality ###
 
 def reverse_dictionary(dict):
-
     return {value: key for key, values in dict.items() for value in values}
 
-
 def is_lowercase_elem(item, lst):
-
     for elem in lst:
         if item.lower() == elem.lower():
             return True
@@ -105,4 +87,3 @@ def merge_list_dictionaries(d1, d2):
         else:
             new_dict[key] = d2[key]
     return new_dict
-

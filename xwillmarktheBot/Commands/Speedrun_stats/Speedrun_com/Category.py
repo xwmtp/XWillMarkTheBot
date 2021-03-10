@@ -2,7 +2,6 @@ import time
 import re
 from xwillmarktheBot.Utils import *
 
-
 class Category:
     def __init__(self, cat):
         self.id = cat['id']
@@ -37,13 +36,6 @@ class Category:
             if ((category is None) and leaderboard.is_default) or name.lower() == category.lower():
                 return leaderboard
 
-    def get_src_url(self):
-        name = self.name
-        name = re.sub(r'[^A-Za-z0-9]+', '', name)
-        name = name.replace(' ', '_')
-
-
-
 
 class Leaderboard:
     def __init__(self, url, is_default=True, name=''):
@@ -51,7 +43,6 @@ class Leaderboard:
         self.name = name
         self.is_default = is_default
         self.runs = readjson(self.url)['data']['runs']
-
 
     def get_rank_run(self, rank=1):
         if rank > len(self.runs):
@@ -61,15 +52,12 @@ class Leaderboard:
         return run
 
     def get_user_run(self, user):
-
         user_id = username_to_id(user)
         if user_id is not None:
-
             for entry in self.runs:
                 player = entry['run']['players'][0]
                 if 'id' in player.keys() and player['id'] == user_id:
                     return Run(entry)
-
 
 
 class Run:
@@ -91,11 +79,9 @@ class Run:
         seconds = run['times']['primary_t']
         return time.strftime('%H:%M:%S', time.gmtime(seconds))
 
+
 def username_to_id(name):
     url = "https://www.speedrun.com/api/v1/users?lookup=" + name
     player_info = readjson(url)
     if player_info['data'] != []:
         return player_info['data'][0]['id']
-
-
-

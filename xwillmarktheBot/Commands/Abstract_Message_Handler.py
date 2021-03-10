@@ -11,7 +11,6 @@ class Message_handler():
         """Abstract method. Each message handler has to implement a way to handle incoming messages."""
         raise NotImplementedError('Subclasses must override handle_message()!')
 
-
     def get_commands(self):
         """
         Get all the commands of this class, including aliases.

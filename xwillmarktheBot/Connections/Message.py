@@ -19,4 +19,3 @@ class Message:
         self.content = content
         self.sender = sender
         self.permission = permission
-
