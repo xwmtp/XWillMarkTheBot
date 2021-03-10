@@ -1,22 +1,27 @@
-#from xwillmarktheBot.Bot import Message_distributor
+from xwillmarktheBot.Responder import Responder
 from xwillmarktheBot.Config import Configs
+from xwillmarktheBot.Connections.Message import convert_discord_message
 import discord
 import logging
+
+def setup_and_run_discord():
+    Discord_connection().run()
+
 
 class Discord_connection:
 
     def __init__(self):
-        bot = Message_distributor()
-        self.client = MyClient(bot)
+        self.client = MyClient(Responder())
 
     def run(self):
+        print(Configs.get('bot_oauth'))
         self.client.run(Configs.get('bot_oauth'))
 
 class MyClient(discord.Client):
 
-    def __init__(self, message_handler):
+    def __init__(self, responder):
         super().__init__()
-        self.message_handler = message_handler
+        self.responder = responder
 
     async def on_ready(self):
         logging.debug(f'Logged on as Discord user {self.user}')
@@ -25,22 +30,22 @@ class MyClient(discord.Client):
         await incoming_message.channel.send(outgoing_message)
         logging.info('Sent message: ' + outgoing_message)
 
-    async def on_message(self, message):
+    async def on_message(self, discord_message):
         # don't respond to ourselves
-        if message.author == self.user:
+        if discord_message.author == self.user:
             return
 
-        logging.info('Received message: ' + message.content)
+        logging.info('Received discord_message: ' + discord_message.content)
 
-        return_message = self.message_handler.get_response(message.content.lower(), message.author.name)
+        response = self.responder.get_response(convert_discord_message(discord_message))
 
-        # multiple messages
-        if isinstance(return_message, list):
-            for message in return_message:
-                return await self.send_message(message, return_message)
+        # multiple discord_messages
+        if isinstance(response, list):
+            for discord_message in response:
+                return await self.send_message(discord_message, response)
 
-        if return_message:
-            await self.send_message(message, return_message)
+        if response:
+            await self.send_message(discord_message, response)
 
-        if message.content == 'ping':
-            await self.send_message(message, 'pong')
+        if discord_message.content == 'ping':
+            await self.send_message(response, 'pong')

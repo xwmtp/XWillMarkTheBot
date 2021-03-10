@@ -1,3 +1,7 @@
+from xwillmarktheBot.Connections.Message import convert_irc_message
+from xwillmarktheBot.Connections.IRC_connection.IRC import IRC_connection
+from xwillmarktheBot.Responder import Responder
+from xwillmarktheBot.Config import Configs
 import socket
 import logging
 import time
@@ -5,12 +9,29 @@ import re
 import traceback
 from collections import deque
 
+def setup_and_run_irc():
+    connection = IRC_connection(Configs.get('streamer'), Configs.get('bot'), Configs.get('bot_oauth'))
+    if connection.is_connected():
+        connection_manager = Connection_manager(connection, Responder())
+        connection_manager.run()
+
+
 class Connection_manager:
 
-    def __init__(self, connection):
+    def __init__(self, connection, responder):
         self.connection = connection
+        self.responder = responder
         self.data_reader = Data_reader(connection)
         self.reconnecter = Reconnecter(connection)
+
+    def run(self):
+        while (True):
+            message = self.get_next_message()
+            if not message:
+                continue
+            response = self.responder.get_response(message)
+            if response:
+                self.send_message(response)
 
     def get_next_message(self):
         try:
@@ -19,7 +40,7 @@ class Connection_manager:
                 message = self.connection.to_message(line)
                 message.log(level='info')
                 if message.is_private_message() and not message.is_bot_message():
-                    return message
+                    return convert_irc_message(message)
                 if message.is_ping():
                     self.connection.send_pong()
                 if message.is_pong():
